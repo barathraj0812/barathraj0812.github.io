@@ -3281,7 +3281,7 @@ window.IMO_CERT_GALLERY = [
   /* Cloudflare Worker URL — paste your deployed Worker URL here.
      Example: https://contact-form.barath.workers.dev
      ⚠ Replace the placeholder before deploying to production.       */
-	const WORKER_URL = 'https://contact-form.barathrajias.workers.dev';
+	const WORKER_URL = 'https://contact-form.barath.workers.dev';
 
   /* ── ELEMENTS ────────────────────────────────────────────────────── */
   const form       = document.getElementById('cf-form');
@@ -3545,6 +3545,185 @@ window.IMO_CERT_GALLERY = [
 
 })();
 
+</script>
+
+<!-- ── COOKIE CONSENT BANNER ──────────────────────────────────────────── -->
+<div id="cookie-banner" role="dialog" aria-modal="true" aria-label="Cookie consent" style="display:none">
+  <div class="ck-inner">
+    <div class="ck-top">
+      <div class="ck-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/>
+          <path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/>
+        </svg>
+      </div>
+      <div class="ck-text">
+        <p class="ck-title">This site uses cookies</p>
+        <p class="ck-desc">
+          I use essential cookies to keep things running and optional analytics to understand how visitors interact with my portfolio. No data is sold or shared with third parties.
+          <a href="#" class="ck-link" onclick="return false">Learn more</a>
+        </p>
+      </div>
+    </div>
+    <div class="ck-toggle-row">
+      <label class="ck-toggle-wrap">
+        <span class="ck-toggle-label">
+          <span class="ck-toggle-name">Essential</span>
+          <span class="ck-toggle-sub">Required for the site to function</span>
+        </span>
+        <span class="ck-toggle ck-toggle--locked" aria-label="Essential cookies always on">
+          <span class="ck-toggle-knob"></span>
+        </span>
+      </label>
+      <label class="ck-toggle-wrap">
+        <span class="ck-toggle-label">
+          <span class="ck-toggle-name">Analytics</span>
+          <span class="ck-toggle-sub">Help me improve this portfolio</span>
+        </span>
+        <input type="checkbox" id="ck-analytics" class="ck-toggle-input" checked>
+        <span class="ck-toggle" aria-hidden="true">
+          <span class="ck-toggle-knob"></span>
+        </span>
+      </label>
+    </div>
+    <div class="ck-actions">
+      <button class="ck-btn ck-btn--deny" id="ck-deny">Decline optional</button>
+      <button class="ck-btn ck-btn--save" id="ck-save">Save preferences</button>
+      <button class="ck-btn ck-btn--accept" id="ck-accept">Accept all</button>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ── Cookie Banner ── */
+#cookie-banner{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  z-index:9999;width:min(640px,calc(100vw - 32px));
+  background:rgba(8,15,28,.97);border:1px solid var(--border2);
+  border-radius:var(--r3);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  box-shadow:0 24px 64px rgba(0,0,0,.6),0 0 0 1px rgba(59,130,246,.07);
+  opacity:0;transition:opacity .4s var(--ease),transform .4s var(--ease);pointer-events:none}
+#cookie-banner.ck-visible{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all}
+#cookie-banner.ck-hiding{opacity:0;transform:translateX(-50%) translateY(16px)}
+
+.ck-inner{padding:24px 26px 22px}
+
+.ck-top{display:flex;gap:16px;align-items:flex-start;margin-bottom:20px}
+.ck-icon{
+  flex-shrink:0;width:40px;height:40px;border-radius:10px;
+  background:var(--blue-dim);border:1px solid rgba(59,130,246,.22);
+  display:flex;align-items:center;justify-content:center;color:var(--blue);margin-top:2px}
+.ck-text{flex:1}
+.ck-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:#fff;margin-bottom:6px}
+.ck-desc{font-size:.78rem;color:var(--text2);line-height:1.65}
+.ck-link{color:var(--blue);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3);
+  transition:border-color .2s}
+.ck-link:hover{border-color:var(--blue)}
+
+.ck-toggle-row{
+  display:flex;flex-direction:column;gap:2px;
+  background:rgba(12,21,38,.6);border:1px solid var(--border);
+  border-radius:var(--r);padding:4px 0;margin-bottom:18px}
+.ck-toggle-wrap{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;border-radius:6px;cursor:pointer;transition:background .2s;gap:14px}
+.ck-toggle-wrap:has(.ck-toggle--locked){cursor:default}
+.ck-toggle-wrap:not(:has(.ck-toggle--locked)):hover{background:rgba(59,130,246,.06)}
+.ck-toggle-label{display:flex;flex-direction:column;gap:2px}
+.ck-toggle-name{font-size:.8rem;font-weight:600;color:var(--text)}
+.ck-toggle-sub{font-size:.7rem;color:var(--text3)}
+
+.ck-toggle-input{position:absolute;opacity:0;width:0;height:0}
+.ck-toggle{
+  flex-shrink:0;width:40px;height:22px;border-radius:11px;
+  background:var(--surface2);border:1px solid var(--border2);
+  position:relative;transition:background .25s,border-color .25s;cursor:pointer}
+.ck-toggle--locked{background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.28);cursor:default}
+.ck-toggle-knob{
+  position:absolute;top:3px;left:3px;width:14px;height:14px;
+  border-radius:50%;background:var(--text3);transition:transform .25s,background .25s}
+.ck-toggle--locked .ck-toggle-knob{background:var(--blue);transform:translateX(18px)}
+.ck-toggle-input:checked + .ck-toggle{background:var(--blue);border-color:var(--blue2)}
+.ck-toggle-input:checked + .ck-toggle .ck-toggle-knob{background:#fff;transform:translateX(18px)}
+
+.ck-actions{display:flex;gap:8px;flex-wrap:wrap}
+.ck-btn{
+  flex:1;min-width:110px;padding:9px 16px;border-radius:7px;
+  font-size:.75rem;font-weight:600;letter-spacing:.04em;cursor:pointer;
+  transition:opacity .2s,transform .2s,background .2s,border-color .2s;border:1px solid transparent;
+  font-family:'Inter',sans-serif}
+.ck-btn:hover{transform:translateY(-1px)}
+.ck-btn--deny{
+  background:transparent;border-color:var(--border2);color:var(--text2)}
+.ck-btn--deny:hover{border-color:var(--border3);color:var(--text)}
+.ck-btn--save{
+  background:var(--blue-dim);border-color:rgba(59,130,246,.3);color:var(--blue)}
+.ck-btn--save:hover{background:var(--blue-dim2)}
+.ck-btn--accept{
+  background:var(--blue);border-color:var(--blue);color:#fff}
+.ck-btn--accept:hover{opacity:.88}
+
+@media(max-width:500px){
+  .ck-inner{padding:20px 18px 18px}
+  .ck-actions{gap:7px}
+  .ck-btn{min-width:0;font-size:.7rem;padding:8px 10px}
+}
+</style>
+
+<script>
+/* ── Cookie Consent Logic ───────────────────────────────────────────── */
+(function(){
+  const STORAGE_KEY = 'cookie_consent_v1';
+  const banner      = document.getElementById('cookie-banner');
+  const acceptBtn   = document.getElementById('ck-accept');
+  const denyBtn     = document.getElementById('ck-deny');
+  const saveBtn     = document.getElementById('ck-save');
+  const analyticsChk = document.getElementById('ck-analytics');
+
+  function getConsent(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)); }catch(e){ return null; } }
+  function setConsent(obj){ localStorage.setItem(STORAGE_KEY, JSON.stringify({...obj, ts: Date.now()})); }
+
+  function hideBanner(){
+    banner.classList.remove('ck-visible');
+    banner.classList.add('ck-hiding');
+    setTimeout(()=>{ banner.style.display='none'; banner.classList.remove('ck-hiding'); }, 420);
+  }
+
+  function showBanner(){
+    banner.style.display='block';
+    requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ banner.classList.add('ck-visible'); }); });
+  }
+
+  /* Apply consent (enable/disable scripts here as needed) */
+  function applyConsent(prefs){
+    // e.g. if(prefs.analytics){ /* init GA */ }
+    console.log('[Cookies] consent applied:', prefs);
+  }
+
+  const existing = getConsent();
+  if(existing){
+    applyConsent(existing);
+  } else {
+    /* Show after a short delay so page load feels settled */
+    setTimeout(showBanner, 1400);
+  }
+
+  acceptBtn.addEventListener('click', ()=>{
+    const prefs = { essential:true, analytics:true };
+    setConsent(prefs); applyConsent(prefs); hideBanner();
+  });
+
+  denyBtn.addEventListener('click', ()=>{
+    const prefs = { essential:true, analytics:false };
+    analyticsChk.checked = false;
+    setConsent(prefs); applyConsent(prefs); hideBanner();
+  });
+
+  saveBtn.addEventListener('click', ()=>{
+    const prefs = { essential:true, analytics: analyticsChk.checked };
+    setConsent(prefs); applyConsent(prefs); hideBanner();
+  });
+})();
 </script>
 </body>
 </html>
