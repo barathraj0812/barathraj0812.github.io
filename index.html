@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Barath Raj M — Portfolio</title>
+<title>Barath M — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
@@ -944,6 +944,218 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
   .ary-right{display:none}
 }
 </style>
+
+<style>
+
+/* ══════════════════════════════════════════════════════
+   CONTACT FORM — Privacy-Safe Professional Contact
+   Design language: matches existing dark space aesthetic
+   ══════════════════════════════════════════════════════ */
+
+/* Section layout */
+#contact{padding:120px 0 100px;border-top:1px solid var(--border)}
+.contact-wrap{max-width:860px;margin:0 auto}
+
+/* Header */
+.contact-hdr{margin-bottom:52px}
+
+/* Two-column layout: info left, form right */
+.contact-grid{
+  display:grid;grid-template-columns:1fr 1.55fr;gap:48px;align-items:start}
+
+/* ── LEFT COLUMN: info cards ── */
+.contact-info{display:flex;flex-direction:column;gap:14px}
+
+.ci-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);
+  padding:20px 22px;transition:border-color .3s,transform .3s}
+.ci-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+
+.ci-card-icon{
+  width:36px;height:36px;border-radius:8px;background:var(--blue-dim);
+  border:1px solid rgba(59,130,246,.22);display:flex;align-items:center;
+  justify-content:center;margin-bottom:12px;flex-shrink:0}
+
+.ci-card-title{
+  font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;
+  color:#fff;margin-bottom:4px}
+.ci-card-desc{font-size:.78rem;color:var(--text2);line-height:1.65}
+
+/* Status indicator */
+.cf-status{
+  display:flex;align-items:center;gap:8px;
+  font-family:'JetBrains Mono',monospace;font-size:.58rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--text3);
+  padding:10px 14px;border:1px solid var(--border);border-radius:6px;
+  background:var(--surface)}
+.cf-status-dot{
+  width:6px;height:6px;border-radius:50%;background:#22C55E;flex-shrink:0;
+  box-shadow:0 0 0 0 rgba(34,197,94,.5);
+  animation:live-pulse 2.5s ease-in-out infinite}
+
+/* Privacy notice */
+.cf-privacy{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:12px 14px;border:1px solid rgba(59,130,246,.15);
+  border-radius:8px;background:rgba(59,130,246,.05)}
+.cf-privacy-icon{flex-shrink:0;color:var(--blue);margin-top:1px}
+.cf-privacy-text{font-size:.72rem;color:var(--text2);line-height:1.65}
+.cf-privacy-text strong{color:var(--blue);font-weight:500}
+
+/* ── RIGHT COLUMN: form card ── */
+.contact-form-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);overflow:hidden;position:relative}
+.contact-form-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(to right,transparent,var(--blue),transparent);
+  pointer-events:none;z-index:2}
+
+.cf-head{
+  padding:24px 28px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:12px}
+.cf-head-left{display:flex;flex-direction:column;gap:3px}
+.cf-head-label{
+  font-family:'JetBrains Mono',monospace;font-size:.58rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--blue)}
+.cf-head-title{
+  font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:#fff}
+
+/* Secure badge */
+.cf-secure{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text3);
+  padding:6px 10px;border:1px solid var(--border);border-radius:4px;
+  background:var(--bg2);flex-shrink:0}
+.cf-secure svg{color:var(--blue)}
+
+/* Form body */
+.cf-body{padding:24px 28px 28px}
+
+/* Field groups */
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cf-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.cf-field:last-of-type{margin-bottom:0}
+
+.cf-label{
+  font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:5px}
+.cf-label .req{color:var(--blue);font-size:.65rem}
+
+/* Inputs / textarea */
+.cf-input,.cf-select,.cf-textarea{
+  width:100%;background:var(--bg2);border:1px solid var(--border2);
+  border-radius:6px;padding:10px 13px;
+  font-family:'Inter',sans-serif;font-size:.83rem;color:var(--text);
+  outline:none;transition:border-color .2s,box-shadow .2s,background .2s;
+  appearance:none;-webkit-appearance:none}
+.cf-input::placeholder,.cf-textarea::placeholder{color:var(--text3)}
+.cf-input:focus,.cf-select:focus,.cf-textarea:focus{
+  border-color:rgba(59,130,246,.55);
+  box-shadow:0 0 0 3px rgba(59,130,246,.1);
+  background:rgba(12,21,38,.8)}
+.cf-input.error,.cf-select.error,.cf-textarea.error{
+  border-color:rgba(239,68,68,.45);
+  box-shadow:0 0 0 3px rgba(239,68,68,.08)}
+.cf-input.valid,.cf-textarea.valid{
+  border-color:rgba(34,197,94,.35)}
+
+/* Select arrow */
+.cf-select-wrap{position:relative}
+.cf-select-wrap::after{
+  content:'';position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;
+  border-top:5px solid var(--text3);pointer-events:none}
+.cf-select{cursor:pointer;padding-right:30px}
+.cf-select option{background:var(--surface);color:var(--text)}
+
+/* Textarea */
+.cf-textarea{resize:vertical;min-height:110px;max-height:300px;line-height:1.6}
+
+/* Error message */
+.cf-err{
+  font-size:.7rem;color:rgba(239,68,68,.85);
+  display:flex;align-items:center;gap:5px;
+  min-height:16px;transition:opacity .2s}
+.cf-err svg{flex-shrink:0}
+
+/* Character counter */
+.cf-counter{
+  font-family:'JetBrains Mono',monospace;font-size:.58rem;
+  color:var(--text3);text-align:right;transition:color .2s}
+.cf-counter.warn{color:var(--amber)}
+.cf-counter.over{color:rgba(239,68,68,.85)}
+
+/* Honeypot field — visually hidden but accessible to bots */
+.cf-hp{opacity:0;position:absolute;top:0;left:0;height:0;width:0;z-index:-1;
+  pointer-events:none;tabindex:-1}
+
+/* Submit button */
+.cf-submit{
+  width:100%;margin-top:20px;padding:13px 24px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  font-family:'Inter',sans-serif;font-size:.82rem;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;color:#fff;
+  background:var(--blue);border:1px solid var(--blue);border-radius:7px;
+  cursor:pointer;transition:opacity .2s,transform .2s,box-shadow .2s;
+  position:relative;overflow:hidden}
+.cf-submit:hover:not(:disabled){opacity:.88;transform:translateY(-1px);
+  box-shadow:0 8px 24px rgba(59,130,246,.28)}
+.cf-submit:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.cf-submit-spinner{
+  width:16px;height:16px;border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;
+  animation:cf-spin .7s linear infinite;display:none}
+@keyframes cf-spin{to{transform:rotate(360deg)}}
+.cf-submit.loading .cf-submit-spinner{display:block}
+.cf-submit.loading .cf-submit-text{display:none}
+
+/* ── SUCCESS STATE ── */
+.cf-success{
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:52px 32px;gap:16px;min-height:320px}
+.cf-success.show{display:flex}
+.cf-success-icon{
+  width:60px;height:60px;border-radius:50%;
+  background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);
+  display:flex;align-items:center;justify-content:center;
+  animation:cf-pop .5s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes cf-pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.cf-success-title{
+  font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;color:#fff}
+.cf-success-msg{
+  font-size:.84rem;color:var(--text2);line-height:1.75;max-width:360px}
+.cf-success-note{
+  font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text3)}
+.cf-reset{
+  margin-top:4px;font-size:.75rem;color:var(--blue);
+  background:none;border:none;cursor:pointer;text-decoration:underline;
+  font-family:'Inter',sans-serif;padding:0;transition:opacity .2s}
+.cf-reset:hover{opacity:.7}
+
+/* Footer note below form */
+.cf-form-footer{
+  display:flex;align-items:center;gap:6px;margin-top:10px;
+  font-size:.7rem;color:var(--text3)}
+.cf-form-footer svg{flex-shrink:0}
+
+/* ── MOBILE ── */
+@media(max-width:860px){
+  .contact-grid{grid-template-columns:1fr;gap:28px}
+  .contact-info{flex-direction:row;flex-wrap:wrap}
+  .ci-card{flex:1;min-width:200px}
+}
+@media(max-width:640px){
+  .cf-row{grid-template-columns:1fr}
+  .contact-info{flex-direction:column}
+  .cf-head{flex-direction:column;align-items:flex-start;gap:10px}
+  .cf-body{padding:18px 20px 22px}
+  .cf-head{padding:18px 20px 16px}
+}
+
+</style>
 </head>
 <body>
 
@@ -969,9 +1181,9 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-right">
-      <a href="mailto:barathrajias@gmail.com" class="nav-cv">
+      <a href="#contact" class="nav-cv">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-        Email Me
+        Contact
       </a>
       <button class="theme-btn" aria-label="Toggle theme">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -1001,7 +1213,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
         <p class="hero-eyebrow">Hello, I'm</p>
         <h1 class="hero-name">
           BARATH
-          <span class="blue">RAJ M</span>
+          <span class="blue">M</span>
         </h1>
         <p class="hero-tagline">Full-Stack AI Developer · Olympiad Achiever · Lifelong Learner</p>
         <p class="hero-desc">
@@ -1014,7 +1226,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
           <span class="chip blue">Full-Stack AI Developer</span>
           <span class="chip blue">NutriGreen AI · Gemini API</span>
           <span class="chip">TNEB Calculator · Chart.js · GSAP</span>
-          <span class="chip">94.8% CBSE · ~96.4% Expected</span>
+          <span class="chip">Top 5% CBSE · ~96.4% Expected</span>
           <span class="chip">Aryabhata Merit Achiever</span>
         </div>
         <div class="hero-live-strip">
@@ -1043,10 +1255,10 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
           <a href="https://github.com/barathraj0812" target="_blank" rel="noopener" class="social-btn" aria-label="GitHub">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
           </a>
-          <a href="https://solocreatorr.itch.io/solar-system" target="_blank" rel="noopener" class="social-btn" aria-label="itch.io">
+          <a href="https://itch.io" target="_blank" rel="noopener" class="social-btn" aria-label="itch.io">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           </a>
-          <a href="mailto:barathrajias@gmail.com" class="social-btn" aria-label="Email">
+          <a href="#contact" class="social-btn" aria-label="Email">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
           </a>
         </div>
@@ -1058,7 +1270,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
           <div class="hero-planet"></div>
           <div class="hero-photo-wrap" style="position:relative;z-index:2">
             <img src="https://lh3.googleusercontent.com/d/1hsyBmf-rOS4iNbi9vk2LPwRxBLi2HSJM"
-                 alt="Barath Raj M"
+                 alt="Barath M"
                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
             <div class="hero-photo-fallback" style="display:none">BR</div>
           </div>
@@ -1091,7 +1303,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
           I believe in consistent learning and creating projects that make an impact.
         </p>
         <p class="about-mini-text">
-          Class XI · Science Stream · Maharishi Vidya Mandir, Chetpet · Chennai, Tamil Nadu
+          Class XI · Science Stream · Private school in Chetpet · Chennai, Tamil Nadu
         </p>
       </div>
       <div class="stat-cards reveal d1">
@@ -1317,7 +1529,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
               <div class="chal-item">Performance optimisation for consistent frame rate</div>
             </div>
           </div>
-          <a href="https://solocreatorr.itch.io/solar-system" target="_blank" rel="noopener" class="proj-link">
+          <a href="https://itch.io" target="_blank" rel="noopener" class="proj-link">
             Play on itch.io
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </a>
@@ -1689,11 +1901,11 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
         <p class="sec-eyebrow">CBSE Academic</p>
         <p class="cbse-title">Class X Results</p>
         <div class="cbse-rows">
-          <div class="cbse-row"><span class="cbse-k">Official Score</span><span class="cbse-v hi">94.8%</span></div>
+          <div class="cbse-row"><span class="cbse-k">Official Score</span><span class="cbse-v hi">95%+</span></div>
           <div class="cbse-row"><span class="cbse-k">Post-Revaluation</span><span class="cbse-v">~96.4% Expected</span></div>
           <div class="cbse-row"><span class="cbse-k">Strongest</span><span class="cbse-v">Maths · Computer Science</span></div>
           <div class="cbse-row"><span class="cbse-k">Board</span><span class="cbse-v">CBSE</span></div>
-          <div class="cbse-row"><span class="cbse-k">School</span><span class="cbse-v">Chinmaya Vidyalaya, Anna Nagar</span></div>
+          <div class="cbse-row"><span class="cbse-k">School</span><span class="cbse-v">Previous school in Anna Nagar, Chennai</span></div>
         </div>
       </div>
       <div class="cbse-mark reveal d2">
@@ -1902,25 +2114,25 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
       <div class="about-left">
         <div class="about-photo-card reveal">
           <img class="about-photo" src="https://lh3.googleusercontent.com/d/1hsyBmf-rOS4iNbi9vk2LPwRxBLi2HSJM"
-               alt="Barath Raj M" loading="lazy"
+               alt="Barath M" loading="lazy"
                onerror="this.style.display='none';document.getElementById('pf2').style.display='flex'"/>
           <div class="about-photo-fallback" id="pf2" style="display:none">B</div>
           <div class="about-name-box">
-            <div class="about-fn">Barath Raj M</div>
+            <div class="about-fn">Barath M</div>
             <div class="about-role">Class XI · Science Stream · CBSE</div>
             <ul class="about-metas">
-              <li><span class="am-lbl">Born</span> 08 December 2010</li>
+              <li><span class="am-lbl">Born</span> 2010</li>
               <li><span class="am-lbl">Location</span> Chennai, Tamil Nadu</li>
-              <li><span class="am-lbl">Current</span> Maharishi Vidya Mandir, Chetpet</li>
-              <li><span class="am-lbl">Email</span> barathrajias@gmail.com</li>
+              <li><span class="am-lbl">Current</span> Private school in Chetpet, Chennai</li>
+              <li><span class="am-lbl">Contact</span> Via this portfolio</li>
             </ul>
           </div>
         </div>
         <div class="schools-card reveal d1">
           <h4>// Schools &amp; Institutions</h4>
-          <div class="school-item"><div class="school-dot past"></div><div class="school-body"><div class="school-name">GK Shetty Vivekananda Vidyalaya</div><div class="school-yrs">Ambattur, Chennai · 2014 – 2016</div></div></div>
-          <div class="school-item"><div class="school-dot past"></div><div class="school-body"><div class="school-name">Chinmaya Vidyalaya</div><div class="school-yrs">Anna Nagar, Chennai · 2016 – 2026</div></div></div>
-          <div class="school-item"><div class="school-dot"></div><div class="school-body"><div class="school-name">Maharishi Vidya Mandir</div><div class="school-yrs">Chetpet, Chennai · 2026 – 2028 (Current)</div></div></div>
+          <div class="school-item"><div class="school-dot past"></div><div class="school-body"><div class="school-name">Primary school in Chennai</div><div class="school-yrs">Chennai · 2014 – 2016</div></div></div>
+          <div class="school-item"><div class="school-dot past"></div><div class="school-body"><div class="school-name">Previous school in Anna Nagar, Chennai</div><div class="school-yrs">Anna Nagar, Chennai · 2016 – 2026</div></div></div>
+          <div class="school-item"><div class="school-dot"></div><div class="school-body"><div class="school-name">Private school in Chetpet, Chennai</div><div class="school-yrs">Chetpet, Chennai · 2026 – 2028 (Current)</div></div></div>
         </div>
         <div class="lang-card reveal d2">
           <h4>// Languages</h4>
@@ -1934,7 +2146,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
         <div class="about-text reveal">
           <p>I'm a Class XI student from Chennai who learns by <strong>building things that help me understand</strong>. Instead of just reading about the solar system, I built a 3D simulation. Instead of just using the web, I started making interactive apps.</p>
           <p>I've been competing in <strong>Olympiads since Grade 4</strong> — IMO, NSO, and NCO — not just for medals but because hard problems genuinely fascinate me. In 2023, I scored 59/60 in the IMO and ranked 2nd internationally. In 2025, I was recognised as a <em>Merit Achiever in the Aryabhata Ganit Challenge</em>, placing in the Top 100 students across the CBSE region nationally.</p>
-          <p>I spent the first two years at GK Shetty Vivekananda Vidyalaya in Ambattur, then a decade at <strong>Chinmaya Vidyalaya Anna Nagar</strong> from Grade 1 through Grade 10. I recently joined <strong>Maharishi Vidya Mandir, Chetpet</strong> for Class XI–XII, where I'm preparing seriously for JEE Main &amp; Advanced.</p>
+          <p>I spent the first two years at a primary school in Chennai, then a decade at a <strong>school in Anna Nagar, Chennai</strong> from Grade 1 through Grade 10. I recently joined a <strong>private school in Chetpet, Chennai</strong> for Class XI–XII, where I'm preparing seriously for JEE Main &amp; Advanced.</p>
           <p>On the technology side, I'm genuinely excited about what AI enables. I use <em>ChatGPT, Claude, and Krea</em> constantly — for debugging, brainstorming, and creative experimentation.</p>
           <p>Long-term: crack JEE Advanced, study at IIT Madras or IIT Bombay, then pursue UPSC CSE to become an IAS officer. That's the plan. I'm working toward it.</p>
         </div>
@@ -1964,14 +2176,14 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
       <div>
         <p style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:24px" class="reveal">// Milestone Timeline</p>
         <div class="tl-wrap reveal">
-          <div class="tl-item past"><p class="tl-yr">2014</p><p class="tl-ev"><strong>Joined GK Shetty Vivekananda Vidyalaya</strong>, Ambattur — start of formal schooling.</p></div>
-          <div class="tl-item past"><p class="tl-yr">2016</p><p class="tl-ev"><strong>Joined Chinmaya Vidyalaya Anna Nagar</strong> — where the next decade of academic achievement would unfold.</p></div>
+          <div class="tl-item past"><p class="tl-yr">2014</p><p class="tl-ev"><strong>Started formal schooling</strong> in Chennai — beginning of the academic journey.</p></div>
+          <div class="tl-item past"><p class="tl-yr">2016</p><p class="tl-ev"><strong>Joined Previous school in Anna Nagar, Chennai</strong> — where the next decade of academic achievement would unfold.</p></div>
           <div class="tl-item past"><p class="tl-yr">2020</p><p class="tl-ev"><strong>IMO Distinction + Zonal Top 25</strong> — Grade 4, first major recognition. NIELIT HTML Course completed.</p></div>
           <div class="tl-item past"><p class="tl-yr">2022</p><p class="tl-ev"><strong>IMO Gold Medal</strong> — first Gold; consistent Olympiad form begins.</p></div>
           <div class="tl-item past"><p class="tl-yr">2023</p><p class="tl-ev"><strong>IMO International Rank 2 · 59/60</strong> — peak mathematical achievement. Solar System Simulation built in Unity + C#.</p></div>
           <div class="tl-item past"><p class="tl-yr">2024</p><p class="tl-ev"><strong>IMO + NSO + NCO Gold Medals.</strong> English Typewriting Lower — First Class with Distinction.</p></div>
           <div class="tl-item past"><p class="tl-yr">2025</p><p class="tl-ev"><strong>Aryabhata Ganit Challenge — Merit, Top 100.</strong> Typewriting Higher — First Class with Distinction. Astrological Web App built.</p></div>
-          <div class="tl-item past"><p class="tl-yr">2026</p><p class="tl-ev"><strong>Joined MVM Chetpet for Class XI.</strong> Generative AI Mastermind cert. NCO Distinction + Zonal Top 25. AI Movie Teaser created. <strong>NutriGreen AI</strong> — full-stack AI nutrition platform with Google Gemini integration. <strong>TNEB Tariff Calculator</strong> — civic tech tool with Chart.js, GSAP, and Canvas lightning effects.</p></div>
+          <div class="tl-item past"><p class="tl-yr">2026</p><p class="tl-ev"><strong>Joined Private school in Chetpet for Class XI.</strong> Generative AI Mastermind cert. NCO Distinction + Zonal Top 25. AI Movie Teaser created. <strong>NutriGreen AI</strong> — full-stack AI nutrition platform with Google Gemini integration. <strong>TNEB Tariff Calculator</strong> — civic tech tool with Chart.js, GSAP, and Canvas lightning effects.</p></div>
           <div class="tl-item fut"><p class="tl-yr">2028</p><p class="tl-ev">Class XII completion. JEE Main + Advanced.</p></div>
           <div class="tl-item fut"><p class="tl-yr">2029+</p><p class="tl-ev">IIT / NIT Trichy. Engineering degree.</p></div>
           <div class="tl-item fut"><p class="tl-yr">Future</p><p class="tl-ev">UPSC CSE. Indian Administrative Service.</p></div>
@@ -2014,69 +2226,261 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
 <section id="contact">
   <div class="container">
     <div class="contact-wrap">
-      <p class="sec-eyebrow reveal">// Get in Touch</p>
-      <h2 class="sec-title reveal d1">Say Hello</h2>
-      <div class="divider reveal d1"></div>
-      <p class="reveal d2" style="margin-top:24px;font-size:.9rem;color:var(--text2);line-height:1.85;max-width:500px">
-        Whether you want to chat about projects, mathematics, AI workflows,
-        space mysteries, or just connect — feel free to reach out.
-        This portfolio is a living document; it grows as I do.
-      </p>
-      <div class="contact-demos reveal d2">
-        <a href="https://nutrigreen-ai.onrender.com/" target="_blank" rel="noopener" class="cdemo green-d">
-          <div class="cdemo-top">
-            <span class="live-dot"></span>
-            <span class="cdemo-label green-d">Live · Full-Stack AI</span>
-          </div>
-          <div class="cdemo-name">NutriGreen AI</div>
-          <div class="cdemo-desc">AI nutrition tracker with Google Gemini image analysis, personalized Indian meal plans, and real-time calorie intelligence.</div>
-          <div class="cdemo-arrow green-d">
-            Open App
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </div>
-        </a>
-        <a href="https://zodiac-birth-star--fibremurugan.replit.app/" target="_blank" rel="noopener" class="cdemo blue-d">
-          <div class="cdemo-top">
-            <span class="live-dot blue"></span>
-            <span class="cdemo-label blue-d">Live · Web App</span>
-          </div>
-          <div class="cdemo-name">Zodiac &amp; Birth Star App</div>
-          <div class="cdemo-desc">Interactive astrological predictor with dynamic frontend logic and prediction systems, built with HTML, CSS &amp; JavaScript.</div>
-          <div class="cdemo-arrow blue-d">
-            Open App
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </div>
-        </a>
+
+      <!-- Header -->
+      <div class="contact-hdr">
+        <p class="sec-eyebrow reveal">// Get in Touch</p>
+        <h2 class="sec-title reveal d1">Say Hello</h2>
+        <div class="divider reveal d1"></div>
+        <p class="reveal d2" style="margin-top:20px;font-size:.9rem;color:var(--text2);line-height:1.85;max-width:560px">
+          Whether you want to discuss projects, mathematics, AI workflows, space
+          mysteries, or just connect — use the form below. No personal contact
+          details are exposed publicly.
+        </p>
       </div>
-      <div class="contact-btns reveal d3">
-        <a href="https://nutrigreen-ai.onrender.com/" target="_blank" rel="noopener" class="c-btn primary">
-          <span class="live-dot" style="width:6px;height:6px"></span>
-          NutriGreen AI
-        </a>
-        <a href="https://solocreatorr.itch.io/solar-system" target="_blank" rel="noopener" class="c-btn">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          Solar System Game
-        </a>
-        <a href="mailto:barathrajias@gmail.com" class="c-btn">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-          Email Me
-        </a>
-        <a href="https://github.com/barathraj0812" target="_blank" rel="noopener" class="c-btn">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-          GitHub
-        </a>
-      </div>
-      <p class="reveal d4" style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.12em;color:var(--text3);text-transform:uppercase">
-        Chennai, Tamil Nadu, India · Class XI · Maharishi Vidya Mandir, Chetpet
+
+      <!-- Grid: info left | form right -->
+      <div class="contact-grid">
+
+        <!-- LEFT: info cards -->
+        <div class="contact-info reveal d1">
+
+          <!-- Card: what to reach out about -->
+          <div class="ci-card">
+            <div class="ci-card-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
+            <div class="ci-card-title">Open to Conversations</div>
+            <div class="ci-card-desc">
+              Project discussions, Olympiad math, AI &amp; full-stack development,
+              educational opportunities, or just a friendly hello — all welcome.
+            </div>
+          </div>
+
+          <!-- Card: response time -->
+          <div class="ci-card">
+            <div class="ci-card-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <div class="ci-card-title">Response Time</div>
+            <div class="ci-card-desc">
+              Messages are reviewed regularly. Expect a response within a few days,
+              depending on academic commitments.
+            </div>
+          </div>
+
+          <!-- Live status -->
+          <div class="cf-status">
+            <span class="cf-status-dot"></span>
+            Form Active · Privacy-Safe
+          </div>
+
+          <!-- Live demo links -->
+          <div class="contact-demos" style="grid-template-columns:1fr;gap:10px;margin:0">
+            <a href="https://nutrigreen-ai.onrender.com/" target="_blank" rel="noopener" class="cdemo green-d">
+              <div class="cdemo-top">
+                <span class="live-dot"></span>
+                <span class="cdemo-label green-d">Live · Full-Stack AI</span>
+              </div>
+              <div class="cdemo-name">NutriGreen AI</div>
+              <div class="cdemo-desc">AI nutrition tracker · Google Gemini API · Node.js</div>
+              <div class="cdemo-arrow green-d">
+                Open App
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </div>
+            </a>
+            <a href="https://zodiac-birth-star--fibremurugan.replit.app/" target="_blank" rel="noopener" class="cdemo blue-d">
+              <div class="cdemo-top">
+                <span class="live-dot blue"></span>
+                <span class="cdemo-label blue-d">Live · Web App</span>
+              </div>
+              <div class="cdemo-name">Zodiac &amp; Birth Star App</div>
+              <div class="cdemo-desc">Interactive astrological predictor · HTML · CSS · JS</div>
+              <div class="cdemo-arrow blue-d">
+                Open App
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </div>
+            </a>
+          </div>
+
+          <!-- Privacy notice -->
+          <div class="cf-privacy">
+            <div class="cf-privacy-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <p class="cf-privacy-text">
+              <strong>Privacy first.</strong> Your information will only be used to
+              respond to your inquiry and will not be shared with third parties.
+              No personal contact details are displayed on this site.
+            </p>
+          </div>
+
+        </div><!-- /contact-info -->
+
+        <!-- RIGHT: form card -->
+        <div class="contact-form-card reveal d2">
+
+          <!-- Form head -->
+          <div class="cf-head">
+            <div class="cf-head-left">
+              <span class="cf-head-label">// Send a Message</span>
+              <span class="cf-head-title">Contact Form</span>
+            </div>
+            <span class="cf-secure">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              Secure · No PII Exposed
+            </span>
+          </div>
+
+          <!-- Form body -->
+          <div class="cf-body">
+            <!-- Success state (shown on submit) -->
+            <div class="cf-success" id="cf-success" aria-live="polite">
+              <div class="cf-success-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+              <div class="cf-success-title">Message Sent!</div>
+              <p class="cf-success-msg">
+                Thank you for reaching out. Your message has been received and
+                I will get back to you as soon as possible.
+              </p>
+              <p class="cf-success-note">Response expected within a few days</p>
+              <button class="cf-reset" id="cf-reset-btn">Send another message</button>
+            </div>
+
+            <!-- The actual form -->
+            <form id="cf-form" novalidate autocomplete="off" aria-label="Contact form">
+
+              <!-- Honeypot anti-spam: hidden from humans, visible to bots -->
+              <div class="cf-hp" aria-hidden="true">
+                <label for="cf-hp-field">Leave this field empty</label>
+                <input type="text" id="cf-hp-field" name="cf_website" tabindex="-1" autocomplete="off"/>
+              </div>
+
+              <!-- Row 1: Name + Email -->
+              <div class="cf-row">
+                <div class="cf-field">
+                  <label class="cf-label" for="cf-name">
+                    Name <span class="req" aria-label="required">*</span>
+                  </label>
+                  <input class="cf-input" id="cf-name" name="name" type="text"
+                    placeholder="Your name" maxlength="80"
+                    autocomplete="off" required aria-required="true"
+                    aria-describedby="cf-name-err"/>
+                  <span class="cf-err" id="cf-name-err" role="alert" aria-live="polite"></span>
+                </div>
+                <div class="cf-field">
+                  <label class="cf-label" for="cf-email">
+                    Email <span class="req" aria-label="required">*</span>
+                  </label>
+                  <input class="cf-input" id="cf-email" name="email" type="email"
+                    placeholder="your@email.com" maxlength="120"
+                    autocomplete="off" required aria-required="true"
+                    aria-describedby="cf-email-err"/>
+                  <span class="cf-err" id="cf-email-err" role="alert" aria-live="polite"></span>
+                </div>
+              </div>
+
+              <!-- Row 2: Subject -->
+              <div class="cf-field">
+                <label class="cf-label" for="cf-subject">
+                  Subject <span class="req" aria-label="required">*</span>
+                </label>
+                <div class="cf-select-wrap">
+                  <select class="cf-select cf-input" id="cf-subject" name="subject"
+                    required aria-required="true" aria-describedby="cf-subject-err">
+                    <option value="" disabled selected>Select a topic…</option>
+                    <option value="Project Discussion">Project Discussion</option>
+                    <option value="AI & Technology">AI &amp; Technology</option>
+                    <option value="Mathematics & Olympiad">Mathematics &amp; Olympiad</option>
+                    <option value="Educational Opportunity">Educational Opportunity</option>
+                    <option value="Collaboration">Collaboration</option>
+                    <option value="Feedback on Portfolio">Feedback on Portfolio</option>
+                    <option value="General Hello">General Hello</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <span class="cf-err" id="cf-subject-err" role="alert" aria-live="polite"></span>
+              </div>
+
+              <!-- Row 3: Organisation (optional) -->
+              <div class="cf-field">
+                <label class="cf-label" for="cf-org">
+                  Organisation
+                  <span style="font-size:.55rem;opacity:.65;text-transform:none;letter-spacing:0;margin-left:4px">(optional)</span>
+                </label>
+                <input class="cf-input" id="cf-org" name="organisation" type="text"
+                  placeholder="School, company, or institution" maxlength="100"
+                  autocomplete="off"/>
+              </div>
+
+              <!-- Row 4: Message -->
+              <div class="cf-field">
+                <label class="cf-label" for="cf-message">
+                  Message <span class="req" aria-label="required">*</span>
+                </label>
+                <textarea class="cf-input cf-textarea" id="cf-message" name="message"
+                  placeholder="Write your message here…" maxlength="1500"
+                  required aria-required="true"
+                  aria-describedby="cf-message-err cf-message-count"
+                  rows="5"></textarea>
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span class="cf-err" id="cf-message-err" role="alert" aria-live="polite"></span>
+                  <span class="cf-counter" id="cf-message-count" aria-live="polite">0 / 1500</span>
+                </div>
+              </div>
+
+              <!-- Submit -->
+              <button class="cf-submit" id="cf-submit" type="submit">
+                <span class="cf-submit-text" style="display:flex;align-items:center;gap:9px">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  </svg>
+                  Send Message
+                </span>
+                <span class="cf-submit-spinner"></span>
+              </button>
+
+              <!-- Footer note under button -->
+              <p class="cf-form-footer">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                Your information will only be used to respond to your inquiry
+                and will not be shared with third parties.
+              </p>
+
+            </form>
+          </div><!-- /cf-body -->
+        </div><!-- /contact-form-card -->
+
+      </div><!-- /contact-grid -->
+
+      <!-- Bottom location line -->
+      <p class="reveal d4" style="margin-top:48px;font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.12em;color:var(--text3);text-transform:uppercase;text-align:center">
+        Chennai, Tamil Nadu, India · Class XI
       </p>
+
     </div>
   </div>
 </section>
 
 <footer>
   <div class="footer-in">
-    <span class="footer-name">Barath Raj M — Portfolio 2026</span>
-    <span class="footer-note">Designed &amp; Built Independently<br>MVM Chetpet · Chennai, India</span>
+    <span class="footer-name">Barath M — Portfolio 2026</span>
+    <span class="footer-note">Designed &amp; Built Independently<br>Chennai, India</span>
   </div>
 </footer>
 
@@ -2758,5 +3162,188 @@ window.IMO_CERT_GALLERY = [
   #ulb-thumbs{max-width:96vw}
 }
 </style>
+
+<script>
+
+/* ════════════════════════════════════════════════════════
+   CONTACT FORM — Validation, Honeypot, Submission
+   Backend: Web3Forms (privacy-safe, no server required)
+   To configure: replace YOUR_ACCESS_KEY below with the
+   key from https://web3forms.com (free, privacy-friendly)
+   ════════════════════════════════════════════════════════ */
+(function(){
+
+  /* ── CONFIG ─────────────────────────────────────────── */
+  const WEB3FORMS_KEY = '13d039fa-93b4-4c1f-b7d9-87361bf76d66'; // ← replace this
+  /* To get a key: go to https://web3forms.com, enter the
+     destination email, and copy the generated access key.
+     No server required. Messages arrive in your inbox.   */
+
+  /* ── ELEMENTS ──────────────────────────────────────── */
+  const form      = document.getElementById('cf-form');
+  const success   = document.getElementById('cf-success');
+  const resetBtn  = document.getElementById('cf-reset-btn');
+  const submitBtn = document.getElementById('cf-submit');
+  const msgField  = document.getElementById('cf-message');
+  const counter   = document.getElementById('cf-message-count');
+  if(!form) return;
+
+  /* ── CHARACTER COUNTER ──────────────────────────────── */
+  msgField.addEventListener('input', ()=>{
+    const len = msgField.value.length;
+    const max = parseInt(msgField.getAttribute('maxlength')) || 1500;
+    counter.textContent = `${len} / ${max}`;
+    counter.className = 'cf-counter' +
+      (len > max*0.9 ? (len >= max ? ' over' : ' warn') : '');
+  });
+
+  /* ── VALIDATION HELPERS ─────────────────────────────── */
+  const ERR_ICON = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+
+  function showErr(inputEl, errEl, msg){
+    inputEl.classList.add('error');
+    inputEl.classList.remove('valid');
+    inputEl.setAttribute('aria-invalid','true');
+    errEl.innerHTML = ERR_ICON + ' ' + msg;
+  }
+  function clearErr(inputEl, errEl){
+    inputEl.classList.remove('error');
+    inputEl.classList.add('valid');
+    inputEl.setAttribute('aria-invalid','false');
+    errEl.innerHTML = '';
+  }
+  function isValidEmail(v){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+  }
+
+  /* ── LIVE VALIDATION ────────────────────────────────── */
+  function wireField(id, errId, validator){
+    const el  = document.getElementById(id);
+    const err = document.getElementById(errId);
+    if(!el||!err) return;
+    ['blur','input'].forEach(ev=>el.addEventListener(ev, ()=>{
+      const r = validator(el.value);
+      if(r === true) clearErr(el, err);
+      else showErr(el, err, r);
+    }));
+  }
+
+  wireField('cf-name','cf-name-err', v=>{
+    if(!v.trim()) return 'Name is required.';
+    if(v.trim().length < 2) return 'Please enter your full name.';
+    if(v.trim().length > 80) return 'Name is too long.';
+    return true;
+  });
+  wireField('cf-email','cf-email-err', v=>{
+    if(!v.trim()) return 'Email address is required.';
+    if(!isValidEmail(v)) return 'Please enter a valid email address.';
+    return true;
+  });
+  wireField('cf-subject','cf-subject-err', v=>{
+    if(!v) return 'Please select a subject.';
+    return true;
+  });
+  wireField('cf-message','cf-message-err', v=>{
+    if(!v.trim()) return 'Message is required.';
+    if(v.trim().length < 10) return 'Message must be at least 10 characters.';
+    if(v.trim().length > 1500) return 'Message is too long (max 1500 characters).';
+    return true;
+  });
+
+  /* ── VALIDATE ALL ────────────────────────────────────── */
+  function validateAll(){
+    const fields = [
+      { id:'cf-name',    errId:'cf-name-err',
+        validate: v=>(!v.trim()?'Name is required.':v.trim().length<2?'Please enter your full name.':v.trim().length>80?'Name is too long.':true) },
+      { id:'cf-email',   errId:'cf-email-err',
+        validate: v=>(!v.trim()?'Email address is required.':!isValidEmail(v)?'Please enter a valid email address.':true) },
+      { id:'cf-subject', errId:'cf-subject-err',
+        validate: v=>(!v?'Please select a subject.':true) },
+      { id:'cf-message', errId:'cf-message-err',
+        validate: v=>(!v.trim()?'Message is required.':v.trim().length<10?'Message must be at least 10 characters.':v.trim().length>1500?'Message is too long.':true) },
+    ];
+    let ok = true;
+    fields.forEach(({id, errId, validate})=>{
+      const el  = document.getElementById(id);
+      const err = document.getElementById(errId);
+      if(!el||!err) return;
+      const r = validate(el.value);
+      if(r===true) clearErr(el,err);
+      else { showErr(el,err,r); ok=false; }
+    });
+    return ok;
+  }
+
+  /* ── SUBMIT ─────────────────────────────────────────── */
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+
+    /* Honeypot check — if bot filled it, silently drop */
+    const hp = document.getElementById('cf-hp-field');
+    if(hp && hp.value.trim() !== '') return;
+
+    if(!validateAll()) return;
+
+    /* UI: loading state */
+    submitBtn.disabled = true;
+    submitBtn.classList.add('loading');
+
+    /* Build payload */
+    const data = {
+      access_key: WEB3FORMS_KEY,
+      subject: `Portfolio Contact: ${document.getElementById('cf-subject').value}`,
+      from_name: document.getElementById('cf-name').value.trim(),
+      email: document.getElementById('cf-email').value.trim(),
+      organisation: document.getElementById('cf-org').value.trim() || '(not provided)',
+      topic: document.getElementById('cf-subject').value,
+      message: document.getElementById('cf-message').value.trim(),
+      botcheck: false,
+    };
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json','Accept':'application/json'},
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+
+      if(json.success){
+        /* Show success */
+        form.style.display = 'none';
+        success.classList.add('show');
+        form.reset();
+        /* Reset counter & valid states */
+        counter.textContent = '0 / 1500';
+        counter.className = 'cf-counter';
+        document.querySelectorAll('.cf-input,.cf-select,.cf-textarea')
+          .forEach(el=>el.classList.remove('valid','error'));
+      } else {
+        throw new Error(json.message || 'Submission failed');
+      }
+    } catch(err) {
+      /* Friendly error toast using existing TNEB toast system if available */
+      if(typeof tnebToast === 'function'){
+        tnebToast('Could not send message. Please try again.','red',3500);
+      } else {
+        const errEl = document.getElementById('cf-message-err');
+        if(errEl) errEl.innerHTML = ERR_ICON + ' Network error — please try again shortly.';
+      }
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('loading');
+    }
+  });
+
+  /* ── RESET ───────────────────────────────────────────── */
+  resetBtn && resetBtn.addEventListener('click', ()=>{
+    success.classList.remove('show');
+    form.style.display = '';
+    document.getElementById('cf-name').focus();
+  });
+
+})();
+
+</script>
 </body>
 </html>
