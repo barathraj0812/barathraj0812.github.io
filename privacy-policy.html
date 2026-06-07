@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Barath M</title>
+  <meta name="description" content="Privacy Policy for barath.pages.dev — how cookies and data are handled on this portfolio." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: rgba(255,255,255,0.04);
+      --surface-hover: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.08);
+      --accent: #7c6af7;
+      --accent-dim: rgba(124,106,247,0.15);
+      --text-primary: #e8e6f0;
+      --text-secondary: #8a879f;
+      --text-muted: #4a4860;
+      --green: #4ade80;
+      --green-dim: rgba(74,222,128,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    /* Subtle background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(124,106,247,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,106,247,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glow blob */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(124,106,247,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(10,10,15,0.85);
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(20px, 5vw, 80px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .nav-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+    .nav-back::before { content: '←'; }
+
+    /* ── MAIN WRAPPER ── */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: clamp(40px, 8vw, 80px) clamp(20px, 5vw, 40px) 80px;
+    }
+
+    /* ── HEADER ── */
+    .page-header {
+      margin-bottom: 56px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-tag {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(124,106,247,0.25);
+      border-radius: 2px;
+      padding: 4px 10px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(24px, 5vw, 36px);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .meta {
+      color: var(--text-muted);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+    }
+
+    .meta span { color: var(--text-secondary); }
+
+    /* ── SECTIONS ── */
+    section {
+      margin-bottom: 48px;
+    }
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    p {
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+      font-size: 13.5px;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    strong { color: var(--text-primary); font-weight: 500; }
+
+    /* ── COOKIE TABLE ── */
+    .cookie-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 12.5px;
+    }
+
+    .cookie-table thead tr {
+      border-bottom: 1px solid rgba(124,106,247,0.3);
+    }
+
+    .cookie-table th {
+      text-align: left;
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      padding: 10px 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .cookie-table td {
+      padding: 10px 12px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .cookie-table tr:last-child td { border-bottom: none; }
+
+    .cookie-table tr:hover td { background: var(--surface); }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 2px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .badge-required {
+      background: rgba(74,222,128,0.12);
+      color: var(--green);
+      border: 1px solid rgba(74,222,128,0.25);
+    }
+
+    .badge-optional {
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid rgba(124,106,247,0.25);
+    }
+
+    /* ── INFO CARD ── */
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 4px;
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+
+    .info-card p { margin-bottom: 8px; }
+    .info-card p:last-child { margin-bottom: 0; }
+
+    /* ── LIST ── */
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 14px 0;
+    }
+
+    ul li {
+      color: var(--text-secondary);
+      font-size: 13.5px;
+      padding: 5px 0 5px 20px;
+      position: relative;
+    }
+
+    ul li::before {
+      content: '//';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 11px;
+    }
+
+    /* ── CONTACT BLOCK ── */
+    .contact-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .contact-block .icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .contact-block p { margin: 0; }
+
+    .contact-block a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .contact-block a:hover { text-decoration: underline; }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 32px 20px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+    }
+
+    footer a {
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+    footer a:hover { color: var(--accent); }
+
+    @media (max-width: 600px) {
+      .cookie-table { display: block; overflow-x: auto; }
+      .contact-block { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">BR.</a>
+    <a href="/" class="nav-back">Back to Portfolio</a>
+  </nav>
+
+  <main>
+    <div class="page-header">
+      <div class="page-tag">// Legal</div>
+      <h1>Privacy Policy</h1>
+      <p class="meta">
+        Last updated: <span>June 2026</span> &nbsp;·&nbsp; Effective: <span>June 2026</span> &nbsp;·&nbsp; Site: <span>barath.pages.dev</span>
+      </p>
+    </div>
+
+    <section>
+      <h2>Overview</h2>
+      <p>
+        This Privacy Policy explains how <strong>barath.pages.dev</strong> (this portfolio website, operated by Barath M) collects, uses, and handles information when you visit. This is a personal portfolio site — no accounts, no purchases, no user-generated content.
+      </p>
+      <div class="info-card">
+        <p><strong>Short version:</strong> This site uses essential cookies to function and optional analytics cookies to understand visitor behaviour. No personal data is sold or shared with third parties. You are in control.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Information Collected</h2>
+      <p>This site does <strong>not</strong> collect any personally identifiable information automatically. The only data collected falls into two categories:</p>
+      <ul>
+        <li><strong>Essential data</strong> — minimal technical information required for the site to load and function correctly (e.g. your browser type, IP address via server logs managed by Cloudflare Pages).</li>
+        <li><strong>Analytics data</strong> — aggregated, anonymised data about how visitors interact with pages (e.g. pages visited, time on page, general location). This is only collected if you accept optional cookies.</li>
+      </ul>
+      <p>The <strong>contact form</strong> on this site collects your name, email address, and message. This information is used solely to respond to your inquiry and is not stored long-term or shared with any third party.</p>
+    </section>
+
+    <section>
+      <h2>Cookies</h2>
+      <p>Cookies are small text files stored in your browser. This site uses two categories of cookies:</p>
+
+      <table class="cookie-table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Purpose</th>
+            <th>Examples</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Essential</strong></td>
+            <td>Required for the site to function. Cannot be disabled.</td>
+            <td>Cookie consent preference, session state</td>
+            <td><span class="badge badge-required">Required</span></td>
+          </tr>
+          <tr>
+            <td><strong>Analytics</strong></td>
+            <td>Helps understand how visitors use the site so it can be improved.</td>
+            <td>Page views, session duration, referrer source</td>
+            <td><span class="badge badge-optional">Optional</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>You can change your cookie preferences at any time by clearing your browser cookies and revisiting the site, which will display the consent banner again.</p>
+    </section>
+
+    <section>
+      <h2>Third-Party Services</h2>
+      <p>This site is hosted on <strong>Cloudflare Pages</strong>, which may process basic request data (such as IP addresses) as part of its infrastructure. Cloudflare's privacy policy applies to this processing: <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">cloudflare.com/privacypolicy</a>.</p>
+      <p>External links on this site (GitHub, itch.io, live apps) lead to third-party websites. This policy does not cover those sites — please review their respective privacy policies.</p>
+    </section>
+
+    <section>
+      <h2>Your Rights</h2>
+      <p>You have the right to:</p>
+      <ul>
+        <li>Opt out of optional analytics cookies via the cookie banner</li>
+        <li>Request deletion of any contact form data you submitted</li>
+        <li>Know what data is held about you (none beyond what you voluntarily provide)</li>
+      </ul>
+      <p>To exercise any of these rights, use the contact form on the portfolio or reach out directly.</p>
+    </section>
+
+    <section>
+      <h2>Data Retention</h2>
+      <p>Contact form submissions are retained only for the duration necessary to respond to your inquiry. Analytics data (if consented) is aggregated and anonymised — no individual records are stored. Cookie preference data is stored in your browser only.</p>
+    </section>
+
+    <section>
+      <h2>Children's Privacy</h2>
+      <p>This site does not knowingly collect personal information from children under 13. If you believe a child has submitted information via the contact form, please get in touch and it will be deleted promptly.</p>
+    </section>
+
+    <section>
+      <h2>Changes to This Policy</h2>
+      <p>This Privacy Policy may be updated occasionally. The <strong>Last updated</strong> date at the top of this page will always reflect the most recent version. Continued use of the site after changes constitutes acceptance of the updated policy.</p>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <div class="contact-block">
+        <div class="icon">✉</div>
+        <p>
+          Questions about this Privacy Policy? Use the <a href="/#contact">contact form on the portfolio</a> and select <em>"Other"</em> as the topic. Messages are reviewed regularly and you can expect a reply within a few days.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>
+      <a href="/">← Barath M — Portfolio</a> &nbsp;·&nbsp; Privacy Policy &nbsp;·&nbsp; Chennai, Tamil Nadu, India
+    </p>
+  </footer>
+
+</body>
+</html>
