@@ -702,9 +702,8 @@ nav.scrolled{background:rgba(6,13,26,.92);backdrop-filter:blur(20px);-webkit-bac
 .gtag.gold{color:var(--gold);background:var(--gold-dim);border-color:rgba(196,162,114,.22)}
 
 /* ── CONTACT ── */
-#contact{padding:100px 0;border-top:1px solid var(--border)}
-.contact-wrap{max-width:600px}
-.contact-btns{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0}
+#contact{padding:120px 0 100px;border-top:1px solid var(--border)}
+.contact-wrap{max-width:860px;margin:0 auto}.contact-btns{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0}
 .c-btn{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:600;
   letter-spacing:.07em;text-transform:uppercase;color:var(--text2);
   border:1px solid var(--border2);padding:11px 22px;border-radius:6px;text-decoration:none;
@@ -1080,6 +1079,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
 #back-top.visible{opacity:1;pointer-events:all;transform:none}
 #back-top:hover{border-color:var(--border3);color:var(--blue);transform:translateY(-2px)}
 
+@media(max-width:640px){
   .about-mini-inner{grid-template-columns:1fr}
   .about-grid{grid-template-columns:1fr}
   .goals-wrap{grid-template-columns:1fr}
@@ -1104,6 +1104,8 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
 @media(max-width:640px){
   .nav-links{display:none}
   .nav-cv{display:none}
+  #print-cv-btn{display:none}
+  #share-portfolio-btn{display:none}
   .hamburger{display:flex}
   .container{padding:0 20px}
   .hero-inner{padding:60px 0 40px}
@@ -1631,6 +1633,10 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
   <a href="#certs" onclick="closeMob()">Certifications</a>
   <a href="#goals" onclick="closeMob()">Goals</a>
   <a href="#contact" onclick="closeMob()">Contact</a>
+  <button class="theme-btn" id="theme-btn-mob" aria-label="Toggle theme" onclick="document.getElementById('theme-btn').click()" style="margin-top:8px;align-self:flex-start">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    &nbsp;Toggle Theme
+  </button>
 </div>
 
 <!-- HERO -->
@@ -3950,9 +3956,9 @@ window.IMO_CERT_GALLERY = [
   /* ── CONFIG ──────────────────────────────────────────────────────── */
 
   /* Cloudflare Worker URL — paste your deployed Worker URL here.
-     Example: https://contact-form.barathrajias.workers.dev/
+     Example: https://contact-form.barath.workers.dev
      ⚠ Replace the placeholder before deploying to production.       */
-	const WORKER_URL = 'https://contact-form.barathrajias.workers.dev/';
+	const WORKER_URL = 'https://contact-form.barathrajias.workers.dev';
 
   /* ── ELEMENTS ────────────────────────────────────────────────────── */
   const form       = document.getElementById('cf-form');
