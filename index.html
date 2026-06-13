@@ -703,7 +703,8 @@ nav.scrolled{background:rgba(6,13,26,.92);backdrop-filter:blur(20px);-webkit-bac
 
 /* ── CONTACT ── */
 #contact{padding:120px 0 100px;border-top:1px solid var(--border)}
-.contact-wrap{max-width:860px;margin:0 auto}.contact-btns{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0}
+.contact-wrap{max-width:860px;margin:0 auto}
+.contact-btns{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0}
 .c-btn{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:600;
   letter-spacing:.07em;text-transform:uppercase;color:var(--text2);
   border:1px solid var(--border2);padding:11px 22px;border-radius:6px;text-decoration:none;
@@ -1633,9 +1634,9 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
   <a href="#certs" onclick="closeMob()">Certifications</a>
   <a href="#goals" onclick="closeMob()">Goals</a>
   <a href="#contact" onclick="closeMob()">Contact</a>
-  <button class="theme-btn" id="theme-btn-mob" aria-label="Toggle theme" onclick="document.getElementById('theme-btn').click()" style="margin-top:8px;align-self:flex-start">
+  <button class="theme-btn" style="margin-top:10px;align-self:flex-start;gap:8px" onclick="document.getElementById('theme-btn').click();closeMob()" aria-label="Toggle theme">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-    &nbsp;Toggle Theme
+    Toggle Theme
   </button>
 </div>
 
@@ -4577,6 +4578,518 @@ if(_sb)_sb.addEventListener('click',function(){sharePortfolio(this);});
   btn.addEventListener('click', ()=>{
     const current = ROOT.getAttribute('data-theme') || 'dark';
     applyTheme(current === 'dark' ? 'light' : 'dark');
+  });
+})();
+</script>
+<!-- ═══════════════════════════════════════════════════════
+     ANIMATION & FEATURE UPGRADE BLOCK
+     ═══════════════════════════════════════════════════════ -->
+<style>
+/* ── CURSOR GLOW ── */
+#cursor-glow{
+  position:fixed;width:400px;height:400px;border-radius:50%;
+  pointer-events:none;z-index:0;
+  background:radial-gradient(circle,rgba(59,130,246,.07) 0%,transparent 70%);
+  transform:translate(-50%,-50%);transition:opacity .4s;
+  mix-blend-mode:screen}
+
+/* ── NAV LINK UNDERLINE SLIDE ── */
+.nav-links a{position:relative;overflow:hidden}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:50%;right:50%;height:1px;
+  background:var(--blue);transition:left .25s var(--ease),right .25s var(--ease)}
+.nav-links a:hover::after,.nav-links a.active::after{left:10px;right:10px}
+
+/* ── HAMBURGER → X ANIMATION ── */
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* ── MOB-NAV SLIDE-DOWN ANIMATION ── */
+.mob-nav{
+  display:flex!important;
+  max-height:0;overflow:hidden;
+  transition:max-height .38s cubic-bezier(.4,0,.2,1),
+             opacity .3s ease,
+             padding .3s ease;
+  opacity:0;padding-top:0;padding-bottom:0}
+.mob-nav.open{max-height:500px;opacity:1;padding-top:24px;padding-bottom:24px}
+.mob-nav a{
+  opacity:0;transform:translateX(-16px);
+  transition:color .2s,opacity .25s,transform .25s}
+.mob-nav.open a:nth-child(1){opacity:1;transform:none;transition-delay:.05s}
+.mob-nav.open a:nth-child(2){opacity:1;transform:none;transition-delay:.09s}
+.mob-nav.open a:nth-child(3){opacity:1;transform:none;transition-delay:.13s}
+.mob-nav.open a:nth-child(4){opacity:1;transform:none;transition-delay:.17s}
+.mob-nav.open a:nth-child(5){opacity:1;transform:none;transition-delay:.21s}
+.mob-nav.open a:nth-child(6){opacity:1;transform:none;transition-delay:.25s}
+.mob-nav.open a:nth-child(7){opacity:1;transform:none;transition-delay:.29s}
+.mob-nav.open button{opacity:1!important;transform:none!important;transition-delay:.33s!important}
+.mob-nav button{opacity:0;transform:translateX(-16px);transition:color .2s,border-color .2s,opacity .25s,transform .25s}
+
+/* ── HERO NAME GRADIENT SHIMMER ── */
+.hero-name{
+  background:linear-gradient(90deg,#fff 0%,#fff 40%,var(--blue) 55%,#fff 70%,#fff 100%);
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:fadeUp .9s .35s forwards,name-shimmer 5s 2s linear infinite}
+@keyframes name-shimmer{
+  0%{background-position:200% center}
+  100%{background-position:-200% center}}
+/* keep .blue span working inside it */
+.hero-name .blue{
+  background:linear-gradient(90deg,var(--blue),var(--cyan),var(--blue));
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:name-shimmer 3s 1s linear infinite}
+
+/* ── CHIP HOVER FLOAT ── */
+.chip{
+  transition:transform .22s var(--ease),border-color .22s,box-shadow .22s,color .22s;
+  cursor:default}
+.chip:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 6px 18px rgba(0,0,0,.28)}
+.chip.gold:hover{border-color:rgba(196,162,114,.6);box-shadow:0 6px 18px rgba(196,162,114,.15)}
+.chip.blue:hover{border-color:rgba(59,130,246,.55);box-shadow:0 6px 18px rgba(59,130,246,.15)}
+
+/* ── BTN MAGNETIC RIPPLE ── */
+.btn-primary,.btn-secondary,.nav-cv,.ng-cta,.ary-cert-btn{
+  position:relative;overflow:hidden}
+.btn-primary::after,.btn-secondary::after,.nav-cv::after,.ng-cta::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.18) 0%,transparent 65%);
+  opacity:0;transition:opacity .35s}
+.btn-primary:hover::after,.btn-secondary:hover::after,.nav-cv:hover::after,.ng-cta:hover::after{opacity:1}
+
+/* ── SECTION TITLE CHARACTER SPLIT REVEAL ── */
+.sec-title-anim span{
+  display:inline-block;opacity:0;transform:translateY(30px) rotateX(-40deg);
+  transition:opacity .5s,transform .5s;transform-origin:bottom center;
+  transform-style:preserve-3d}
+.sec-title-anim.vis span{opacity:1;transform:none}
+
+/* ── CARD 3D TILT ── */
+.tilt-card{
+  transition:transform .18s var(--ease),box-shadow .18s var(--ease);
+  transform-style:preserve-3d;will-change:transform}
+
+/* ── STAT CARD GLOW ON HOVER ── */
+.stat-card{position:relative;overflow:hidden}
+.stat-card::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(circle at 50% 0%,rgba(59,130,246,.08),transparent 70%);
+  opacity:0;transition:opacity .4s}
+.stat-card:hover::before{opacity:1}
+.stat-card:hover{border-color:var(--border2);transform:translateY(-4px);
+  box-shadow:0 16px 40px rgba(0,0,0,.3)}
+
+/* ── PROJECT CARD REVEAL BORDER ── */
+.proj-card,.oly-card,.cert-c,.sk-group,.goal-c{position:relative}
+.proj-card::after,.oly-card::after,.cert-c::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  box-shadow:inset 0 0 0 1px rgba(59,130,246,.0);
+  transition:box-shadow .35s}
+.proj-card:hover::after{box-shadow:inset 0 0 0 1px rgba(59,130,246,.3)}
+.oly-card:hover::after{box-shadow:inset 0 0 0 1px rgba(196,162,114,.3)}
+.cert-c:hover::after{box-shadow:inset 0 0 0 1px rgba(59,130,246,.25)}
+
+/* ── ACHIEVEMENT COUNTER GLOW ── */
+.stat-n{
+  text-shadow:none;
+  transition:text-shadow .4s}
+.stat-c:hover .stat-n.gold{text-shadow:0 0 24px rgba(196,162,114,.5)}
+.stat-c:hover .stat-n.cyan{text-shadow:0 0 24px rgba(82,184,212,.5)}
+.stat-c:hover .stat-n.violet{text-shadow:0 0 24px rgba(167,139,250,.5)}
+.stat-c:hover .stat-n{text-shadow:0 0 24px rgba(255,255,255,.2)}
+
+/* ── SCROLL-TRIGGERED STAGGER REVEAL ── */
+.stagger-child{
+  opacity:0;transform:translateY(24px);
+  transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.stagger-parent.vis .stagger-child:nth-child(1){opacity:1;transform:none;transition-delay:.04s}
+.stagger-parent.vis .stagger-child:nth-child(2){opacity:1;transform:none;transition-delay:.10s}
+.stagger-parent.vis .stagger-child:nth-child(3){opacity:1;transform:none;transition-delay:.16s}
+.stagger-parent.vis .stagger-child:nth-child(4){opacity:1;transform:none;transition-delay:.22s}
+.stagger-parent.vis .stagger-child:nth-child(5){opacity:1;transform:none;transition-delay:.28s}
+.stagger-parent.vis .stagger-child:nth-child(6){opacity:1;transform:none;transition-delay:.34s}
+.stagger-parent.vis .stagger-child:nth-child(7){opacity:1;transform:none;transition-delay:.40s}
+.stagger-parent.vis .stagger-child:nth-child(8){opacity:1;transform:none;transition-delay:.46s}
+
+/* ── SKILL BAR ANIMATED ── */
+.sk-bar-wrap{margin-top:6px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.sk-bar-fill{
+  height:100%;border-radius:2px;width:0%;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));
+  transition:width 1.1s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 0 8px rgba(59,130,246,.4)}
+.sk-row{flex-direction:column;align-items:flex-start;gap:4px;padding:10px 0}
+.sk-row-top{display:flex;justify-content:space-between;width:100%;align-items:center}
+.sk-name{color:var(--text2)}
+.sk-lvl{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.08em;padding:3px 9px;border-radius:3px}
+
+/* ── TIMELINE ANIMATED DOT ── */
+.tl-item::before{
+  transition:background .4s,box-shadow .4s,transform .3s}
+.tl-item.past::before{
+  box-shadow:0 0 0 4px rgba(59,130,246,.15);
+  animation:tl-pulse 2.5s ease-in-out infinite}
+@keyframes tl-pulse{
+  0%,100%{box-shadow:0 0 0 4px rgba(59,130,246,.15)}
+  50%{box-shadow:0 0 0 8px rgba(59,130,246,.06)}}
+.tl-item:hover::before{transform:scale(1.5)}
+
+/* ── RANK NUMBER COUNT-UP GLOW ── */
+.rank-num{
+  transition:text-shadow .3s,transform .3s}
+.rank-row:hover .rank-num{
+  transform:scale(1.08);
+  text-shadow:0 0 20px rgba(196,162,114,.6)}
+.rank-row:hover .rank-num.blue{
+  text-shadow:0 0 20px rgba(59,130,246,.6)}
+
+/* ── FOOTER SOCIAL ICON BOUNCE ── */
+.footer-social-icon{transition:border-color .2s,color .2s,background .2s,transform .2s}
+.footer-social-icon:hover{transform:translateY(-3px) scale(1.12)}
+
+/* ── BACK-TO-TOP ANIMATED ── */
+#back-top svg{transition:transform .3s var(--ease)}
+#back-top:hover svg{transform:translateY(-3px)}
+
+/* ── SECTION DIVIDER ANIMATED ── */
+.divider{
+  width:0px;height:2px;
+  background:linear-gradient(to right,var(--blue),var(--cyan),transparent);
+  transition:width 1s cubic-bezier(.4,0,.2,1)}
+.divider.vis{width:60px}
+
+/* ── AURORA HERO GLOW (behind photo) ── */
+.hero-aurora{
+  position:absolute;right:-60px;top:10%;
+  width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(59,130,246,.09) 0%,rgba(82,184,212,.05) 40%,transparent 70%);
+  filter:blur(40px);pointer-events:none;z-index:1;
+  animation:aurora-drift 8s ease-in-out infinite alternate}
+@keyframes aurora-drift{
+  0%{transform:translateY(0) scale(1)}
+  100%{transform:translateY(-30px) scale(1.08)}}
+
+/* ── GOLD PARTICLE SHIMMER on aryabhata crown ── */
+.aryabhata-crown .gold-sparkle{
+  position:absolute;width:3px;height:3px;border-radius:50%;
+  background:var(--gold);pointer-events:none;opacity:0;
+  animation:sparkle-float 3s ease-in-out infinite}
+@keyframes sparkle-float{
+  0%{opacity:0;transform:translateY(0) scale(.5)}
+  40%{opacity:.8}
+  100%{opacity:0;transform:translateY(-60px) scale(1.4) rotate(180deg)}}
+
+/* ── CONTACT FORM FIELD FOCUS GLOW ── */
+.cf-input:focus,.cf-select:focus,.cf-textarea:focus{
+  border-color:rgba(59,130,246,.6);
+  box-shadow:0 0 0 3px rgba(59,130,246,.12),0 0 16px rgba(59,130,246,.08)}
+
+/* ── SUBMIT BTN LOADING SPINNER ── */
+.cf-submit-btn{position:relative;overflow:hidden}
+.cf-submit-btn.loading{pointer-events:none;opacity:.75}
+.cf-submit-btn.loading::after{
+  content:'';position:absolute;right:18px;top:50%;
+  width:14px;height:14px;margin-top:-7px;
+  border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;
+  animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── PRELOADER UPGRADE ── */
+#preloader{
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px}
+.pre-logo{
+  font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;
+  letter-spacing:-.02em;color:var(--text);
+  animation:pre-pulse 1.2s ease-in-out infinite alternate}
+@keyframes pre-pulse{
+  0%{opacity:.5;transform:scale(.97)}
+  100%{opacity:1;transform:scale(1)}}
+#preloader.done{
+  opacity:0;visibility:hidden;
+  transition:opacity .5s .1s,visibility 0s .6s}
+
+/* ── FLOATING BADGE ANIMATION ── */
+.hero-badge{animation:badge-float 4s ease-in-out infinite}
+@keyframes badge-float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-6px)}}
+
+/* ── SCROLL-INDICATOR BOUNCE ── */
+.hero-scroll-arrow{animation:arrow-bounce 1.6s ease-in-out infinite}
+@keyframes arrow-bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(5px)}}
+
+/* ── NAV LOGO HOVER EFFECT ── */
+.nav-logo{transition:letter-spacing .3s var(--ease)}
+.nav-logo:hover{letter-spacing:.04em}
+
+/* ── CERT CARD ICON BOUNCE ── */
+.cert-c:hover .cert-icon-box{animation:icon-bounce .4s var(--ease)}
+@keyframes icon-bounce{
+  0%,100%{transform:translateY(0)}
+  40%{transform:translateY(-5px)}
+  70%{transform:translateY(-2px)}}
+
+/* ── GOAL CARD HOVER BORDER GLOW ── */
+.goal-c{transition:border-color .3s,transform .3s,box-shadow .3s}
+.goal-c:hover{border-color:rgba(59,130,246,.28);transform:translateY(-2px);
+  box-shadow:0 12px 32px rgba(0,0,0,.25)}
+
+/* ── LIVE DOT ENHANCED ── */
+.live-dot{filter:drop-shadow(0 0 4px rgba(34,197,94,.6))}
+.live-dot.blue{filter:drop-shadow(0 0 4px rgba(59,130,246,.6))}
+
+/* ── SCROLL-REVEAL: SLIDE FROM LEFT / RIGHT ── */
+.reveal-left{opacity:0;transform:translateX(-32px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal-left.visible{opacity:1;transform:none}
+.reveal-right{opacity:0;transform:translateX(32px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal-right.visible{opacity:1;transform:none}
+.reveal-scale{opacity:0;transform:scale(.92);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal-scale.visible{opacity:1;transform:none}
+
+/* ── MOBILE LAYOUT FIXES ── */
+@media(max-width:640px){
+  .hero-inner{grid-template-columns:1fr;padding:60px 0 40px}
+  .hero-right{display:none}
+  .hero-name{font-size:clamp(2.4rem,10vw,3.6rem)}
+  .about-mini-inner{grid-template-columns:1fr;gap:32px}
+  .stat-cards{grid-template-columns:1fr 1fr}
+  .sec-title{font-size:clamp(1.6rem,6vw,2.2rem)}
+  footer{padding:28px 20px}
+  .footer-top{flex-direction:column;gap:20px}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:8px}
+  .ach-stats{grid-template-columns:1fr 1fr;gap:12px}
+  .stat-c{padding:18px}
+  .stat-n{font-size:1.8rem}
+  .tl-wrap{margin-left:4px;padding-left:18px}
+  .goal-cards{gap:10px}
+  .sk-group{padding:20px 18px}
+  .about-grid{gap:28px}
+  .contact-grid{grid-template-columns:1fr!important;gap:20px}
+}
+@media(max-width:400px){
+  .hero-chips{gap:5px}
+  .chip{font-size:.62rem;padding:4px 10px}
+  .hero-btns{flex-direction:column}
+  .btn-primary,.btn-secondary{width:100%;justify-content:center}
+}
+</style>
+
+<script>
+/* ── CURSOR GLOW ── */
+(function(){
+  if(window.matchMedia('(pointer:coarse)').matches)return;
+  var el=document.createElement('div');
+  el.id='cursor-glow';document.body.appendChild(el);
+  var tx=0,ty=0,cx=0,cy=0,raf;
+  document.addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY;});
+  function loop(){
+    cx+=(tx-cx)*.09;cy+=(ty-cy)*.09;
+    el.style.left=cx+'px';el.style.top=cy+'px';
+    raf=requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+/* ── HAMBURGER X ANIMATION ── */
+(function(){
+  var hbg=document.getElementById('hbg'),mob=document.getElementById('mob-nav');
+  if(!hbg||!mob)return;
+  hbg.addEventListener('click',function(){
+    hbg.classList.toggle('open');
+  });
+})();
+
+/* ── BTN MOUSE-POSITION RIPPLE ── */
+(function(){
+  document.querySelectorAll('.btn-primary,.btn-secondary,.nav-cv').forEach(function(btn){
+    btn.addEventListener('mousemove',function(e){
+      var r=btn.getBoundingClientRect();
+      btn.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
+      btn.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
+    });
+  });
+})();
+
+/* ── 3D TILT ON CARDS ── */
+(function(){
+  if(window.matchMedia('(pointer:coarse)').matches)return;
+  document.querySelectorAll('.stat-card,.cert-c,.goal-c,.oly-card').forEach(function(card){
+    card.classList.add('tilt-card');
+    card.addEventListener('mousemove',function(e){
+      var r=card.getBoundingClientRect();
+      var x=(e.clientX-r.left)/r.width-.5;
+      var y=(e.clientY-r.top)/r.height-.5;
+      card.style.transform='perspective(600px) rotateY('+(x*10)+'deg) rotateX('+(-y*10)+'deg) translateY(-4px)';
+    });
+    card.addEventListener('mouseleave',function(){
+      card.style.transform='';
+    });
+  });
+})();
+
+/* ── STAGGER OBSERVER ── */
+(function(){
+  if(!window.IntersectionObserver)return;
+  document.querySelectorAll('.stat-cards,.cert-grid,.skills-wrap,.ach-stats,.goal-cards,.proj-grid2').forEach(function(el){
+    el.classList.add('stagger-parent');
+    Array.from(el.children).forEach(function(c){c.classList.add('stagger-child');});
+  });
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}
+    });
+  },{threshold:.08});
+  document.querySelectorAll('.stagger-parent').forEach(function(el){obs.observe(el);});
+})();
+
+/* ── DIVIDER ANIMATION ── */
+(function(){
+  if(!window.IntersectionObserver)return;
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}
+    });
+  },{threshold:.5});
+  document.querySelectorAll('.divider').forEach(function(el){obs.observe(el);});
+})();
+
+/* ── REVEAL LEFT / RIGHT / SCALE ── */
+(function(){
+  if(!window.IntersectionObserver)return;
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
+    });
+  },{threshold:.08,rootMargin:'0px 0px -20px 0px'});
+  document.querySelectorAll('.reveal-left,.reveal-right,.reveal-scale').forEach(function(el){obs.observe(el);});
+})();
+
+/* ── SKILL BARS ── */
+(function(){
+  var bars={
+    'Python':92,'JavaScript':88,'HTML/CSS':95,'Node.js':75,'React':65,
+    'Google Gemini API':80,'Chart.js':85,'GSAP':70,'SQL':68,'Git':82
+  };
+  document.querySelectorAll('.sk-row').forEach(function(row){
+    var nameEl=row.querySelector('.sk-name');
+    if(!nameEl)return;
+    var name=nameEl.textContent.trim();
+    var pct=bars[name]||60;
+    var wrap=document.createElement('div');wrap.className='sk-bar-wrap';
+    var fill=document.createElement('div');fill.className='sk-bar-fill';fill.dataset.pct=pct;
+    wrap.appendChild(fill);
+    // restructure row
+    var top=document.createElement('div');top.className='sk-row-top';
+    var lvl=row.querySelector('.sk-lvl');
+    top.appendChild(nameEl.cloneNode(true));
+    if(lvl)top.appendChild(lvl.cloneNode(true));
+    row.innerHTML='';
+    row.appendChild(top);
+    row.appendChild(wrap);
+  });
+  if(!window.IntersectionObserver)return;
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.style.width=e.target.dataset.pct+'%';obs.unobserve(e.target);}
+    });
+  },{threshold:.3});
+  document.querySelectorAll('.sk-bar-fill[data-pct]').forEach(function(el){obs.observe(el);});
+})();
+
+/* ── GOLD SPARKLES on Aryabhata Crown ── */
+(function(){
+  var crown=document.querySelector('.aryabhata-crown');
+  if(!crown)return;
+  function spawn(){
+    var sp=document.createElement('div');
+    sp.className='gold-sparkle';
+    sp.style.cssText='left:'+Math.random()*100+'%;top:'+Math.random()*80+'%;animation-delay:'+Math.random()*2+'s;animation-duration:'+(2+Math.random()*2)+'s';
+    crown.appendChild(sp);
+    setTimeout(function(){sp.remove();},4000);
+  }
+  setInterval(spawn,600);
+})();
+
+/* ── AURORA ELEMENT in HERO ── */
+(function(){
+  var hero=document.querySelector('.hero-right');
+  if(!hero)return;
+  var aurora=document.createElement('div');
+  aurora.className='hero-aurora';
+  hero.appendChild(aurora);
+})();
+
+/* ── SECTION TITLE SPLIT ANIM ── */
+(function(){
+  if(!window.IntersectionObserver)return;
+  document.querySelectorAll('.sec-title').forEach(function(el){
+    var text=el.textContent;
+    el.innerHTML='';
+    el.classList.add('sec-title-anim');
+    text.split('').forEach(function(ch,i){
+      var sp=document.createElement('span');
+      sp.textContent=ch==='' ? '\u00a0' : ch;
+      sp.style.transitionDelay=(i*0.028)+'s';
+      el.appendChild(sp);
+    });
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){el.classList.add('vis');obs.unobserve(el);}
+      });
+    },{threshold:.3});
+    obs.observe(el);
+  });
+})();
+
+/* ── SMOOTH ACTIVE NAV INDICATOR ── */
+(function(){
+  var indicator=document.createElement('div');
+  indicator.style.cssText='position:absolute;bottom:0;height:2px;background:var(--blue);border-radius:1px;transition:left .3s var(--ease),width .3s var(--ease);pointer-events:none';
+  var navLinks=document.querySelector('.nav-links');
+  if(!navLinks)return;
+  navLinks.style.position='relative';
+  navLinks.appendChild(indicator);
+  function moveIndicator(a){
+    var r=a.getBoundingClientRect(),pr=navLinks.getBoundingClientRect();
+    indicator.style.left=(r.left-pr.left+10)+'px';
+    indicator.style.width=(r.width-20)+'px';
+  }
+  var links=navLinks.querySelectorAll('a');
+  links.forEach(function(a){
+    a.addEventListener('mouseenter',function(){moveIndicator(a);indicator.style.opacity='1';});
+  });
+  navLinks.addEventListener('mouseleave',function(){indicator.style.opacity='0';});
+})();
+
+/* ── COPY EMAIL BUTTON ── */
+(function(){
+  document.querySelectorAll('.copy-email-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var email=btn.dataset.email||'barathm@example.com';
+      navigator.clipboard.writeText(email).then(function(){
+        var orig=btn.textContent;
+        btn.textContent='✓ Copied!';btn.classList.add('done');
+        setTimeout(function(){btn.textContent=orig;btn.classList.remove('done');},2000);
+      }).catch(function(){});
+    });
+  });
+})();
+
+/* ── PAGE TRANSITION FADE ── */
+(function(){
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(){
+      /* smooth scroll is already handled by CSS; nothing extra needed */
+    });
   });
 })();
 </script>
