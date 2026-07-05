@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Barath M — Full-Stack AI Developer & Olympiad Achiever | Chennai</title>
 <meta name="description" content="Portfolio of Barath M — Class XI student from Chennai. Full-Stack AI Developer, IMO International Rank 2, 6 Distinctions & 11 Gold Medals. Built NutriGreen AI with Google Gemini API."/>
-<meta name="keywords" content="Barath M, portfolio, AI developer, IMO rank 2, olympiad, NutriGreen AI, Gemini API, Chennai, CBSE, JEE, full stack developer"/>
+<meta name="keywords" content="Barath M, portfolio, AI developer, IMO rank 2, olympiad, NutriGreen AI, Gemini API, AstroTamil, Vedic astrology app, Chennai, CBSE, JEE, full stack developer"/>
 <meta name="author" content="Barath M"/>
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://barath.pages.dev/"/>
@@ -172,6 +172,8 @@ nav.scrolled{background:rgba(6,13,26,.92);backdrop-filter:blur(20px);-webkit-bac
 .theme-btn:hover{border-color:var(--border3);color:var(--text)}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
 .hamburger span{display:block;width:22px;height:1.5px;background:var(--text2);transition:.3s}
+.hamburger:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.mob-nav a:focus-visible,.mob-nav button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .mob-nav{display:none;position:fixed;top:var(--nav-h);left:0;right:0;
   background:rgba(6,13,26,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);
   z-index:199;padding:24px 32px;flex-direction:column;gap:4px}
@@ -320,10 +322,36 @@ nav.scrolled{background:rgba(6,13,26,.92);backdrop-filter:blur(20px);-webkit-bac
 .solar-video-wrap{position:relative;width:100%;padding-bottom:47%;background:var(--bg2);overflow:hidden}
 .solar-video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
 .solar-video-label{
-  position:absolute;top:14px;left:14px;z-index:2;
+  position:absolute;top:14px;left:14px;z-index:3;
   font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
   color:var(--blue);background:rgba(6,13,26,.8);border:1px solid rgba(59,130,246,.22);
   padding:5px 12px;border-radius:4px;backdrop-filter:blur(8px)}
+/* Solar video player: click-to-load poster, loading state, fallback link */
+.solar-video-poster{
+  position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;cursor:pointer;border:none;padding:0;width:100%;
+  background:radial-gradient(ellipse at center,rgba(59,130,246,.1),transparent 70%),var(--bg2)}
+.solar-video-poster:focus-visible{outline:2px solid var(--blue);outline-offset:-3px}
+.solar-video-play-btn{
+  width:60px;height:60px;border-radius:50%;background:var(--blue);color:#04070f;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .25s var(--ease),box-shadow .25s;box-shadow:0 8px 24px rgba(59,130,246,.35)}
+.solar-video-play-btn svg{margin-left:3px}
+.solar-video-poster:hover .solar-video-play-btn,.solar-video-poster:focus-visible .solar-video-play-btn{
+  transform:scale(1.08);box-shadow:0 0 0 10px rgba(59,130,246,.14),0 8px 24px rgba(59,130,246,.35)}
+.solar-video-hint{
+  font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text2)}
+.solar-video-loading{position:absolute;inset:0;z-index:2;display:none;align-items:center;justify-content:center;background:var(--bg2)}
+.solar-video-loading.active{display:flex}
+.solar-video-spinner{width:32px;height:32px;border-radius:50%;border:3px solid rgba(59,130,246,.2);border-top-color:var(--blue);animation:solarVidSpin .8s linear infinite}
+@keyframes solarVidSpin{to{transform:rotate(360deg)}}
+.solar-video-fallback{
+  position:absolute;top:14px;right:14px;z-index:3;display:none;
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.1em;
+  color:var(--text2);text-decoration:none;background:rgba(6,13,26,.8);border:1px solid var(--border);
+  padding:5px 10px;border-radius:4px;backdrop-filter:blur(8px);transition:color .2s,border-color .2s}
+.solar-video-fallback:hover{color:var(--blue);border-color:rgba(59,130,246,.3)}
 .solar-lower{display:grid;grid-template-columns:1fr 1.3fr}
 .solar-shots{display:grid;grid-template-rows:1fr 1fr;gap:2px;background:var(--bg2)}
 .solar-shot{overflow:hidden}
@@ -352,10 +380,6 @@ nav.scrolled{background:rgba(6,13,26,.92);backdrop-filter:blur(20px);-webkit-bac
 .proj-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);
   overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s}
 .proj-card:hover{border-color:rgba(59,130,246,.22);transform:translateY(-3px);box-shadow:0 18px 44px rgba(0,0,0,.35)}
-.pc-shots{display:grid;grid-template-columns:1fr 1fr;height:180px;gap:1px;background:var(--border)}
-.pc-shot{overflow:hidden}
-.pc-shot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--ease)}
-.proj-card:hover .pc-shot img{transform:scale(1.05)}
 .pc-body{padding:22px 24px}
 .pc-body .proj-title{font-size:1.15rem;margin-bottom:8px}
 .pc-body .proj-desc{font-size:.83rem;margin-bottom:14px}
@@ -724,15 +748,18 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
   display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
   background:rgba(34,197,94,.06);border-top:1px solid rgba(34,197,94,.1);
   border-bottom:1px solid rgba(34,197,94,.1)}
-.ng-shot{overflow:hidden;position:relative;aspect-ratio:16/10}
+/* Shared screenshot-tile skeleton — identical across ng-shot/tneb-shot/at-shot.
+   Per-project filter/hover/label values stay separate below (deliberate tuning, not duplication). */
+.ng-shot,.tneb-shot,.at-shot{overflow:hidden;position:relative;aspect-ratio:16/10}
+.tneb-shot,.at-shot{cursor:zoom-in}
+.ng-shot::after,.tneb-shot::after,.at-shot::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(6,13,26,.65) 0%,transparent 55%);
+  pointer-events:none}
 .ng-shot img{
   width:100%;height:100%;object-fit:cover;display:block;
   transition:transform .5s var(--ease);filter:brightness(.92) saturate(1.05)}
 .ng-shot:hover img{transform:scale(1.06);filter:brightness(1) saturate(1.1)}
-.ng-shot::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(6,13,26,.65) 0%,transparent 55%);
-  pointer-events:none}
 .ng-shot-label{
   position:absolute;bottom:10px;left:12px;z-index:2;
   font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.1em;
@@ -881,14 +908,10 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
 .tneb-shots{
   display:grid;grid-template-columns:repeat(5,1fr);gap:2px;
   background:rgba(245,158,11,.06);border-bottom:1px solid rgba(245,158,11,.1)}
-.tneb-shot{overflow:hidden;position:relative;aspect-ratio:16/10;cursor:zoom-in}
 .tneb-shot img{
   width:100%;height:100%;object-fit:cover;display:block;
   transition:transform .45s var(--ease),filter .45s;filter:brightness(.88) saturate(1.1)}
 .tneb-shot:hover img{transform:scale(1.08);filter:brightness(1) saturate(1.25)}
-.tneb-shot::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(6,13,26,.65) 0%,transparent 55%);pointer-events:none}
 .tneb-shot-lbl{
   position:absolute;bottom:7px;left:9px;z-index:2;
   font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.1em;
@@ -900,6 +923,19 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
   display:flex;align-items:center;justify-content:center;
   opacity:0;transition:opacity .2s;pointer-events:none}
 .tneb-shot:hover .tneb-shot-zoom{opacity:1}
+
+/* AstroTamil screenshot strip — same visual recipe as .tneb-shots/.ng-screenshots, blue-tinted, 6-wide */
+.at-shots{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:2px;
+  background:rgba(59,130,246,.06);border-top:1px solid rgba(59,130,246,.1);border-bottom:1px solid rgba(59,130,246,.1)}
+.at-shot img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .45s var(--ease),filter .45s;filter:brightness(.88) saturate(1.1)}
+.at-shot:hover img{transform:scale(1.08);filter:brightness(1) saturate(1.25)}
+.at-shot-lbl{
+  position:absolute;bottom:7px;left:9px;z-index:2;
+  font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(59,130,246,.85)}
 
 /* Card body */
 .tneb-body{padding:26px 28px;flex:1;display:flex;flex-direction:column;gap:16px}
@@ -1059,6 +1095,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
 @media(max-width:900px){
   .tneb-shots{grid-template-columns:1fr 1fr 1fr}
   .tneb-stats{grid-template-columns:repeat(3,1fr)}
+  .at-shots{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:640px){
   .tneb-shots{grid-template-columns:1fr 1fr}
@@ -1066,6 +1103,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
   .tneb-badge-col{align-items:flex-start}
   .tneb-stats{grid-template-columns:repeat(2,1fr)}
   .tneb-foot{flex-direction:column;align-items:flex-start}
+  .at-shots{grid-template-columns:repeat(2,1fr)}
 }
 
 /* ── BACK TO TOP ── */
@@ -1547,6 +1585,20 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
      ═══════════════════════════════════════════════════════════════════ -->
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
+<!-- Structured data — AstroTamil (SoftwareApplication) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "AstroTamil",
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "Web",
+  "url": "https://astrotamil.pages.dev/",
+  "description": "An AI-powered Vedic astrology platform with sidereal planetary calculations, Vimshottari Dasha, Dosha and Yoga detection, real-time birthplace search, and Tamil & English support.",
+  "author": { "@type": "Person", "name": "Barath M" }
+}
+</script>
+
 </head>
 <body>
 
@@ -1620,13 +1672,13 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
         <!-- Moon icon (shown in light mode) -->
         <svg class="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
-      <button class="hamburger" id="hbg" aria-label="Menu">
+      <button class="hamburger" id="hbg" aria-label="Menu" aria-expanded="false" aria-controls="mob-nav">
         <span></span><span></span><span></span>
       </button>
     </div>
   </div>
 </nav>
-<div class="mob-nav" id="mob-nav">
+<div class="mob-nav" id="mob-nav" role="navigation" aria-label="Mobile navigation">
   <a href="#hero" onclick="closeMob()">Home</a>
   <a href="#about" onclick="closeMob()">About</a>
   <a href="#achievements" onclick="closeMob()">Achievements</a>
@@ -1673,7 +1725,7 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
           </a>
           <a href="https://astrotamil.pages.dev/" target="_blank" rel="noopener" class="hero-live-btn blue-l">
             <span class="live-dot blue"></span>
-            Zodiac App Live
+            AstroTamil Live
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </a>
         </div>
@@ -1691,7 +1743,7 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
           <a href="https://github.com/barathraj0812" target="_blank" rel="noopener" class="social-btn" aria-label="GitHub">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
           </a>
-          <a href="https://itch.io" target="_blank" rel="noopener" class="social-btn" aria-label="itch.io">
+          <a href="https://barathraj08.itch.io/solar-system" target="_blank" rel="noopener" class="social-btn" aria-label="itch.io">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           </a>
           <a href="#contact" class="social-btn" aria-label="Email">
@@ -1919,7 +1971,7 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
             Try Live App
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </a>
-          <a href="https://github.com/barathraj0812" target="_blank" rel="noopener" class="ng-cta secondary">
+          <a href="https://github.com/barathraj0812/nutrigreen-ai" target="_blank" rel="noopener" class="ng-cta secondary">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
             GitHub
           </a>
@@ -1928,11 +1980,85 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
     </div>
 
     <div class="solar-featured reveal">
-      <div class="solar-video-wrap">
+      <div class="solar-info">
+        <p class="proj-cat">Web Development · AI-Powered Vedic Astrology Platform</p>
+        <h3 class="proj-title">AstroTamil</h3>
+        <p class="proj-desc">A sidereal Vedic astrology platform that computes real planetary positions, Nakshatra placements, and Vimshottari Dasha timelines directly in the browser, then layers an AI interpretation engine on top to explain them in plain Tamil or English. Supports real-time birthplace search via geocoding, automatic Dosha and Yoga detection, saved birth profiles, and a full dark/light theme system — built independently as an end-to-end astronomical calculation engine rather than a template-driven horoscope generator.</p>
+        <div class="proj-tags">
+          <span class="ptag hi">JavaScript</span><span class="ptag hi">Astronomical Algorithms</span>
+          <span class="ptag hi">AI Integration</span><span class="ptag">Geocoding API</span>
+          <span class="ptag">Sidereal Calculations</span><span class="ptag">Tamil &amp; English</span>
+        </div>
+        <div class="proj-chal">
+          <h4>Engineering Highlights</h4>
+          <div class="chal-list">
+            <div class="chal-item">Sidereal planetary position &amp; Lagna calculation engine</div>
+            <div class="chal-item">Vimshottari Dasha timeline computation</div>
+            <div class="chal-item">Automated Dosha &amp; Yoga detection across chart combinations</div>
+            <div class="chal-item">AI-assisted horoscope interpretation layer</div>
+            <div class="chal-item">Real-time geocoded birthplace search</div>
+            <div class="chal-item">Bilingual Tamil/English UI with persistent theme &amp; profile storage</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:12px">
+          <a href="https://astrotamil.pages.dev/" target="_blank" rel="noopener" class="proj-link">
+            <span class="live-dot blue" style="width:6px;height:6px;margin-right:2px"></span>
+            Try Live App
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+          <button onclick="window.openProjectModal(window.ASTROTAMIL_PROJECT_DATA)" class="btn-secondary" style="padding:8px 16px;font-size:.78rem">
+            Learn More
+          </button>
+        </div>
+      </div>
+      <div class="at-shots" data-gallery-group="astrology-app">
+        <div class="at-shot">
+          <img src="https://lh3.googleusercontent.com/d/ASTROTAMIL_SCREENSHOT_1" alt="AstroTamil dashboard displaying sidereal planetary calculations" loading="lazy"/>
+          <span class="at-shot-lbl">Dashboard</span>
+        </div>
+        <div class="at-shot">
+          <img src="https://lh3.googleusercontent.com/d/ASTROTAMIL_SCREENSHOT_2" alt="AstroTamil planetary positions chart with sidereal calculations" loading="lazy"/>
+          <span class="at-shot-lbl">Planetary Positions</span>
+        </div>
+        <div class="at-shot">
+          <img src="https://lh3.googleusercontent.com/d/ASTROTAMIL_SCREENSHOT_3" alt="AstroTamil birth details form with real-time location search" loading="lazy"/>
+          <span class="at-shot-lbl">Birth Details</span>
+        </div>
+        <div class="at-shot">
+          <img src="https://lh3.googleusercontent.com/d/ASTROTAMIL_SCREENSHOT_4" alt="AstroTamil AI-generated horoscope explanation" loading="lazy"/>
+          <span class="at-shot-lbl">AI Horoscope</span>
+        </div>
+        <div class="at-shot">
+          <img src="https://lh3.googleusercontent.com/d/ASTROTAMIL_SCREENSHOT_5" alt="AstroTamil dosha analysis and detection results" loading="lazy"/>
+          <span class="at-shot-lbl">Dosha Analysis</span>
+        </div>
+        <div class="at-shot">
+          <img src="https://lh3.googleusercontent.com/d/ASTROTAMIL_SCREENSHOT_6" alt="AstroTamil Vimshottari Dasha timeline view" loading="lazy"/>
+          <span class="at-shot-lbl">Vimshottari Dasha</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="solar-featured reveal">
+      <div class="solar-video-wrap" id="solar-video-wrap">
         <span class="solar-video-label">Featured Project · Unity Simulation · 2023</span>
-        <iframe src="https://drive.google.com/file/d/1ohRR0ZZdq9AZMKzFjrvskDp-PKWhhk_M/preview"
-          allow="autoplay; fullscreen" allowfullscreen loading="lazy"
-          title="Solar System Simulation Gameplay Demo"></iframe>
+        <button type="button" class="solar-video-poster" id="solar-video-poster"
+          aria-label="Play Solar System Simulation gameplay demo video">
+          <span class="solar-video-play-btn" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </span>
+          <span class="solar-video-hint">Click to play gameplay demo</span>
+        </button>
+        <div class="solar-video-loading" id="solar-video-loading" aria-hidden="true">
+          <span class="solar-video-spinner"></span>
+        </div>
+        <a class="solar-video-fallback" id="solar-video-fallback"
+          href="https://youtu.be/nEYY5Gg2pwM"
+          target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
+        <iframe id="solar-video-iframe" data-src="https://www.youtube.com/embed/nEYY5Gg2pwM?autoplay=1&rel=0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen loading="lazy"
+          title="Solar System Simulation Gameplay Demo" style="display:none"></iframe>
       </div>
       <div class="solar-lower">
         <div class="solar-shots" data-gallery-group="solar">
@@ -1962,7 +2088,7 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
               <div class="chal-item">Performance optimisation for consistent frame rate</div>
             </div>
           </div>
-          <a href="https://itch.io" target="_blank" rel="noopener" class="proj-link">
+          <a href="https://barathraj08.itch.io/solar-system" target="_blank" rel="noopener" class="proj-link">
             Play on itch.io
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </a>
@@ -1971,27 +2097,7 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
     </div>
 
     <div class="proj-grid2">
-      <div class="proj-card reveal d1">
-        <div class="pc-shots" data-gallery-group="astrology-app">
-          <div class="pc-shot"><img src="https://lh3.googleusercontent.com/d/1hb1qY5Q6gv7BdPb9CUo15em4nqTXXB1z" alt="Astrology Web App 1" loading="lazy"/></div>
-          <div class="pc-shot"><img src="https://lh3.googleusercontent.com/d/1PO9zlVlu5EGu4ve_c8jz10qfzxkbFtTA" alt="Astrology Web App 2" loading="lazy"/></div>
-        </div>
-        <div class="pc-body">
-          <p class="proj-cat">Web Development · Interactive App</p>
-          <h3 class="proj-title">Astrological Predictor Web App</h3>
-          <p class="proj-desc">A dynamic web application featuring astrological information, interactive frontend logic, and prediction systems — built independently using HTML, CSS, and JavaScript with an AI-assisted workflow.</p>
-          <div class="proj-tags">
-            <span class="ptag hi">HTML</span><span class="ptag hi">CSS</span>
-            <span class="ptag hi">JavaScript</span><span class="ptag">AI-Assisted</span>
-          </div>
-          <a href="https://astrotamil.pages.dev/" target="_blank" rel="noopener" class="proj-link" style="margin-top:12px">
-            <span class="live-dot blue" style="width:6px;height:6px;margin-right:2px"></span>
-            Try Live App
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </a>
-        </div>
-      </div>
-      <div class="proj-card reveal d2">
+      <div class="proj-card reveal d1" style="grid-column:1/-1;max-width:520px">
         <div class="teaser-frames" data-gallery-group="ai-teaser">
           <div class="tf-frame">
             <img src="https://lh3.googleusercontent.com/d/1sLJMmmCbRu9c-EnTYVBGE1OqlngJfnQd" alt="AI Movie Teaser Frame 1" loading="lazy"/>
@@ -2975,8 +3081,8 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
                 <span class="live-dot blue"></span>
                 <span class="cdemo-label blue-d">Live · Web App</span>
               </div>
-              <div class="cdemo-name">Zodiac &amp; Birth Star App</div>
-              <div class="cdemo-desc">Interactive astrological predictor · HTML · CSS · JS</div>
+              <div class="cdemo-name">AstroTamil</div>
+              <div class="cdemo-desc">AI-powered Vedic astrology platform · JS · Astronomical Algorithms</div>
               <div class="cdemo-arrow blue-d">
                 Open App
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -3234,7 +3340,7 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
       <div class="footer-links-col">
         <h4>Projects</h4>
         <a href="https://nutrigreenai.pages.dev/" target="_blank" rel="noopener">NutriGreen AI ↗</a>
-        <a href="https://astrotamil.pages.dev/" target="_blank" rel="noopener">Zodiac App ↗</a>
+        <a href="https://astrotamil.pages.dev/" target="_blank" rel="noopener">AstroTamil ↗</a>
         <a href="#projects">Solar System Sim</a>
         <a href="#projects">TNEB Calculator</a>
         <a href="#projects">AI Movie Teaser</a>
@@ -3310,10 +3416,8 @@ window.addEventListener('scroll',()=>{
   });
 },{passive:true});
 
-/* Hamburger */
-const hbg=document.getElementById('hbg'),mob=document.getElementById('mob-nav');
-if(hbg&&mob)hbg.addEventListener('click',()=>mob.classList.toggle('open'));
-function closeMob(){if(mob)mob.classList.remove('open')}
+/* Hamburger — see consolidated controller (HAMBURGER MORPH + MOBILE NAV) below,
+   which defines window.closeMob() and owns the single #hbg/#mob-nav query. */
 
 /* Reveal */
 const ro=new IntersectionObserver(entries=>{
@@ -3661,6 +3765,7 @@ document.querySelectorAll('[data-tneb-idx]').forEach(el=>{
                 || img.closest('.tneb-shot')?.querySelector('.tneb-shot-lbl')?.textContent?.trim()
                 || img.closest('.ng-shot')?.querySelector('.ng-shot-label')?.textContent?.trim()
                 || img.closest('.solar-shot')?.querySelector('.solar-shot-label')?.textContent?.trim()
+                || img.closest('.at-shot')?.querySelector('.at-shot-lbl')?.textContent?.trim()
                 || img.alt || '',
           _img: img
         };
@@ -3747,7 +3852,7 @@ document.querySelectorAll('[data-tneb-idx]').forEach(el=>{
   function wireVideo(){
     const wrap = document.querySelector('.solar-video-wrap iframe');
     if(!wrap) return;
-    const videoSrc=wrap.src, videoTitle=wrap.title||'Solar System Simulation — Gameplay';
+    const videoSrc=wrap.dataset.src||wrap.src, videoTitle=wrap.title||'Solar System Simulation — Gameplay';
     const container=wrap.parentElement;
     if(container.querySelector('#ulb-vid-expand')) return;
     const btn=document.createElement('button');
@@ -3758,9 +3863,32 @@ document.querySelectorAll('[data-tneb-idx]').forEach(el=>{
     btn.addEventListener('click',()=>window.openVideo(videoSrc,videoTitle));
   }
 
+  /* Wire Solar System trailer: click-to-play poster, loading indicator, fallback link.
+     Iframe src is only set on interaction (perf + avoids unnecessary Drive embed loads). */
+  function wireSolarVideoPlayer(){
+    const poster=document.getElementById('solar-video-poster');
+    const loading=document.getElementById('solar-video-loading');
+    const fallback=document.getElementById('solar-video-fallback');
+    const iframe=document.getElementById('solar-video-iframe');
+    if(!poster||!iframe||poster._solarWired) return;
+    poster._solarWired=true;
+
+    function playSolarVideo(){
+      if(iframe.src) return; /* already loading/loaded */
+      loading.classList.add('active');
+      iframe.addEventListener('load',()=>loading.classList.remove('active'),{once:true});
+      iframe.src=iframe.dataset.src;
+      iframe.style.display='block';
+      poster.style.display='none';
+      if(fallback) fallback.style.display='inline-block';
+    }
+    poster.addEventListener('click',playSolarVideo);
+  }
+
   /* Run wiring after DOM is ready and images have loaded captions */
   wireAllImages();
   wireVideo();
+  wireSolarVideoPlayer();
 
   /* Re-wire on dynamic content (future-proofing via MutationObserver) */
   const _mo = new MutationObserver(()=>{wireAllImages();wireVideo();});
@@ -3769,7 +3897,118 @@ document.querySelectorAll('[data-tneb-idx]').forEach(el=>{
 })();
 </script>
 
-<!-- IBM cert shot & IMO shot hover styles -->
+<!-- ── PROJECT INFO DIALOG ────────────────────────────────────────────────
+     Generic "Learn More" component. Any project registers a data object
+     (see window.ASTROTAMIL_PROJECT_DATA below) and calls
+     window.openProjectModal(data) — zero duplication for future projects.
+-->
+<script>
+(function(){
+  const modal = document.createElement('div');
+  modal.id = 'pmodal';
+  modal.setAttribute('role','dialog');
+  modal.setAttribute('aria-modal','true');
+  modal.setAttribute('aria-labelledby','pmodal-title');
+  modal.innerHTML = `
+    <div id="pmodal-backdrop"></div>
+    <div id="pmodal-box">
+      <button id="pmodal-close" aria-label="Close dialog">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <p class="proj-cat" id="pmodal-eyebrow"></p>
+      <h3 class="proj-title" id="pmodal-title"></h3>
+      <p id="pmodal-tagline"></p>
+      <p class="proj-desc" id="pmodal-overview"></p>
+      <div class="pmodal-section">
+        <h4>Core Capabilities</h4>
+        <div class="chal-list" id="pmodal-capabilities"></div>
+      </div>
+      <div class="pmodal-section">
+        <h4>Engineering Highlights</h4>
+        <div class="chal-list" id="pmodal-highlights"></div>
+      </div>
+      <div class="proj-tags" id="pmodal-tech"></div>
+      <div id="pmodal-cta-row">
+        <a id="pmodal-cta" class="btn-primary" target="_blank" rel="noopener"></a>
+        <button id="pmodal-close-btn" class="btn-secondary">Close</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+
+  const backdrop = modal.querySelector('#pmodal-backdrop'),
+        btnClose = modal.querySelector('#pmodal-close'),
+        btnCloseAlt = modal.querySelector('#pmodal-close-btn'),
+        eyebrow = modal.querySelector('#pmodal-eyebrow'),
+        title = modal.querySelector('#pmodal-title'),
+        tagline = modal.querySelector('#pmodal-tagline'),
+        overview = modal.querySelector('#pmodal-overview'),
+        capsEl = modal.querySelector('#pmodal-capabilities'),
+        highEl = modal.querySelector('#pmodal-highlights'),
+        techEl = modal.querySelector('#pmodal-tech'),
+        cta = modal.querySelector('#pmodal-cta');
+
+  let lastFocused = null;
+
+  function fillList(el, items){
+    el.textContent = '';
+    (items||[]).forEach(t=>{
+      const row = document.createElement('div');
+      row.className = 'chal-item';
+      row.textContent = t;
+      el.appendChild(row);
+    });
+  }
+
+  function fillChips(el, items){
+    el.textContent = '';
+    (items||[]).forEach(t=>{
+      const chip = document.createElement('span');
+      chip.className = 'ptag hi';
+      chip.textContent = t;
+      el.appendChild(chip);
+    });
+  }
+
+  window.openProjectModal = function(data){
+    if(!data) return;
+    lastFocused = document.activeElement;
+    eyebrow.textContent = data.eyebrow || '';
+    title.textContent = data.title || '';
+    tagline.textContent = data.tagline || '';
+    overview.textContent = data.overview || '';
+    fillList(capsEl, data.capabilities);
+    fillList(highEl, data.highlights);
+    fillChips(techEl, data.tech);
+    cta.textContent = data.ctaText || 'Visit Website';
+    cta.href = data.ctaUrl || '#';
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    btnClose.focus();
+    document.addEventListener('keydown', onKeydown);
+  };
+
+  function closeProjectModal(){
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', onKeydown);
+    if(lastFocused) lastFocused.focus();
+  }
+
+  function onKeydown(e){
+    if(e.key === 'Escape'){ closeProjectModal(); return; }
+    if(e.key === 'Tab'){
+      const focusables = modal.querySelectorAll('button, a[href]');
+      const first = focusables[0], last = focusables[focusables.length-1];
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+  }
+
+  btnClose.addEventListener('click', closeProjectModal);
+  btnCloseAlt.addEventListener('click', closeProjectModal);
+  backdrop.addEventListener('click', closeProjectModal);
+})();
+</script>
 <style>
 .ibm-cert-shot:hover img{transform:scale(1.06);filter:brightness(1) saturate(1.15)!important}
 .ibm-cert-shot:hover .ibm-cert-zoom{opacity:1!important}
@@ -3795,6 +4034,36 @@ window.IMO_CERT_GALLERY = [
     alt: 'IMO 2023 Certificate — International Rank 2, Score 59 out of 60, Distinction, Zonal Top 25'
   }
 ];
+
+/* AstroTamil "Learn More" dialog content — consumed by window.openProjectModal() */
+window.ASTROTAMIL_PROJECT_DATA = {
+  eyebrow: 'Web Development · AI-Powered Vedic Astrology Platform',
+  title: 'AstroTamil',
+  tagline: 'Where Astronomical Precision Meets Vedic Tradition',
+  overview: 'AstroTamil is a modern Vedic astrology platform combining real astronomical calculations with AI-assisted explanations — built independently as an end-to-end sidereal calculation engine rather than a template-driven horoscope generator.',
+  capabilities: [
+    'Sidereal planetary position calculations',
+    'Lagna (ascendant) calculation engine',
+    'Nakshatra analysis engine',
+    'Dosha detection',
+    'Yoga detection',
+    'Vimshottari Dasha timeline',
+    'Real-time birthplace search via geocoding',
+    'Birth profile management',
+    'Tamil & English language support'
+  ],
+  highlights: [
+    'Real astronomical mathematics, computed client-side',
+    'Modern, modular frontend architecture',
+    'Local-first birth profile management',
+    'Fully responsive interface',
+    'Dark / light theme engine',
+    'Accessibility-focused interaction design'
+  ],
+  tech: ['JavaScript', 'Astronomical Algorithms', 'AI Integration', 'Geocoding API', 'LocalStorage', 'Responsive Design'],
+  ctaText: 'Launch AstroTamil',
+  ctaUrl: 'https://astrotamil.pages.dev/'
+};
 
 /* Keyboard support for clickable shot panels */
 (function(){
@@ -3930,6 +4199,46 @@ window.IMO_CERT_GALLERY = [
   #ulb-box{max-width:99vw;gap:8px}
   .ulb-thumb{width:44px;height:30px}
   #ulb-thumbs{max-width:96vw}
+}
+
+/* ── PROJECT INFO DIALOG ── generic "Learn More" component, driven by data,
+   any project registers its own content object — same visual language as
+   the lightbox (backdrop blur, box transform-in, radius, shadow) but no
+   zoom/pan/media logic since the content here is text, not images. ── */
+#pmodal{
+  position:fixed;inset:0;z-index:9999;display:flex;align-items:center;
+  justify-content:center;opacity:0;pointer-events:none;padding:24px;
+  transition:opacity .25s ease}
+#pmodal.active{opacity:1;pointer-events:all}
+#pmodal-backdrop{
+  position:absolute;inset:0;background:rgba(3,7,18,.92);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+#pmodal-box{
+  position:relative;z-index:1;width:100%;max-width:640px;max-height:86vh;
+  overflow-y:auto;background:var(--surface);border:1px solid var(--border2);
+  border-radius:14px;box-shadow:0 32px 80px rgba(0,0,0,.8);
+  padding:36px 36px 30px;
+  transform:scale(.95) translateY(6px);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+#pmodal.active #pmodal-box{transform:scale(1) translateY(0)}
+#pmodal-close{
+  position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;
+  background:none;border:1px solid var(--border);color:var(--text2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s,border-color .15s,color .15s}
+#pmodal-close:hover{background:rgba(255,60,60,.1);border-color:rgba(255,80,80,.4);color:rgba(255,140,140,1)}
+#pmodal-eyebrow{margin-bottom:8px}
+#pmodal-title{font-size:1.5rem;margin-bottom:6px}
+#pmodal-tagline{font-size:.85rem;color:var(--blue);margin-bottom:16px}
+#pmodal-overview{margin-bottom:22px}
+.pmodal-section{margin-bottom:20px}
+.pmodal-section h4{font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+#pmodal-tech{margin-bottom:26px}
+#pmodal-cta-row{display:flex;gap:10px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:22px}
+@media(max-width:640px){
+  #pmodal-box{padding:28px 22px 24px}
+  #pmodal-cta-row{flex-direction:column}
+  #pmodal-cta-row a,#pmodal-cta-row button{width:100%;justify-content:center}
 }
 </style>
 
@@ -4925,9 +5234,9 @@ if(_sb)_sb.addEventListener('click',function(){sharePortfolio(this);});
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    33. IMAGE HOVER ZOOM ENHANCED
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.solar-shot img,.pc-shot img,.tf-frame img,.ng-shot img,.tneb-shot img{
+.solar-shot img,.tf-frame img,.ng-shot img,.tneb-shot img,.at-shot img{
   transition:transform .55s cubic-bezier(.4,0,.2,1),filter .55s}
-.solar-shot:hover img,.proj-card:hover .pc-shot img,.ng-shot:hover img,.tneb-shot:hover img{
+.solar-shot:hover img,.ng-shot:hover img,.tneb-shot:hover img,.at-shot:hover img{
   transform:scale(1.07);filter:brightness(1.05) saturate(1.1)}
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -5002,17 +5311,30 @@ if(_sb)_sb.addEventListener('click',function(){sharePortfolio(this);});
 (function(){
   var hbg=document.getElementById('hbg'),mob=document.getElementById('mob-nav');
   if(!hbg||!mob)return;
-  hbg.addEventListener('click',function(){
-    var open=mob.classList.toggle('open');
+
+  function setOpen(open){
+    mob.classList.toggle('open',open);
     hbg.classList.toggle('open',open);
+    hbg.setAttribute('aria-expanded',open?'true':'false');
     document.body.style.overflow=open?'hidden':'';
+  }
+  window.closeMob=function(){ setOpen(false); };
+
+  hbg.addEventListener('click',function(){
+    setOpen(!mob.classList.contains('open'));
   });
   // close when clicking outside
   document.addEventListener('click',function(e){
-    if(mob.classList.contains('open')&&!mob.contains(e.target)&&!hbg.contains(e.target)){
-      mob.classList.remove('open');hbg.classList.remove('open');document.body.style.overflow='';
-    }
+    if(mob.classList.contains('open')&&!mob.contains(e.target)&&!hbg.contains(e.target)) setOpen(false);
   });
+  // close on Escape and return focus to the trigger
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&mob.classList.contains('open')){ setOpen(false); hbg.focus(); }
+  });
+  // auto-close if resized past the mobile breakpoint while open
+  window.addEventListener('resize',function(){
+    if(window.innerWidth>640&&mob.classList.contains('open')) setOpen(false);
+  },{passive:true});
 })();
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
