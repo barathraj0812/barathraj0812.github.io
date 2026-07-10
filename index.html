@@ -3180,20 +3180,10 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
                 <label class="cf-label" for="cf-subject">
                   Subject <span class="req" aria-label="required">*</span>
                 </label>
-                <div class="cf-select-wrap">
-                  <select class="cf-select cf-input" id="cf-subject" name="subject"
-                    required aria-required="true" aria-describedby="cf-subject-err">
-                    <option value="" disabled selected>Select a topic…</option>
-                    <option value="Project Discussion">Project Discussion</option>
-                    <option value="AI & Technology">AI &amp; Technology</option>
-                    <option value="Mathematics & Olympiad">Mathematics &amp; Olympiad</option>
-                    <option value="Educational Opportunity">Educational Opportunity</option>
-                    <option value="Collaboration">Collaboration</option>
-                    <option value="Feedback on Portfolio">Feedback on Portfolio</option>
-                    <option value="General Hello">General Hello</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
+                <input class="cf-input" id="cf-subject" name="subject" type="text"
+                  placeholder="What would you like to talk about?" maxlength="120"
+                  autocomplete="off" required aria-required="true"
+                  aria-describedby="cf-subject-err"/>
                 <span class="cf-err" id="cf-subject-err" role="alert" aria-live="polite"></span>
               </div>
 
@@ -4381,7 +4371,9 @@ window.ASTROTAMIL_PROJECT_DATA = {
     return true;
   });
   wireField('cf-subject', 'cf-subject-err', v=>{
-    if(!v) return 'Please select a subject.';
+    if(!v.trim())             return 'Subject is required.';
+    if(v.trim().length < 3)   return 'Subject is too short.';
+    if(v.trim().length > 120) return 'Subject is too long (max 120 characters).';
     return true;
   });
   wireField('cf-message', 'cf-message-err', v=>{
@@ -4399,7 +4391,7 @@ window.ASTROTAMIL_PROJECT_DATA = {
       { id:'cf-email',   errId:'cf-email-err',
         fn: v=>(!v.trim()?'Email address is required.':!isValidEmail(v)?'Please enter a valid email address.':true) },
       { id:'cf-subject', errId:'cf-subject-err',
-        fn: v=>(!v?'Please select a subject.':true) },
+        fn: v=>(!v.trim()?'Subject is required.':v.trim().length<3?'Subject is too short.':v.trim().length>120?'Subject is too long.':true) },
       { id:'cf-message', errId:'cf-message-err',
         fn: v=>(!v.trim()?'Message is required.':v.trim().length<10?'Message must be at least 10 characters.':v.trim().length>1500?'Message is too long.':true) },
     ];
