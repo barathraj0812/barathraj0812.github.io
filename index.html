@@ -132,16 +132,138 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
 .cdemo-arrow.blue-d{color:var(--blue)}
 @media(max-width:640px){.contact-demos{grid-template-columns:1fr}.hero-live-strip{gap:8px}}
 
+/* Skip link — visually hidden until keyboard-focused, jumps past the nav
+   straight to the hero content. Required for keyboard users; costs nothing
+   for everyone else since it only ever appears on Tab. */
+.skip-link{
+  position:fixed;top:-60px;left:12px;z-index:9999;
+  background:var(--blue);color:#fff;font-family:'Inter',sans-serif;font-weight:600;
+  font-size:.85rem;padding:10px 18px;border-radius:6px;text-decoration:none;
+  transition:top .2s ease}
+.skip-link:focus{top:12px}
+
+/* Global focus-visible fallback — every interactive element gets a visible
+   keyboard focus ring even where a component-specific one wasn't defined.
+   More specific rules elsewhere in this file simply override this. */
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
+select:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--blue);outline-offset:2px}
+
+/* Coarse-pointer (touch) minimum target size — WCAG 2.5.5/2.5.8 target,
+   applied only under pointer:coarse so desktop's tighter visual sizing is
+   untouched. Uses padding rather than forcing width/height so it doesn't
+   fight each control's own layout. */
+@media(pointer:coarse){
+  .theme-btn,.hamburger{min-width:44px;min-height:44px}
+}
+
 /* Stars */
 #star-canvas{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.5}
+
+/* ═══════════════════════════════════════════════════
+   COSMOS — cinematic 3D hero engine + scroll journey
+═══════════════════════════════════════════════════ */
+#cosmos-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;
+  transition:opacity 1.6s var(--ease)}
+#cosmos-canvas.ready{opacity:1}
+#cosmos-canvas.faded{opacity:0}
+
+#intro-veil{position:fixed;inset:0;z-index:600;background:#03060D;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;
+  transition:opacity .9s var(--ease),visibility .9s;}
+#intro-veil.gone{opacity:0;visibility:hidden;pointer-events:none}
+.iv-mark{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;letter-spacing:-.02em;
+  margin-bottom:2px;background:linear-gradient(135deg,#fff,var(--blue),var(--cyan));
+  background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;animation:iv-shimmer 2.2s linear infinite;opacity:0;
+  transition:opacity .6s ease}
+.iv-mark.show{opacity:1}
+@keyframes iv-shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+.iv-line{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--text3);opacity:0;transform:translateY(6px);
+  transition:opacity .5s ease,transform .5s ease}
+.iv-line.show{opacity:1;transform:none}
+.iv-line b{color:var(--blue);font-weight:400}
+.iv-bar-row{display:flex;align-items:center;gap:10px;margin-top:6px}
+.iv-bar{width:180px;height:1px;background:rgba(59,130,246,.15);position:relative;overflow:hidden}
+.iv-pct{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--text3);
+  min-width:2.6em;text-align:right;letter-spacing:.05em;font-variant-numeric:tabular-nums}
+
+/* Scroll progress + coordinate readout */
+#scroll-progress{position:fixed;top:0;left:0;height:2px;width:0%;z-index:210;
+  background:linear-gradient(90deg,var(--blue),var(--gold));transition:width .08s linear}
+.nav-coord{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.14em;
+  color:var(--text3);white-space:nowrap;padding:0 4px;border-left:1px solid var(--border2);
+  padding-left:14px;display:flex;align-items:center;gap:6px}
+.nav-coord .nc-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);
+  box-shadow:0 0 6px rgba(59,130,246,.8);flex-shrink:0}
+@media(max-width:900px){.nav-coord{display:none}}
+
+/* Cinematic depth-emergence reveal (overrides default reveal transform) */
+.reveal{opacity:0;transform:translateY(26px) scale(.985);filter:blur(6px);
+  transition:opacity .9s var(--ease),transform .9s var(--ease),filter .9s var(--ease)}
+.reveal.visible{opacity:1;transform:none;filter:blur(0)}
+
+/* Section light-seam: a thin glow line marking each new chapter of the journey */
+section{position:relative;z-index:1}
+section+section{border-top:1px solid var(--border)}
+section+section::before{content:'';position:absolute;top:-1px;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,rgba(82,184,212,.55),transparent);
+  pointer-events:none}
+
+@media(prefers-reduced-motion:reduce){
+  #intro-veil{display:none !important}
+  #cosmos-canvas{display:none !important}
+  .reveal{filter:none !important}
+}
+
+/* Custom cursor (desktop, fine-pointer only — see cursor-light comment below,
+   now superseded by this). Two elements: a precise 6px dot exactly under the
+   pointer, and a softer ring that trails it with light inertia. Both are
+   pure translate-transform so they cost nothing on scroll/paint. */
+html.has-custom-cursor,html.has-custom-cursor *{cursor:none!important}
+html.has-custom-cursor input,html.has-custom-cursor textarea,
+html.has-custom-cursor select,html.has-custom-cursor [contenteditable]{cursor:text!important}
+#cc-dot,#cc-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9998;
+  border-radius:50%;will-change:transform;transform:translate3d(-100px,-100px,0)}
+#cc-dot{width:6px;height:6px;margin:-3px 0 0 -3px;background:var(--blue);
+  transition:opacity .2s ease}
+#cc-ring{width:34px;height:34px;margin:-17px 0 0 -17px;
+  border:1px solid rgba(59,130,246,.55);
+  transition:width .28s cubic-bezier(.16,1,.3,1),height .28s cubic-bezier(.16,1,.3,1),
+    margin .28s cubic-bezier(.16,1,.3,1),border-color .28s ease,background .28s ease,opacity .2s ease}
+#cc-ring.cc-hover{width:56px;height:56px;margin:-28px 0 0 -28px;
+  background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.8)}
+#cc-ring.cc-view{width:64px;height:64px;margin:-32px 0 0 -32px;
+  background:rgba(255,153,51,.08);border-color:rgba(255,153,51,.7)}
+#cc-ring.cc-hidden,#cc-dot.cc-hidden{opacity:0}
+@media(hover:none),(pointer:coarse){#cc-dot,#cc-ring{display:none!important}}
+
+/* Cursor-reactive ambient light (desktop only, added by JS) */
+#cursor-light{
+  position:fixed;top:0;left:0;width:440px;height:440px;border-radius:50%;
+  background:radial-gradient(circle,rgba(59,130,246,.10),rgba(59,130,246,0) 70%);
+  pointer-events:none;z-index:2;opacity:0;transition:opacity .3s ease;
+  mix-blend-mode:screen;will-change:transform}
+
+/* Project scroll-stage: the in-focus project comes forward, others recede */
+.proj-stage{transition:opacity .5s var(--ease),transform .5s var(--ease),filter .5s var(--ease)}
+#projects .proj-stage{opacity:.55;transform:scale(.975);filter:blur(1.5px) saturate(.85)}
+#projects .proj-stage.proj-focus{opacity:1;transform:scale(1);filter:none}
+@media(max-width:760px){
+  #projects .proj-stage{opacity:1;transform:none;filter:none} /* mobile: no scroll-stage, just read it */
+}
+
+/* Magnetic buttons need a touch of ease so the pull-back reads intentional */
+.btn-primary,.btn-secondary,.social-btn,.nav-cv,.hero-live-btn{transition:transform .25s var(--ease),opacity .2s,border-color .2s,background .2s,color .2s}
 
 /* Layout */
 .container{max-width:1120px;margin:0 auto;padding:0 32px}
 section{position:relative;z-index:1}
 
-/* Reveal */
-.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
-.reveal.visible{opacity:1;transform:none}
+/* Reveal delays (base .reveal transform/filter is defined once, above, as the
+   cinematic depth-emergence version — this duplicate plain definition used to
+   load after it and silently cancel the blur/scale via cascade order) */
 .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.4s}
 
 /* ── NAV ── */
@@ -189,9 +311,7 @@ nav.scrolled{background:rgba(6,13,26,.92);backdrop-filter:blur(20px);-webkit-bac
 }
 .hero-bg{
   position:absolute;inset:0;z-index:0;
-  background:
-    linear-gradient(to right,rgba(6,13,26,.99) 0%,rgba(6,13,26,.95) 40%,rgba(6,13,26,.6) 65%,rgba(6,13,26,.2) 100%),
-    url('https://lh3.googleusercontent.com/d/10ouo6bd8ALsB2ZvQuIlnTlwt81z7i1nR') center/cover no-repeat;
+  background:linear-gradient(to right,rgba(3,6,13,.94) 0%,rgba(3,6,13,.72) 42%,rgba(3,6,13,.28) 68%,rgba(3,6,13,.05) 100%);
 }
 .hero-bg::after{
   content:'';position:absolute;bottom:0;left:0;right:0;height:160px;
@@ -266,11 +386,7 @@ nav.scrolled{background:rgba(6,13,26,.92);backdrop-filter:blur(20px);-webkit-bac
   width:36px;height:36px;background:var(--blue-dim);border:1px solid rgba(59,130,246,.3);
   border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .badge-text{font-size:.72rem;color:var(--text2);line-height:1.4;font-weight:500}
-.hero-planet{
-  position:absolute;top:-40px;right:-80px;width:280px;height:280px;
-  border-radius:50%;background:radial-gradient(circle at 30% 30%,#1a3a6e,#0a1a3a,#040810);
-  border:1px solid rgba(59,130,246,.12);opacity:.55;z-index:1;
-  box-shadow:inset -20px -20px 60px rgba(59,130,246,.08)}
+.hero-planet{display:none}
 .hero-scroll{
   position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
   display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2;
@@ -309,6 +425,14 @@ nav.scrolled{background:rgba(6,13,26,.92);backdrop-filter:blur(20px);-webkit-bac
   text-transform:uppercase;color:var(--blue);margin-bottom:8px}
 .sec-title{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,3.2vw,2.8rem);
   font-weight:700;color:#fff;line-height:1.1;margin-bottom:12px;letter-spacing:-.01em}
+/* Major-heading reveal: a slower, expo-eased blur/rise reserved for section
+   titles only — deliberately distinct from the body-copy .reveal so the
+   hierarchy between "chapter title" and "supporting text" reads in the motion,
+   not just the type scale. */
+.title-reveal{opacity:0;transform:translateY(38px);filter:blur(14px);
+  transition:opacity 1.1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1),filter 1.1s cubic-bezier(.16,1,.3,1)}
+.title-reveal.visible{opacity:1;transform:none;filter:blur(0)}
+@media(prefers-reduced-motion:reduce){.title-reveal{filter:none!important}}
 .sec-sub{font-size:.88rem;color:var(--text2);max-width:560px;line-height:1.8}
 .sec-hdr{margin-bottom:52px}
 .divider{width:40px;height:2px;background:linear-gradient(to right,var(--blue),transparent);margin-top:16px}
@@ -1447,29 +1571,11 @@ footer{border-top:1px solid var(--border);padding:28px 32px;position:relative;z-
    NEW FEATURES CSS
    ══════════════════════════════════════════ */
 
-/* ── 1. READING PROGRESS BAR ── */
-#read-progress{
-  position:fixed;top:0;left:0;height:2px;width:0%;z-index:9999;
-  background:linear-gradient(to right,var(--blue),var(--cyan));
-  transition:width .1s linear;pointer-events:none}
-
-/* ── 2. PRELOADER ── */
-#preloader{
-  position:fixed;inset:0;z-index:99999;
-  background:var(--bg);display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:20px;
-  transition:opacity .5s var(--ease),visibility .5s}
-#preloader.done{opacity:0;visibility:hidden;pointer-events:none}
-.pre-logo{
-  font-family:'Syne',sans-serif;font-size:3.5rem;font-weight:800;
-  color:#fff;letter-spacing:-.04em;animation:pre-pulse 1.2s ease-in-out infinite alternate}
-.pre-logo span{color:var(--blue)}
-@keyframes pre-pulse{from{opacity:.4}to{opacity:1}}
-.pre-bar-wrap{width:160px;height:2px;background:var(--border);border-radius:1px;overflow:hidden}
-.pre-bar{height:100%;background:linear-gradient(to right,var(--blue),var(--cyan));
-  width:0%;transition:width .08s linear}
-.pre-label{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--text3)}
+/* Loading now runs through a single system: #intro-veil (see its own block
+   near the canvas markup). The old #read-progress bar duplicated
+   #scroll-progress pixel-for-pixel and the old #preloader (generic pulsing
+   wordmark + fake timer-driven bar) duplicated the intro-veil boot sequence
+   — both removed so there's one readout, one loader. */
 
 /* ── 3. TYPED TAGLINE ── */
 .typed-cursor{
@@ -1576,7 +1682,7 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
   text-decoration:none;font-family:inherit;transition:color .2s,border-color .2s,background .2s}
 #print-cv-btn:hover{color:var(--text);border-color:var(--border3);background:var(--blue-dim)}
 @media print{
-  #preloader,#main-nav,.mob-nav,#back-top,#kbd-overlay,.hero-scroll,
+  #intro-veil,#main-nav,.mob-nav,#back-top,#kbd-overlay,.hero-scroll,
   #star-canvas,.hero-bg,.hero-btns,.hero-live-strip,.hero-planet,
   .aryabhata-crown .ary-right,.imo-right,.cbse-mark,
   footer #share-portfolio-btn,#print-cv-btn{display:none!important}
@@ -1607,13 +1713,12 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
   text-transform:uppercase;color:var(--text3);display:inline-flex;align-items:center;gap:6px}
 
 /* ── 13. LIGHT MODE EXTRAS ── */
-[data-theme="light"] #preloader{background:var(--bg)}
-[data-theme="light"] .pre-logo{color:var(--text)}
+[data-theme="light"] #intro-veil{background:var(--bg)}
 [data-theme="light"] #star-canvas{opacity:0.15}
 [data-theme="light"] .kbd-panel{background:#fff;border-color:rgba(59,100,180,.2)}
 [data-theme="light"] kbd{background:#f0f4fa;border-color:rgba(59,100,180,.2);color:var(--text2)}
 [data-theme="light"] footer{background:transparent}
-[data-theme="light"] #read-progress{background:linear-gradient(to right,var(--blue),#0E7090)}
+[data-theme="light"] #scroll-progress{background:linear-gradient(90deg,var(--blue),#0E7090)}
 
 </style>
 
@@ -1679,15 +1784,7 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
 </head>
 <body>
 
-<!-- READING PROGRESS BAR -->
-<div id="read-progress"></div>
-
-<!-- PRELOADER -->
-<div id="preloader">
-  <div class="pre-logo">BR<span>.</span></div>
-  <div class="pre-bar-wrap"><div class="pre-bar" id="pre-bar"></div></div>
-  <div class="pre-label">Loading Portfolio</div>
-</div>
+<a href="#hero" class="skip-link">Skip to main content</a>
 
 <!-- KEYBOARD SHORTCUTS PANEL -->
 <div id="kbd-overlay" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
@@ -1710,6 +1807,20 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
 </div>
 
 <canvas id="star-canvas"></canvas>
+<canvas id="cosmos-canvas"></canvas>
+
+<div id="scroll-progress"></div>
+
+<div id="intro-veil" aria-hidden="true">
+  <div class="iv-mark" id="iv-mark">BR<span style="color:var(--blue)">.</span></div>
+  <p class="iv-line" data-d="0">SYSTEM <b>//</b> PORTFOLIO.EXE</p>
+  <p class="iv-line" data-d="1">LOCATING SOLAR ANCHOR<b>…</b></p>
+  <p class="iv-line" data-d="2">BARATH M <b>—</b> CHENNAI, IN</p>
+  <div class="iv-bar-row">
+    <div class="iv-bar" id="iv-bar"></div>
+    <span class="iv-pct" id="iv-pct">0%</span>
+  </div>
+</div>
 
 <button id="back-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
@@ -1731,6 +1842,7 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-right">
+      <span class="nav-coord" id="nav-coord"><span class="nc-dot"></span>01 / 09 · HERO</span>
       <button id="print-cv-btn" onclick="window.print()" aria-label="Print portfolio as PDF">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         Print
@@ -1770,7 +1882,7 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
 </div>
 
 <!-- HERO -->
-<section id="hero">
+<section id="hero" tabindex="-1">
   <div class="hero-bg"></div>
   <div class="container">
     <div class="hero-inner">
@@ -1894,12 +2006,291 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
   </div>
 </section>
 
+<!-- CERTIFICATIONS -->
+<section id="certs">
+  <div class="container">
+    <div class="sec-hdr reveal">
+      <p class="sec-eyebrow">// Certifications</p>
+      <h2 class="sec-title reveal title-reveal">Verified Skills</h2>
+      <p class="sec-sub">Structured learning beyond the classroom — from government certifications to AI and cybersecurity.</p>
+      <div class="divider"></div>
+    </div>
+    <div class="cert-grid">
+
+      <!-- IBM Ethical Hacking — FEATURED (first, highest priority) -->
+      <div class="cert-c reveal d1" style="border-color:rgba(59,130,246,.28);position:relative;overflow:hidden;padding:0;display:flex;flex-direction:column">
+        <!-- Top accent line -->
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--blue),transparent);pointer-events:none;z-index:2"></div>
+
+        <!-- Certificate image strip — same pattern as .tneb-shot -->
+        <div class="ibm-cert-shot" role="button" tabindex="0"
+             aria-label="View IBM Ethical Hacking certificate — click to enlarge"
+             onclick="window.openGallery(window.IBM_CERT_GALLERY||[],0)"
+             style="position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;
+                    background:var(--bg2);cursor:zoom-in;border-bottom:1px solid rgba(59,130,246,.15)">
+          <img src="https://lh3.googleusercontent.com/d/1uO388bfxp15BWUEMGmCpxJKZVvZD6Xsh"
+               alt="IBM Ethical Hacking with Kali Linux — Certificate"
+               loading="lazy"
+               style="width:100%;height:100%;object-fit:cover;display:block;
+                      transition:transform .45s var(--ease),filter .45s;
+                      filter:brightness(.88) saturate(1.05)"/>
+          <!-- Bottom gradient + label — identical to .tneb-shot pattern -->
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(6,13,26,.7) 0%,transparent 55%);pointer-events:none"></div>
+          <span style="position:absolute;bottom:8px;left:10px;z-index:2;
+                       font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.1em;
+                       text-transform:uppercase;color:rgba(59,130,246,.85)">Certificate · IBM</span>
+          <!-- Zoom icon — identical to .tneb-shot-zoom pattern -->
+          <span class="ibm-cert-zoom" aria-hidden="true"
+                style="position:absolute;top:8px;right:8px;z-index:2;
+                       width:22px;height:22px;border-radius:4px;
+                       background:rgba(6,13,26,.7);border:1px solid rgba(59,130,246,.3);
+                       display:flex;align-items:center;justify-content:center;
+                       opacity:0;transition:opacity .2s;pointer-events:none">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="rgba(59,130,246,.9)" stroke-width="2.5">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+            </svg>
+          </span>
+        </div>
+
+        <!-- Card body (matches other cert-c internal padding) -->
+        <div style="padding:18px 22px;display:grid;grid-template-rows:auto auto 1fr auto;gap:10px;flex:1">
+          <!-- Icon + badge row -->
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+            <div class="cert-icon-box">🔐</div>
+            <img src="https://lh3.googleusercontent.com/d/1cswjLht-CJr2Zv65aG3Xm93tcHgg6h7I"
+                 alt="IBM Ethical Hacking Badge"
+                 loading="lazy"
+                 onclick="event.stopPropagation();window.openImage(this.src,'IBM Ethical Hacking Badge')"
+                 tabindex="0" role="button" aria-label="View IBM badge — click to enlarge"
+                 style="width:44px;height:44px;object-fit:contain;border-radius:6px;
+                        border:1px solid rgba(59,130,246,.22);background:rgba(12,21,38,.9);
+                        padding:3px;flex-shrink:0;cursor:zoom-in"/>
+          </div>
+          <div>
+            <p class="cert-name">IBM Ethical Hacking with Kali Linux</p>
+            <p class="cert-org">IBM Skills Network · Coursera · June 2026</p>
+            <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px">
+              <span class="ptag hi" style="font-size:.58rem">Cybersecurity</span>
+              <span class="ptag hi" style="font-size:.58rem">Kali Linux</span>
+              <span class="ptag hi" style="font-size:.58rem">Ethical Hacking</span>
+              <span class="ptag" style="font-size:.58rem">Vulnerability Assessment</span>
+              <span class="ptag" style="font-size:.58rem">Security Awareness</span>
+            </div>
+          </div>
+          <span class="cert-status cs-done">Completed</span>
+          <!-- Actions -->
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+            <button onclick="window.openGallery(window.IBM_CERT_GALLERY||[],0)"
+                    class="cert-view" style="background:none;border:none;cursor:pointer;padding:0;font:inherit"
+                    aria-label="View IBM certificate in lightbox">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              View Certificate
+            </button>
+            <a href="https://lh3.googleusercontent.com/d/1nqN3CK9S--bzwRhFwAbOGWciSeCL3DDR"
+               target="_blank" rel="noopener" class="cert-view"
+               style="color:var(--text3);border-bottom-color:rgba(122,144,176,.18)"
+               aria-label="Open IBM certificate PDF">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              PDF
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════ NCC ACHIEVEMENTS — premium sub-section ═══════════
+           Spans the full grid width (grid-column:1/-1), sitting between the
+           IBM featured card above and the remaining certification cards below.
+           No personally identifiable information (name, photo, registration
+           number, unit number, QR code, signatures, etc.) is shown — only
+           publicly shareable achievement summaries. ═══════════════════════ -->
+      <section class="ncc-wrap reveal d2" aria-labelledby="ncc-heading">
+        <div class="ncc-head">
+          <p class="ncc-eyebrow" aria-hidden="true">National Cadet Corps</p>
+          <h3 class="ncc-title" id="ncc-heading">NCC Achievements</h3>
+          <p class="ncc-sub">Leadership • Discipline • Service • Patriotism</p>
+        </div>
+        <div class="ncc-grid">
+
+          <!-- Card 1: NCC 'A' Certificate -->
+          <article class="ncc-card" tabindex="0" aria-label="National Cadet Corps Certificate A, B Grade, 2025, Ministry of Defence, Government of India">
+            <div class="ncc-card-accent" aria-hidden="true"></div>
+            <div class="ncc-card-top">
+              <!-- Shield icon — inline SVG, no external icon library -->
+              <span class="ncc-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2.5 4.5 5.3v5.4c0 5.1 3.3 8.9 7.5 10.8 4.2-1.9 7.5-5.7 7.5-10.8V5.3z"/>
+                  <path d="M8.7 12.1l2.3 2.3 4.3-4.6"/>
+                </svg>
+              </span>
+              <div class="ncc-badges">
+                <span class="ncc-badge">2025</span>
+                <span class="ncc-badge hi">B Grade</span>
+              </div>
+            </div>
+            <div>
+              <p class="ncc-card-title">NCC Certificate &lsquo;A&rsquo;</p>
+              <p class="ncc-card-org">National Cadet Corps · Ministry of Defence · Government of India</p>
+            </div>
+            <p class="ncc-card-desc">Successfully qualified the National Cadet Corps Certificate &lsquo;A&rsquo; Examination, conducted under the authority of the Ministry of Defence, Government of India.</p>
+            <div class="ncc-badges" style="margin-top:auto">
+              <span class="ncc-badge">Ministry of Defence</span>
+              <span class="ncc-badge">Government of India</span>
+            </div>
+          </article>
+
+          <!-- Card 2: Annual Training Camp -->
+          <article class="ncc-card" tabindex="0" aria-label="Annual Training Camp, 5 to 14 December 2024, National Cadet Corps">
+            <div class="ncc-card-accent" aria-hidden="true"></div>
+            <div class="ncc-card-top">
+              <!-- Medal icon — inline SVG, no external icon library -->
+              <span class="ncc-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8.5 3 6 9.5M15.5 3 18 9.5M9.5 3h5"/>
+                  <circle cx="12" cy="15" r="5.5"/>
+                  <path d="M12 12.3v5.4M9.6 15h4.8"/>
+                </svg>
+              </span>
+              <div class="ncc-badges">
+                <span class="ncc-badge">ATC</span>
+                <span class="ncc-badge hi">December 2024</span>
+              </div>
+            </div>
+            <div>
+              <p class="ncc-card-title">Annual Training Camp (ATC)</p>
+              <p class="ncc-card-org">National Cadet Corps · 1 (TN) Battery NCC</p>
+            </div>
+            <p class="ncc-card-desc">Successfully completed the Annual Training Camp (ATC) conducted by 1 (TN) Battery NCC, held from 05&ndash;14 December 2024 at Chennai Institute of Technology, Chennai.</p>
+            <div class="ncc-badges" style="margin-top:auto">
+              <span class="ncc-badge">NCC</span>
+              <span class="ncc-badge">Leadership</span>
+              <span class="ncc-badge">Discipline</span>
+            </div>
+          </article>
+
+        </div>
+      </section>
+      <!-- ═══════════ END NCC ACHIEVEMENTS ═══════════ -->
+
+      <!-- Generative AI Mastermind -->
+      <div class="cert-c reveal d2">
+        <div class="cert-icon-box">🤖</div>
+        <div><p class="cert-name">Generative AI Mastermind</p><p class="cert-org">Outskill · 2026</p></div>
+        <span class="cert-status cs-done">Completed</span>
+        <div><a href="https://lh3.googleusercontent.com/d/1l8Q7otNhJjHTZDZCoPkduaMwcm64mgln" target="_blank" rel="noopener" class="cert-view"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Certificate</a></div>
+      </div>
+
+      <!-- English Typewriting — Higher -->
+      <div class="cert-c reveal d3">
+        <div class="cert-icon-box">⌨️</div>
+        <div><p class="cert-name">English Typewriting — Higher</p><p class="cert-org">Government of Tamil Nadu · 2025</p></div>
+        <span class="cert-status cs-done">First Class with Distinction</span>
+        <div><a href="https://lh3.googleusercontent.com/d/1eCGGVrvrNE2A0pLvC0X09aB8vXUZssr5" target="_blank" rel="noopener" class="cert-view"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Certificate</a></div>
+      </div>
+
+      <!-- English Typewriting — Lower -->
+      <div class="cert-c reveal d1">
+        <div class="cert-icon-box">⌨️</div>
+        <div><p class="cert-name">English Typewriting — Lower</p><p class="cert-org">Government of Tamil Nadu · 2024</p></div>
+        <span class="cert-status cs-done">First Class with Distinction</span>
+        <div><a href="https://lh3.googleusercontent.com/d/1zwgqIKXLBlhZBqB0nZM3YH7DKonVU_Sg" target="_blank" rel="noopener" class="cert-view"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Certificate</a></div>
+      </div>
+
+      <!-- HTML Course -->
+      <div class="cert-c reveal d2">
+        <div class="cert-icon-box">🌐</div>
+        <div><p class="cert-name">HTML Course</p><p class="cert-org">NIELIT · 2020</p></div>
+        <span class="cert-status cs-done">Completed</span>
+        <div></div>
+      </div>
+
+      <!-- Placeholder -->
+      <div class="cert-c reveal d3" style="border-style:dashed;opacity:.45;cursor:default">
+        <div class="cert-icon-box" style="font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--text3)">+</div>
+        <div><p class="cert-name" style="color:var(--text3)">More certificates on the way</p><p class="cert-org">Portfolio updated as I grow</p></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="sec-hdr reveal">
+      <p class="sec-eyebrow">// Technical Profile</p>
+      <h2 class="sec-title reveal title-reveal">Skills &amp; Tools</h2>
+      <p class="sec-sub">Honest about what I'm actively using, what I'm learning, and how I use AI — not a list of inflated claims.</p>
+      <div class="divider"></div>
+    </div>
+    <div class="skills-wrap">
+      <div class="sk-group reveal d1">
+        <p class="sk-title">// Game Development</p>
+        <div class="sk-row"><span class="sk-name">Unity 3D</span><span class="sk-lvl on">Active</span></div>
+        <div class="sk-row"><span class="sk-name">C# Scripting</span><span class="sk-lvl on">Active</span></div>
+        <div class="sk-row"><span class="sk-name">Game UI / UX Systems</span><span class="sk-lvl on">Active</span></div>
+        <div class="sk-row"><span class="sk-name">Blender (3D Assets)</span><span class="sk-lvl learn">Learning</span></div>
+        <div class="sk-row"><span class="sk-name">Simulation Architecture</span><span class="sk-lvl on">Active</span></div>
+      </div>
+      <div class="sk-group reveal d2">
+        <p class="sk-title">// Web &amp; Full-Stack Development</p>
+        <div class="sk-row"><span class="sk-name">HTML5 / CSS3</span><span class="sk-lvl on">Active</span></div>
+        <div class="sk-row"><span class="sk-name">JavaScript (ES6+)</span><span class="sk-lvl on">Active</span></div>
+        <div class="sk-row"><span class="sk-name">Node.js · REST APIs</span><span class="sk-lvl on">Active</span></div>
+        <div class="sk-row"><span class="sk-name">Frontend Architecture</span><span class="sk-lvl on">Active</span></div>
+        <div class="sk-row"><span class="sk-name">Backend API Design</span><span class="sk-lvl on">Active</span></div>
+        <div class="sk-row"><span class="sk-name">Responsive Layouts</span><span class="sk-lvl on">Active</span></div>
+      </div>
+      <div class="sk-group reveal d3">
+        <p class="sk-title">// AI Integration &amp; Engineering</p>
+        <div class="sk-row"><span class="sk-name">Google Gemini API</span><span class="sk-lvl on">Active</span></div>
+        <div class="sk-row"><span class="sk-name">Multimodal AI (Image + Text)</span><span class="sk-lvl on">Active</span></div>
+        <div class="sk-row"><span class="sk-name">Prompt Engineering</span><span class="sk-lvl on">Active</span></div>
+        <div class="sk-row"><span class="sk-name">JSON Validation &amp; Parsing</span><span class="sk-lvl on">Active</span></div>
+        <div class="sk-row"><span class="sk-name">Async API Communication</span><span class="sk-lvl on">Active</span></div>
+        <div class="sk-row"><span class="sk-name">Python</span><span class="sk-lvl learn">Developing</span></div>
+      </div>
+      <div class="ai-block reveal">
+        <div class="ai-block-hdr">
+          <h3>// AI-Assisted Workflows</h3>
+          <span class="ai-note">Used as a tool, not a crutch</span>
+        </div>
+        <div class="ai-tools-row">
+          <span class="ai-tool">Google Gemini API</span><span class="ai-tool">ChatGPT</span>
+          <span class="ai-tool">Claude</span><span class="ai-tool">Krea</span>
+          <span class="ai-tool">Generative Image/Video Tools</span>
+        </div>
+        <p class="ai-quote">"I use AI as a core engineering component — integrating Gemini's multimodal API directly into production applications, not just as a workflow tool. The architecture, prompt engineering, and problem-solving are mine."</p>
+      </div>
+    </div><!-- /skills-wrap -->
+
+    <!-- PROFICIENCY BARS -->
+    <div class="sk-bar-wrap reveal" style="margin-top:28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:28px 30px">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:22px">// Core Proficiencies</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 40px">
+        <div>
+          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">HTML5 / CSS3</span><span class="sk-bar-pct">92%</span></div><div class="sk-bar-track"><div class="sk-bar-fill blue" data-pct="92"></div></div></div>
+          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">JavaScript (ES6+)</span><span class="sk-bar-pct">85%</span></div><div class="sk-bar-track"><div class="sk-bar-fill blue" data-pct="85"></div></div></div>
+          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">Node.js / APIs</span><span class="sk-bar-pct">78%</span></div><div class="sk-bar-track"><div class="sk-bar-fill blue" data-pct="78"></div></div></div>
+          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">Google Gemini API</span><span class="sk-bar-pct">82%</span></div><div class="sk-bar-track"><div class="sk-bar-fill cyan" data-pct="82"></div></div></div>
+        </div>
+        <div>
+          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">Unity 3D / C#</span><span class="sk-bar-pct">75%</span></div><div class="sk-bar-track"><div class="sk-bar-fill gold" data-pct="75"></div></div></div>
+          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">Prompt Engineering</span><span class="sk-bar-pct">88%</span></div><div class="sk-bar-track"><div class="sk-bar-fill cyan" data-pct="88"></div></div></div>
+          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">Problem Solving (Math)</span><span class="sk-bar-pct">95%</span></div><div class="sk-bar-track"><div class="sk-bar-fill gold" data-pct="95"></div></div></div>
+          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">Python</span><span class="sk-bar-pct">45%</span></div><div class="sk-bar-track"><div class="sk-bar-fill blue" data-pct="45"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PROJECTS -->
 <section id="projects">
   <div class="container">
     <div class="sec-hdr reveal">
       <p class="sec-eyebrow">// Featured Work</p>
-      <h2 class="sec-title">Projects &amp; Experiments</h2>
+      <h2 class="sec-title reveal title-reveal">Projects &amp; Experiments</h2>
       <p class="sec-sub">Full-stack AI applications, civic tech tools, Unity simulations, generative AI experiments — built independently using Node.js, Gemini API, Chart.js, Canvas API, C#, HTML/CSS/JS, and genuine engineering curiosity.</p>
       <div class="divider"></div>
     </div>
@@ -2149,11 +2540,11 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
         <div class="solar-info">
           <p class="proj-cat">Game Development · Educational Simulation</p>
           <h3 class="proj-title">Solar System Simulation Game</h3>
-          <p class="proj-desc">A 3D interactive educational game built in Unity where users explore planets, read information panels, and experience the solar system at an intuitive scale. Built independently at age 15 over roughly 40–50 hours.</p>
+          <p class="proj-desc">A 3D interactive educational game built in Unity where users explore planets, read information panels, and experience the solar system at an intuitive scale. Built independently at age 13 over roughly 40–50 hours.</p>
           <div class="proj-tags">
             <span class="ptag hi">Unity 3D</span><span class="ptag hi">C#</span>
             <span class="ptag hi">Blender</span><span class="ptag">Windows</span>
-            <span class="ptag">51 MB</span><span class="ptag">Age 15</span>
+            <span class="ptag">51 MB</span><span class="ptag">Age 13</span>
           </div>
           <div class="proj-chal">
             <h4>Key Technical Challenges Solved</h4>
@@ -2406,7 +2797,7 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
   <div class="container">
     <div class="sec-hdr reveal">
       <p class="sec-eyebrow">// SOF Olympiad Record</p>
-      <h2 class="sec-title">Achievements &amp; Recognition</h2>
+      <h2 class="sec-title reveal title-reveal">Achievements &amp; Recognition</h2>
       <p class="sec-sub">An 8-year Olympiad journey across IMO, NSO, NCO, ISSO &amp; ICSO — 6 Distinctions, 11 Gold Medals, an International Rank 2, and consistent Level 2 qualifications.</p>
       <div class="divider"></div>
     </div>
@@ -2757,290 +3148,11 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
     </div>
   </div>
 </section>
-
-<!-- CERTIFICATIONS -->
-<section id="certs">
-  <div class="container">
-    <div class="sec-hdr reveal">
-      <p class="sec-eyebrow">// Certifications</p>
-      <h2 class="sec-title">Verified Skills</h2>
-      <p class="sec-sub">Structured learning beyond the classroom — from government certifications to AI and cybersecurity.</p>
-      <div class="divider"></div>
-    </div>
-    <div class="cert-grid">
-
-      <!-- IBM Ethical Hacking — FEATURED (first, highest priority) -->
-      <div class="cert-c reveal d1" style="border-color:rgba(59,130,246,.28);position:relative;overflow:hidden;padding:0;display:flex;flex-direction:column">
-        <!-- Top accent line -->
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--blue),transparent);pointer-events:none;z-index:2"></div>
-
-        <!-- Certificate image strip — same pattern as .tneb-shot -->
-        <div class="ibm-cert-shot" role="button" tabindex="0"
-             aria-label="View IBM Ethical Hacking certificate — click to enlarge"
-             onclick="window.openGallery(window.IBM_CERT_GALLERY||[],0)"
-             style="position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;
-                    background:var(--bg2);cursor:zoom-in;border-bottom:1px solid rgba(59,130,246,.15)">
-          <img src="https://lh3.googleusercontent.com/d/1uO388bfxp15BWUEMGmCpxJKZVvZD6Xsh"
-               alt="IBM Ethical Hacking with Kali Linux — Certificate"
-               loading="lazy"
-               style="width:100%;height:100%;object-fit:cover;display:block;
-                      transition:transform .45s var(--ease),filter .45s;
-                      filter:brightness(.88) saturate(1.05)"/>
-          <!-- Bottom gradient + label — identical to .tneb-shot pattern -->
-          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(6,13,26,.7) 0%,transparent 55%);pointer-events:none"></div>
-          <span style="position:absolute;bottom:8px;left:10px;z-index:2;
-                       font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.1em;
-                       text-transform:uppercase;color:rgba(59,130,246,.85)">Certificate · IBM</span>
-          <!-- Zoom icon — identical to .tneb-shot-zoom pattern -->
-          <span class="ibm-cert-zoom" aria-hidden="true"
-                style="position:absolute;top:8px;right:8px;z-index:2;
-                       width:22px;height:22px;border-radius:4px;
-                       background:rgba(6,13,26,.7);border:1px solid rgba(59,130,246,.3);
-                       display:flex;align-items:center;justify-content:center;
-                       opacity:0;transition:opacity .2s;pointer-events:none">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="rgba(59,130,246,.9)" stroke-width="2.5">
-              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-              <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
-            </svg>
-          </span>
-        </div>
-
-        <!-- Card body (matches other cert-c internal padding) -->
-        <div style="padding:18px 22px;display:grid;grid-template-rows:auto auto 1fr auto;gap:10px;flex:1">
-          <!-- Icon + badge row -->
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
-            <div class="cert-icon-box">🔐</div>
-            <img src="https://lh3.googleusercontent.com/d/1cswjLht-CJr2Zv65aG3Xm93tcHgg6h7I"
-                 alt="IBM Ethical Hacking Badge"
-                 loading="lazy"
-                 onclick="event.stopPropagation();window.openImage(this.src,'IBM Ethical Hacking Badge')"
-                 tabindex="0" role="button" aria-label="View IBM badge — click to enlarge"
-                 style="width:44px;height:44px;object-fit:contain;border-radius:6px;
-                        border:1px solid rgba(59,130,246,.22);background:rgba(12,21,38,.9);
-                        padding:3px;flex-shrink:0;cursor:zoom-in"/>
-          </div>
-          <div>
-            <p class="cert-name">IBM Ethical Hacking with Kali Linux</p>
-            <p class="cert-org">IBM Skills Network · Coursera · June 2026</p>
-            <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px">
-              <span class="ptag hi" style="font-size:.58rem">Cybersecurity</span>
-              <span class="ptag hi" style="font-size:.58rem">Kali Linux</span>
-              <span class="ptag hi" style="font-size:.58rem">Ethical Hacking</span>
-              <span class="ptag" style="font-size:.58rem">Vulnerability Assessment</span>
-              <span class="ptag" style="font-size:.58rem">Security Awareness</span>
-            </div>
-          </div>
-          <span class="cert-status cs-done">Completed</span>
-          <!-- Actions -->
-          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
-            <button onclick="window.openGallery(window.IBM_CERT_GALLERY||[],0)"
-                    class="cert-view" style="background:none;border:none;cursor:pointer;padding:0;font:inherit"
-                    aria-label="View IBM certificate in lightbox">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              View Certificate
-            </button>
-            <a href="https://lh3.googleusercontent.com/d/1nqN3CK9S--bzwRhFwAbOGWciSeCL3DDR"
-               target="_blank" rel="noopener" class="cert-view"
-               style="color:var(--text3);border-bottom-color:rgba(122,144,176,.18)"
-               aria-label="Open IBM certificate PDF">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              PDF
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══════════ NCC ACHIEVEMENTS — premium sub-section ═══════════
-           Spans the full grid width (grid-column:1/-1), sitting between the
-           IBM featured card above and the remaining certification cards below.
-           No personally identifiable information (name, photo, registration
-           number, unit number, QR code, signatures, etc.) is shown — only
-           publicly shareable achievement summaries. ═══════════════════════ -->
-      <section class="ncc-wrap reveal d2" aria-labelledby="ncc-heading">
-        <div class="ncc-head">
-          <p class="ncc-eyebrow" aria-hidden="true">National Cadet Corps</p>
-          <h3 class="ncc-title" id="ncc-heading">NCC Achievements</h3>
-          <p class="ncc-sub">Leadership • Discipline • Service • Patriotism</p>
-        </div>
-        <div class="ncc-grid">
-
-          <!-- Card 1: NCC 'A' Certificate -->
-          <article class="ncc-card" tabindex="0" aria-label="National Cadet Corps Certificate A, B Grade, 2025, Ministry of Defence, Government of India">
-            <div class="ncc-card-accent" aria-hidden="true"></div>
-            <div class="ncc-card-top">
-              <!-- Shield icon — inline SVG, no external icon library -->
-              <span class="ncc-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 2.5 4.5 5.3v5.4c0 5.1 3.3 8.9 7.5 10.8 4.2-1.9 7.5-5.7 7.5-10.8V5.3z"/>
-                  <path d="M8.7 12.1l2.3 2.3 4.3-4.6"/>
-                </svg>
-              </span>
-              <div class="ncc-badges">
-                <span class="ncc-badge">2025</span>
-                <span class="ncc-badge hi">B Grade</span>
-              </div>
-            </div>
-            <div>
-              <p class="ncc-card-title">NCC Certificate &lsquo;A&rsquo;</p>
-              <p class="ncc-card-org">National Cadet Corps · Ministry of Defence · Government of India</p>
-            </div>
-            <p class="ncc-card-desc">Successfully qualified the National Cadet Corps Certificate &lsquo;A&rsquo; Examination, conducted under the authority of the Ministry of Defence, Government of India.</p>
-            <div class="ncc-badges" style="margin-top:auto">
-              <span class="ncc-badge">Ministry of Defence</span>
-              <span class="ncc-badge">Government of India</span>
-            </div>
-          </article>
-
-          <!-- Card 2: Annual Training Camp -->
-          <article class="ncc-card" tabindex="0" aria-label="Annual Training Camp, 5 to 14 December 2024, National Cadet Corps">
-            <div class="ncc-card-accent" aria-hidden="true"></div>
-            <div class="ncc-card-top">
-              <!-- Medal icon — inline SVG, no external icon library -->
-              <span class="ncc-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M8.5 3 6 9.5M15.5 3 18 9.5M9.5 3h5"/>
-                  <circle cx="12" cy="15" r="5.5"/>
-                  <path d="M12 12.3v5.4M9.6 15h4.8"/>
-                </svg>
-              </span>
-              <div class="ncc-badges">
-                <span class="ncc-badge">ATC</span>
-                <span class="ncc-badge hi">December 2024</span>
-              </div>
-            </div>
-            <div>
-              <p class="ncc-card-title">Annual Training Camp (ATC)</p>
-              <p class="ncc-card-org">National Cadet Corps · 1 (TN) Battery NCC</p>
-            </div>
-            <p class="ncc-card-desc">Successfully completed the Annual Training Camp (ATC) conducted by 1 (TN) Battery NCC, held from 05&ndash;14 December 2024 at Chennai Institute of Technology, Chennai.</p>
-            <div class="ncc-badges" style="margin-top:auto">
-              <span class="ncc-badge">NCC</span>
-              <span class="ncc-badge">Leadership</span>
-              <span class="ncc-badge">Discipline</span>
-            </div>
-          </article>
-
-        </div>
-      </section>
-      <!-- ═══════════ END NCC ACHIEVEMENTS ═══════════ -->
-
-      <!-- Generative AI Mastermind -->
-      <div class="cert-c reveal d2">
-        <div class="cert-icon-box">🤖</div>
-        <div><p class="cert-name">Generative AI Mastermind</p><p class="cert-org">Outskill · 2026</p></div>
-        <span class="cert-status cs-done">Completed</span>
-        <div><a href="https://lh3.googleusercontent.com/d/1l8Q7otNhJjHTZDZCoPkduaMwcm64mgln" target="_blank" rel="noopener" class="cert-view"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Certificate</a></div>
-      </div>
-
-      <!-- English Typewriting — Higher -->
-      <div class="cert-c reveal d3">
-        <div class="cert-icon-box">⌨️</div>
-        <div><p class="cert-name">English Typewriting — Higher</p><p class="cert-org">Government of Tamil Nadu · 2025</p></div>
-        <span class="cert-status cs-done">First Class with Distinction</span>
-        <div><a href="https://lh3.googleusercontent.com/d/1eCGGVrvrNE2A0pLvC0X09aB8vXUZssr5" target="_blank" rel="noopener" class="cert-view"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Certificate</a></div>
-      </div>
-
-      <!-- English Typewriting — Lower -->
-      <div class="cert-c reveal d1">
-        <div class="cert-icon-box">⌨️</div>
-        <div><p class="cert-name">English Typewriting — Lower</p><p class="cert-org">Government of Tamil Nadu · 2024</p></div>
-        <span class="cert-status cs-done">First Class with Distinction</span>
-        <div><a href="https://lh3.googleusercontent.com/d/1zwgqIKXLBlhZBqB0nZM3YH7DKonVU_Sg" target="_blank" rel="noopener" class="cert-view"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>View Certificate</a></div>
-      </div>
-
-      <!-- HTML Course -->
-      <div class="cert-c reveal d2">
-        <div class="cert-icon-box">🌐</div>
-        <div><p class="cert-name">HTML Course</p><p class="cert-org">NIELIT · 2020</p></div>
-        <span class="cert-status cs-done">Completed</span>
-        <div></div>
-      </div>
-
-      <!-- Placeholder -->
-      <div class="cert-c reveal d3" style="border-style:dashed;opacity:.45;cursor:default">
-        <div class="cert-icon-box" style="font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--text3)">+</div>
-        <div><p class="cert-name" style="color:var(--text3)">More certificates on the way</p><p class="cert-org">Portfolio updated as I grow</p></div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills">
-  <div class="container">
-    <div class="sec-hdr reveal">
-      <p class="sec-eyebrow">// Technical Profile</p>
-      <h2 class="sec-title">Skills &amp; Tools</h2>
-      <p class="sec-sub">Honest about what I'm actively using, what I'm learning, and how I use AI — not a list of inflated claims.</p>
-      <div class="divider"></div>
-    </div>
-    <div class="skills-wrap">
-      <div class="sk-group reveal d1">
-        <p class="sk-title">// Game Development</p>
-        <div class="sk-row"><span class="sk-name">Unity 3D</span><span class="sk-lvl on">Active</span></div>
-        <div class="sk-row"><span class="sk-name">C# Scripting</span><span class="sk-lvl on">Active</span></div>
-        <div class="sk-row"><span class="sk-name">Game UI / UX Systems</span><span class="sk-lvl on">Active</span></div>
-        <div class="sk-row"><span class="sk-name">Blender (3D Assets)</span><span class="sk-lvl learn">Learning</span></div>
-        <div class="sk-row"><span class="sk-name">Simulation Architecture</span><span class="sk-lvl on">Active</span></div>
-      </div>
-      <div class="sk-group reveal d2">
-        <p class="sk-title">// Web &amp; Full-Stack Development</p>
-        <div class="sk-row"><span class="sk-name">HTML5 / CSS3</span><span class="sk-lvl on">Active</span></div>
-        <div class="sk-row"><span class="sk-name">JavaScript (ES6+)</span><span class="sk-lvl on">Active</span></div>
-        <div class="sk-row"><span class="sk-name">Node.js · REST APIs</span><span class="sk-lvl on">Active</span></div>
-        <div class="sk-row"><span class="sk-name">Frontend Architecture</span><span class="sk-lvl on">Active</span></div>
-        <div class="sk-row"><span class="sk-name">Backend API Design</span><span class="sk-lvl on">Active</span></div>
-        <div class="sk-row"><span class="sk-name">Responsive Layouts</span><span class="sk-lvl on">Active</span></div>
-      </div>
-      <div class="sk-group reveal d3">
-        <p class="sk-title">// AI Integration &amp; Engineering</p>
-        <div class="sk-row"><span class="sk-name">Google Gemini API</span><span class="sk-lvl on">Active</span></div>
-        <div class="sk-row"><span class="sk-name">Multimodal AI (Image + Text)</span><span class="sk-lvl on">Active</span></div>
-        <div class="sk-row"><span class="sk-name">Prompt Engineering</span><span class="sk-lvl on">Active</span></div>
-        <div class="sk-row"><span class="sk-name">JSON Validation &amp; Parsing</span><span class="sk-lvl on">Active</span></div>
-        <div class="sk-row"><span class="sk-name">Async API Communication</span><span class="sk-lvl on">Active</span></div>
-        <div class="sk-row"><span class="sk-name">Python</span><span class="sk-lvl learn">Developing</span></div>
-      </div>
-      <div class="ai-block reveal">
-        <div class="ai-block-hdr">
-          <h3>// AI-Assisted Workflows</h3>
-          <span class="ai-note">Used as a tool, not a crutch</span>
-        </div>
-        <div class="ai-tools-row">
-          <span class="ai-tool">Google Gemini API</span><span class="ai-tool">ChatGPT</span>
-          <span class="ai-tool">Claude</span><span class="ai-tool">Krea</span>
-          <span class="ai-tool">Generative Image/Video Tools</span>
-        </div>
-        <p class="ai-quote">"I use AI as a core engineering component — integrating Gemini's multimodal API directly into production applications, not just as a workflow tool. The architecture, prompt engineering, and problem-solving are mine."</p>
-      </div>
-    </div><!-- /skills-wrap -->
-
-    <!-- PROFICIENCY BARS -->
-    <div class="sk-bar-wrap reveal" style="margin-top:28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:28px 30px">
-      <p style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:22px">// Core Proficiencies</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 40px">
-        <div>
-          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">HTML5 / CSS3</span><span class="sk-bar-pct">92%</span></div><div class="sk-bar-track"><div class="sk-bar-fill blue" data-pct="92"></div></div></div>
-          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">JavaScript (ES6+)</span><span class="sk-bar-pct">85%</span></div><div class="sk-bar-track"><div class="sk-bar-fill blue" data-pct="85"></div></div></div>
-          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">Node.js / APIs</span><span class="sk-bar-pct">78%</span></div><div class="sk-bar-track"><div class="sk-bar-fill blue" data-pct="78"></div></div></div>
-          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">Google Gemini API</span><span class="sk-bar-pct">82%</span></div><div class="sk-bar-track"><div class="sk-bar-fill cyan" data-pct="82"></div></div></div>
-        </div>
-        <div>
-          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">Unity 3D / C#</span><span class="sk-bar-pct">75%</span></div><div class="sk-bar-track"><div class="sk-bar-fill gold" data-pct="75"></div></div></div>
-          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">Prompt Engineering</span><span class="sk-bar-pct">88%</span></div><div class="sk-bar-track"><div class="sk-bar-fill cyan" data-pct="88"></div></div></div>
-          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">Problem Solving (Math)</span><span class="sk-bar-pct">95%</span></div><div class="sk-bar-track"><div class="sk-bar-fill gold" data-pct="95"></div></div></div>
-          <div class="sk-bar-row"><div class="sk-bar-top"><span class="sk-bar-name">Python</span><span class="sk-bar-pct">45%</span></div><div class="sk-bar-track"><div class="sk-bar-fill blue" data-pct="45"></div></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 <section id="about">
   <div class="container">
     <div class="sec-hdr reveal">
       <p class="sec-eyebrow">// The Person Behind the Work</p>
-      <h2 class="sec-title">About Me</h2>
+      <h2 class="sec-title reveal title-reveal">About Me</h2>
       <div class="divider"></div>
     </div>
     <div class="about-grid">
@@ -3102,7 +3214,7 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
   <div class="container">
     <div class="sec-hdr reveal">
       <p class="sec-eyebrow">// The Path Forward</p>
-      <h2 class="sec-title">Goals &amp; Timeline</h2>
+      <h2 class="sec-title reveal title-reveal">Goals &amp; Timeline</h2>
       <p class="sec-sub">This portfolio grows with me. Here's where I've been and where I'm going.</p>
       <div class="divider"></div>
     </div>
@@ -3164,7 +3276,7 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
       <!-- Header -->
       <div class="contact-hdr">
         <p class="sec-eyebrow reveal">// Get in Touch</p>
-        <h2 class="sec-title reveal d1">Say Hello</h2>
+        <h2 class="sec-title reveal title-reveal">Say Hello</h2>
         <div class="divider reveal d1"></div>
         <p class="reveal d2" style="margin-top:20px;font-size:.9rem;color:var(--text2);line-height:1.85;max-width:560px">
           Whether you want to discuss projects, mathematics, AI workflows, space
@@ -4863,30 +4975,8 @@ window.ASTROTAMIL_PROJECT_DATA = {
    Script is at end of <body> so DOM is fully available.
    ══════════════════════════════════════════════════════ */
 
-/* ── 1. PRELOADER ── */
-(function(){
-  var loader=document.getElementById('preloader'),bar=document.getElementById('pre-bar');
-  if(!loader||!bar)return;
-  var prog=0,tick=setInterval(function(){
-    prog=Math.min(prog+Math.random()*18+4,95);bar.style.width=prog+'%';
-  },80);
-  function finish(){clearInterval(tick);bar.style.width='100%';setTimeout(function(){loader.classList.add('done');},300);}
-  if(document.readyState==='complete')finish();
-  else window.addEventListener('load',finish);
-  setTimeout(finish,2200);
-})();
-
-/* ── 2. READING PROGRESS BAR ── */
-(function(){
-  var bar=document.getElementById('read-progress');
-  if(!bar)return;
-  function update(){
-    var d=document.documentElement,s=d.scrollTop||document.body.scrollTop,t=d.scrollHeight-d.clientHeight;
-    bar.style.width=(t>0?(s/t*100):0)+'%';
-  }
-  window.addEventListener('scroll',update,{passive:true});
-  update();
-})();
+/* Loading + scroll-progress are now handled entirely by the intro-veil
+   boot sequence and the single #scroll-progress bar (see end of body). */
 
 /* ── 3. TYPED TAGLINE ── */
 (function(){
@@ -5344,24 +5434,8 @@ if(_sb)_sb.addEventListener('click',function(){sharePortfolio(this);});
   transform:translateY(-4px) scale(1.12);
   box-shadow:0 8px 20px rgba(59,130,246,.18)}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   30. PRELOADER UPGRADE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-#preloader{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
-  background:var(--bg)}
-.pre-logo{
-  font-family:'Syne',sans-serif;font-size:2.6rem;font-weight:800;letter-spacing:-.02em;
-  background:linear-gradient(135deg,#fff,var(--blue),var(--cyan));
-  background-size:200% auto;
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  animation:pre-shimmer 1.8s linear infinite}
-@keyframes pre-shimmer{
-  0%{background-position:200% center}
-  100%{background-position:-200% center}}
-#preloader.done{
-  opacity:0;visibility:hidden;pointer-events:none;
-  transition:opacity .55s ease,visibility 0s .56s}
+/* (Preloader consolidated into #intro-veil — see the boot-sequence block
+   near the canvas markup. This is where its shimmer wordmark now lives.) */
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    31. ACTIVE NAV SECTION HIGHLIGHT
@@ -5715,5 +5789,902 @@ if(_sb)_sb.addEventListener('click',function(){sharePortfolio(this);});
 <style>
 @keyframes btn-ripple{to{transform:scale(1);opacity:0}}
 </style>
+
+<!-- ═══════════════════════════════════════════════════
+     COSMOS ENGINE — cinematic 3D sun + scroll journey
+     Fallback-safe: intro veil always clears even if WebGL
+     or the CDN import fails.
+═══════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var veil=document.getElementById('intro-veil');
+  var mark=document.getElementById('iv-mark');
+  var lines=document.querySelectorAll('.iv-line');
+  var bar=document.getElementById('iv-bar');
+  var pctEl=document.getElementById('iv-pct');
+  var reduced=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!veil)return;
+  if(reduced){veil.classList.add('gone');return;}
+
+  if(mark)setTimeout(function(){mark.classList.add('show');},80);
+  lines.forEach(function(el){
+    var d=parseInt(el.dataset.d||'0',10)*480;
+    setTimeout(function(){el.classList.add('show');},260+d);
+  });
+
+  // Real readiness, not a fake timer: track DOM parse, full window load, and
+  // the 3D engine reporting itself ready (or unsupported/failed) via the
+  // 'cosmos:ready' event dispatched below. Progress is the max of a gentle
+  // perceived-time ramp and the actual milestones reached, so it never lies
+  // by racing ahead of what's truly loaded, but also never stalls dead.
+  var milestone=8, cosmosDone=false, minStageDone=false;
+  if(document.readyState!=='loading')milestone=Math.max(milestone,45);
+  else document.addEventListener('DOMContentLoaded',function(){milestone=Math.max(milestone,45);});
+  if(document.readyState==='complete')milestone=Math.max(milestone,80);
+  else window.addEventListener('load',function(){milestone=Math.max(milestone,80);});
+  window.addEventListener('cosmos:ready',function(){cosmosDone=true;});
+  setTimeout(function(){minStageDone=true;},1500); // let the boot lines actually be readable
+
+  var fillEl=document.createElement('div');
+  fillEl.style.cssText='position:absolute;left:0;top:0;bottom:0;width:0%;background:var(--blue);transition:width .1s linear';
+  if(bar){bar.style.position='relative';bar.appendChild(fillEl);}
+
+  var shown=0, start=performance.now(), hardStop=3400;
+  function frame(now){
+    var t=now-start;
+    var rampTarget=cosmosDone?100:Math.min(milestone,minStageDone?96:70);
+    var perceived=Math.min(96,(t/hardStop)*100);
+    var target=Math.max(rampTarget,perceived,shown); // real progress, never regresses
+    shown+=(target-shown)*0.18;
+    if(shown>99.4)shown=100;
+    if(pctEl)pctEl.textContent=Math.round(shown)+'%';
+    if(fillEl)fillEl.style.width=shown+'%';
+    if(shown<100 && t<hardStop+400){
+      requestAnimationFrame(frame);
+    }else{
+      if(pctEl)pctEl.textContent='100%';
+      if(fillEl)fillEl.style.width='100%';
+      setTimeout(function(){veil.classList.add('gone');},260);
+    }
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+
+<script type="module">
+(function(){
+  var canvas=document.getElementById('cosmos-canvas');
+  var hero=document.getElementById('hero');
+  if(!canvas||!hero){window.dispatchEvent(new Event('cosmos:ready'));return;}
+  var reduced=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduced){window.dispatchEvent(new Event('cosmos:ready'));return;} // static CSS backdrop only, keeps things calm
+
+  var supportsWebGL=(function(){
+    try{var c=document.createElement('canvas');
+      return !!(window.WebGLRenderingContext && (c.getContext('webgl')||c.getContext('experimental-webgl')));
+    }catch(e){return false;}
+  })();
+  if(!supportsWebGL){window.dispatchEvent(new Event('cosmos:ready'));return;}
+
+  import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js').then(function(THREE){
+
+    var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+    renderer.setSize(window.innerWidth,window.innerHeight);
+
+    /* ---- CONTEXT LOSS / RESTORE ----
+       A GPU driver reset or a backgrounded mobile tab can drop the WebGL
+       context at any time, not just on first load. Without handling this,
+       the canvas silently freezes on its last frame (or goes black) while
+       the render loop keeps quietly ticking against a dead context. We
+       stop the loop immediately, fade the canvas out so the page's static
+       backdrop shows through cleanly, and if the browser restores the
+       context (most desktop cases) we simply reload the assets in place;
+       if it never restores (some mobile GPUs), the page just stays on its
+       graceful static fallback rather than a frozen or blank canvas. */
+    canvas.addEventListener('webglcontextlost',function(e){
+      e.preventDefault();
+      contextLost=true;
+      canvas.classList.remove('ready');
+      canvas.classList.add('faded');
+    },false);
+    canvas.addEventListener('webglcontextrestored',function(){
+      contextLost=false;
+      canvas.classList.remove('faded');
+      canvas.classList.add('ready');
+    },false);
+    var contextLost=false;
+
+    var scene=new THREE.Scene();
+    var camera=new THREE.PerspectiveCamera(42,window.innerWidth/window.innerHeight,0.1,300);
+    camera.position.set(0,0,34);
+
+    /* ---- BLOOM (controlled, desktop-only) ----
+       A real post-process bloom reads very differently from a shader that
+       just paints "bright" colours — but it is also the single most
+       expensive thing in this scene, so it is: desktop-only, low strength,
+       high threshold (only the sun's hottest pixels bloom, not the whole
+       frame), and loaded lazily so it never blocks first paint. Falls back
+       to a plain renderer.render() silently if the CDN addons don't load. */
+    var composer=null;
+    var wantBloom=!(window.matchMedia && window.matchMedia('(pointer:coarse)').matches) && window.innerWidth>=760;
+    if(wantBloom){
+      Promise.all([
+        import('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js'),
+        import('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/postprocessing/RenderPass.js'),
+        import('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/postprocessing/UnrealBloomPass.js')
+      ]).then(function(mods){
+        var EffectComposer=mods[0].EffectComposer;
+        var RenderPass=mods[1].RenderPass;
+        var UnrealBloomPass=mods[2].UnrealBloomPass;
+        var c=new EffectComposer(renderer);
+        c.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+        c.setSize(window.innerWidth,window.innerHeight);
+        c.addPass(new RenderPass(scene,camera));
+        var bloom=new UnrealBloomPass(new THREE.Vector2(window.innerWidth,window.innerHeight),0.42,0.55,0.86);
+        c.addPass(bloom);
+        window.addEventListener('resize',function(){c.setSize(window.innerWidth,window.innerHeight);});
+        composer=c;
+      }).catch(function(){ /* bloom unavailable — plain render remains, no crash */ });
+    }
+
+    /* ---- QUALITY TIER (drives sun mesh density + shader octave count;
+       computed once, before any geometry is built, so both the CPU-side
+       geometry detail and the uOctaves uniform agree with each other) ---- */
+    var sunQuality=(function(){
+      var coarse=window.matchMedia && window.matchMedia('(pointer:coarse)').matches;
+      if(coarse || window.innerWidth<760)return 1;      // LOW — mobile/weak GPU
+      if(window.innerWidth<1200)return 2;                 // MEDIUM — laptop/tablet
+      return 3;                                            // HIGH — desktop
+    })();
+    var sunOctaves=sunQuality===3?4:(sunQuality===2?3:2);
+    var sunDetail=sunQuality===3?6:(sunQuality===2?5:4);
+
+    /* ---- SUN ---- */
+    var noiseGLSL=[
+      'vec3 mod289(vec3 x){return x - floor(x * (1.0/289.0)) * 289.0;}',
+      'vec4 mod289(vec4 x){return x - floor(x * (1.0/289.0)) * 289.0;}',
+      'vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}',
+      'vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}',
+      'float snoise(vec3 v){',
+      '  const vec2 C = vec2(1.0/6.0, 1.0/3.0);',
+      '  const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);',
+      '  vec3 i  = floor(v + dot(v, C.yyy));',
+      '  vec3 x0 = v - i + dot(i, C.xxx);',
+      '  vec3 g = step(x0.yzx, x0.xyz);',
+      '  vec3 l = 1.0 - g;',
+      '  vec3 i1 = min(g.xyz, l.zxy);',
+      '  vec3 i2 = max(g.xyz, l.zxy);',
+      '  vec3 x1 = x0 - i1 + C.xxx;',
+      '  vec3 x2 = x0 - i2 + C.yyy;',
+      '  vec3 x3 = x0 - D.yyy;',
+      '  i = mod289(i);',
+      '  vec4 p = permute(permute(permute(',
+      '            i.z + vec4(0.0, i1.z, i2.z, 1.0))',
+      '          + i.y + vec4(0.0, i1.y, i2.y, 1.0))',
+      '          + i.x + vec4(0.0, i1.x, i2.x, 1.0));',
+      '  float n_ = 0.142857142857;',
+      '  vec3 ns = n_ * D.wyz - D.xzx;',
+      '  vec4 j = p - 49.0 * floor(p * ns.z * ns.z);',
+      '  vec4 x_ = floor(j * ns.z);',
+      '  vec4 y_ = floor(j - 7.0 * x_);',
+      '  vec4 x = x_ * ns.x + ns.yyyy;',
+      '  vec4 y = y_ * ns.x + ns.yyyy;',
+      '  vec4 h = 1.0 - abs(x) - abs(y);',
+      '  vec4 b0 = vec4(x.xy, y.xy);',
+      '  vec4 b1 = vec4(x.zw, y.zw);',
+      '  vec4 s0 = floor(b0)*2.0 + 1.0;',
+      '  vec4 s1 = floor(b1)*2.0 + 1.0;',
+      '  vec4 sh = -step(h, vec4(0.0));',
+      '  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;',
+      '  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;',
+      '  vec3 p0 = vec3(a0.xy, h.x);',
+      '  vec3 p1 = vec3(a0.zw, h.y);',
+      '  vec3 p2 = vec3(a1.xy, h.z);',
+      '  vec3 p3 = vec3(a1.zw, h.w);',
+      '  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));',
+      '  p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;',
+      '  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);',
+      '  m = m * m;',
+      '  return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));',
+      '}'
+    ].join('\n');
+
+    /* fbm: layered snoise at doubling frequency / halving amplitude, gated
+       by uOctaves so low-tier devices simply skip the finest (most costly)
+       layers rather than rendering a lower-resolution version of the same
+       pattern — the large-scale structure stays identical across tiers,
+       only the fine granulation grain is what scales down. */
+    var fbmGLSL=[
+      'uniform int uOctaves;',
+      'float fbm(vec3 p, float t){',
+      '  float v = snoise(p + t) * 0.55;',
+      '  if(uOctaves>=2) v += snoise(p*2.13 + t*1.7) * 0.28;',
+      '  if(uOctaves>=3) v += snoise(p*4.7  + t*2.6) * 0.13;',
+      '  if(uOctaves>=4) v += snoise(p*9.8  - t*3.1) * 0.06;',
+      '  return v;',
+      '}'
+    ].join('\n');
+
+    var sunVertex=[
+      'varying vec3 vNormal;',
+      'varying vec3 vPos;',
+      'varying vec3 vObjPos;',
+      'uniform float uTime;',
+      noiseGLSL,
+      fbmGLSL,
+      'void main(){',
+      '  vNormal = normalize(normalMatrix * normal);',
+      '  vec3 p = position;',
+      '  float n1 = fbm(p * 1.5, uTime * 0.045);',
+      '  float n2 = snoise(p * 5.2 + vec3(uTime * 0.09, 0.0, 0.0));',
+      '  p += normal * (n1 * 0.14 + n2 * 0.035);', // relief stays subtle — fine detail lives in the fragment colour, not displaced geometry
+      '  vPos = p;',
+      '  vObjPos = position;',
+      '  vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);',
+      '  gl_Position = projectionMatrix * mvPosition;',
+      '}'
+    ].join('\n');
+
+    var sunFragment=[
+      'varying vec3 vNormal;',
+      'varying vec3 vPos;',
+      'varying vec3 vObjPos;',
+      'uniform float uTime;',
+      noiseGLSL,
+      fbmGLSL,
+      'void main(){',
+      '  vec3 n = normalize(vNormal);',
+      '  vec3 viewDir = normalize(cameraPosition - vPos);',
+      '  float mu = clamp(dot(n, viewDir), 0.0, 1.0);', // cosine of view angle from disk centre — the physical basis for limb darkening
+      // ── classic solar limb-darkening approximation (I(mu)/I(1) = 1 - u(1-mu)) ──
+      '  float limbDark = 1.0 - 0.62 * (1.0 - pow(mu, 0.62));',
+      // ── multi-scale turbulent granulation: coarse convection cells (slow)
+      //    layered under fine granule grain (faster, higher frequency) ──
+      '  float cells = fbm(vObjPos * 1.35, uTime * 0.02);',
+      '  float granule = fbm(vObjPos * 7.5 + 4.2, uTime * 0.14);',
+      '  float grain = uOctaves>=3 ? snoise(vObjPos * 21.0 + uTime * 0.22) : 0.0;', // finest scale, desktop/tablet only
+      '  float tex = cells * 0.5 + granule * 0.38 + grain * 0.12;',
+      // ── sunspots: sparse dark umbra + softer penumbra, irregular via low-frequency noise, not hand-placed dots ──
+      '  float spotField = fbm(vObjPos * 1.05 + 8.8, uTime * 0.015);',
+      '  float umbra = smoothstep(0.62, 0.82, spotField);',
+      '  float penumbra = smoothstep(0.38, 0.62, spotField) - umbra;',
+      // ── base colour ramp: deep orange/red -> golden yellow -> bright yellow-white, driven by combined texture value ──
+      '  vec3 c1 = vec3(0.58,0.15,0.035);',
+      '  vec3 c2 = vec3(0.92,0.46,0.10);',
+      '  vec3 c3 = vec3(1.00,0.74,0.28);',
+      '  vec3 c4 = vec3(1.00,0.97,0.82);',
+      '  float h = clamp(tex*0.5+0.5, 0.0, 1.0);',
+      '  vec3 col = h<0.45 ? mix(c1,c2,h/0.45) : (h<0.8 ? mix(c2,c3,(h-0.45)/0.35) : mix(c3,c4,(h-0.8)/0.2));',
+      // hottest granule peaks push toward white-hot
+      '  col = mix(col, vec3(1.0,0.99,0.93), smoothstep(0.86,0.99,h)*0.55);',
+      // apply limb darkening to the physical surface colour
+      '  col *= limbDark;',
+      // sunspots darken the surface locally, with a soft penumbra transition
+      '  col = mix(col, col*0.16, umbra);',
+      '  col = mix(col, col*0.55, penumbra);',
+      // thin, bright limb rim — a narrow high-power fresnel term, not a broad glow
+      '  float rim = pow(1.0 - mu, 9.0);',
+      '  col += vec3(1.0,0.85,0.55) * rim * 0.9;',
+      '  gl_FragColor = vec4(col, 1.0);',
+      '}'
+    ].join('\n');
+
+    var sunGeo=new THREE.IcosahedronGeometry(5.6,sunDetail);
+    var sunMat=new THREE.ShaderMaterial({uniforms:{uTime:{value:0},uOctaves:{value:sunOctaves}},vertexShader:sunVertex,fragmentShader:sunFragment});
+    var sun=new THREE.Mesh(sunGeo,sunMat);
+    scene.add(sun);
+
+    /* ---- CORONA (two soft additive glow shells: a tight hot rim + a wider
+       atmospheric haze, so the falloff reads as a real gaseous envelope
+       instead of one flat glow ring) ---- */
+    var coronaFrag=[
+      'varying vec3 vNormal;',
+      'uniform vec3 uColor;',
+      'uniform float uPower;',
+      'uniform float uStrength;',
+      'void main(){',
+      '  float intensity = pow(0.62 - dot(normalize(vNormal), vec3(0.0,0.0,1.0)), uPower);',
+      '  gl_FragColor = vec4(uColor, clamp(intensity,0.0,1.0) * uStrength);',
+      '}'
+    ].join('\n');
+    var coronaVert=[
+      'varying vec3 vNormal;',
+      'void main(){',
+      '  vNormal = normalize(normalMatrix * normal);',
+      '  gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);',
+      '}'
+    ].join('\n');
+    var corona=new THREE.Mesh(
+      new THREE.SphereGeometry(7.4,48,48),
+      new THREE.ShaderMaterial({uniforms:{uColor:{value:new THREE.Color(0xff8a3d)},uPower:{value:2.6},uStrength:{value:1.0}},vertexShader:coronaVert,fragmentShader:coronaFrag,
+        side:THREE.BackSide,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false})
+    );
+    scene.add(corona);
+    var coronaOuter=new THREE.Mesh(
+      new THREE.SphereGeometry(10.5,40,40),
+      new THREE.ShaderMaterial({uniforms:{uColor:{value:new THREE.Color(0xff8a3d)},uPower:{value:4.2},uStrength:{value:0.55}},vertexShader:coronaVert,fragmentShader:coronaFrag,
+        side:THREE.BackSide,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false})
+    );
+    scene.add(coronaOuter);
+
+    /* ---- STARFIELD / DUST ---- */
+    var starCount=1600;
+    var starPos=new Float32Array(starCount*3);
+    var starSize=new Float32Array(starCount);
+    for(var i=0;i<starCount;i++){
+      var r=26+Math.random()*70;
+      var th=Math.random()*Math.PI*2;
+      var ph=Math.acos((Math.random()*2)-1);
+      starPos[i*3]=r*Math.sin(ph)*Math.cos(th);
+      starPos[i*3+1]=r*Math.sin(ph)*Math.sin(th);
+      starPos[i*3+2]=r*Math.cos(ph);
+      starSize[i]=Math.random()*1.6+0.3;
+    }
+    var starGeo=new THREE.BufferGeometry();
+    starGeo.setAttribute('position',new THREE.BufferAttribute(starPos,3));
+    starGeo.setAttribute('size',new THREE.BufferAttribute(starSize,1));
+    var starMat=new THREE.PointsMaterial({color:0xbcd6ff,size:0.09,transparent:true,opacity:0.75,
+      sizeAttenuation:true,depthWrite:false,blending:THREE.AdditiveBlending});
+    var stars=new THREE.Points(starGeo,starMat);
+    scene.add(stars);
+
+    /* ---- PERFORMANCE TIER (mobile / coarse-pointer gets a lighter scene) ---- */
+    var isMobile=(window.matchMedia && window.matchMedia('(pointer:coarse)').matches) || window.innerWidth<760;
+
+    /* ---- DUST LAYER — a second, much closer particle field that drifts
+       independently of the starfield and answers to the cursor with a
+       stronger parallax offset than the stars get. Two depth layers read as
+       real depth; one big starfield alone reads as a flat backdrop. Skipped
+       on mobile: it is the cheapest thing to cut and the least missed. ---- */
+    var dust=null;
+    if(!isMobile){
+      var dustCount=260;
+      var dustPos=new Float32Array(dustCount*3);
+      for(var di=0;di<dustCount;di++){
+        var dr=4+Math.random()*16;
+        var dth=Math.random()*Math.PI*2;
+        var dph=Math.acos((Math.random()*2)-1);
+        dustPos[di*3]=dr*Math.sin(dph)*Math.cos(dth);
+        dustPos[di*3+1]=dr*Math.sin(dph)*Math.sin(dth)*0.6;
+        dustPos[di*3+2]=dr*Math.cos(dph)-6;
+      }
+      var dustGeo=new THREE.BufferGeometry();
+      dustGeo.setAttribute('position',new THREE.BufferAttribute(dustPos,3));
+      var dustMat=new THREE.PointsMaterial({color:0x9fc6e8,size:0.045,transparent:true,opacity:0.4,
+        sizeAttenuation:true,depthWrite:false,blending:THREE.AdditiveBlending});
+      dust=new THREE.Points(dustGeo,dustMat);
+      scene.add(dust);
+    }
+
+    /* ---- SKILLS SCENE: orbital node network (data-graph motif) ---- */
+    var nodeCount=isMobile?9:16;
+    var nodeGroup=new THREE.Group();
+    var nodePositions=[];
+    for(var n=0;n<nodeCount;n++){
+      var ring=n%3;
+      var ang=(n/nodeCount)*Math.PI*2*3+ring*0.6;
+      var rad=3.2+ring*2.1;
+      var np=new THREE.Vector3(Math.cos(ang)*rad,Math.sin(ang)*rad*0.6,Math.sin(ang*1.3)*rad*0.5);
+      nodePositions.push(np);
+    }
+    var nodeGeo=new THREE.SphereGeometry(0.09,10,10);
+    var nodeMatEmissive=new THREE.MeshBasicMaterial({color:0x7fd4ec});
+    var nodeMeshes=[];
+    nodePositions.forEach(function(p){
+      var m=new THREE.Mesh(nodeGeo,nodeMatEmissive);
+      // chaos origin: a scattered point in roughly the same volume as the
+      // surrounding starfield, so the network visibly *assembles itself*
+      // out of nearby stars rather than fading in already-formed
+      var chaosR=6+Math.random()*9;
+      var chaosTh=Math.random()*Math.PI*2, chaosPh=Math.acos((Math.random()*2)-1);
+      m.userData.chaos=new THREE.Vector3(chaosR*Math.sin(chaosPh)*Math.cos(chaosTh),chaosR*Math.sin(chaosPh)*Math.sin(chaosTh),chaosR*Math.cos(chaosPh));
+      m.userData.target=p.clone();
+      m.position.copy(m.userData.chaos);
+      nodeGroup.add(m);
+      nodeMeshes.push(m);
+    });
+    // connective lines between near neighbours — the "connected systems" motif
+    if(!isMobile){
+      var linePts=[];
+      for(var a=0;a<nodePositions.length;a++){
+        for(var b=a+1;b<nodePositions.length;b++){
+          if(nodePositions[a].distanceTo(nodePositions[b])<3.4){
+            linePts.push(nodePositions[a],nodePositions[b]);
+          }
+        }
+      }
+      var lineGeo=new THREE.BufferGeometry().setFromPoints(linePts);
+      var lineMat=new THREE.LineBasicMaterial({color:0x3f7fae,transparent:true,opacity:0.35});
+      nodeGroup.add(new THREE.LineSegments(lineGeo,lineMat));
+    }
+    nodeGroup.visible=false;
+    scene.add(nodeGroup);
+
+    /* ---- FORMATION SCENE: orbital timeline ring (Formation / Certifications) ----
+       A single elliptical ring of markers threaded on a circular line — read as
+       "things arranged in sequence" rather than a network, distinguishing it
+       from the Systems node-graph even though it is built from the same
+       primitives for consistency and cost. */
+    var ringCount=isMobile?7:11;
+    var ringGroup=new THREE.Group();
+    var ringPts=[];
+    for(var rI=0;rI<ringCount;rI++){
+      var rAng=(rI/ringCount)*Math.PI*2;
+      var rp=new THREE.Vector3(Math.cos(rAng)*4.6,Math.sin(rAng)*1.6,Math.sin(rAng*2)*1.1);
+      ringPts.push(rp);
+    }
+    var ringNodeMat=new THREE.MeshBasicMaterial({color:0x9fd0ff});
+    var ringMeshes=[];
+    ringPts.forEach(function(p){
+      var m=new THREE.Mesh(nodeGeo,ringNodeMat);
+      var chaosR=7+Math.random()*10;
+      var chaosTh=Math.random()*Math.PI*2, chaosPh=Math.acos((Math.random()*2)-1);
+      m.userData.chaos=new THREE.Vector3(chaosR*Math.sin(chaosPh)*Math.cos(chaosTh),chaosR*Math.sin(chaosPh)*Math.sin(chaosTh),chaosR*Math.cos(chaosPh));
+      m.userData.target=p.clone();
+      m.position.copy(m.userData.chaos);
+      ringGroup.add(m);
+      ringMeshes.push(m);
+    });
+    var ringLoopGeo=new THREE.BufferGeometry().setFromPoints(ringPts.concat([ringPts[0]]));
+    var ringLoopMat=new THREE.LineBasicMaterial({color:0x4f8fc9,transparent:true,opacity:0.4});
+    ringGroup.add(new THREE.Line(ringLoopGeo,ringLoopMat));
+    ringGroup.visible=false;
+    scene.add(ringGroup);
+
+    /* ---- MILESTONES SCENE: constellation (Achievements) ----
+       Irregular, sparsely-linked points rather than a regular ring or dense
+       graph — reads as "stars joined into a constellation" marking discrete
+       achievements, not a system or a sequence. */
+    var constCount=isMobile?8:14;
+    var constGroup=new THREE.Group();
+    var constPts=[];
+    for(var cI=0;cI<constCount;cI++){
+      constPts.push(new THREE.Vector3(
+        (Math.random()-0.5)*9.5,
+        (Math.random()-0.5)*5.5,
+        (Math.random()-0.5)*4.0
+      ));
+    }
+    var constNodeGeo=new THREE.SphereGeometry(0.075,8,8);
+    var constNodeMat=new THREE.MeshBasicMaterial({color:0xe8c27a});
+    var constMeshes=[];
+    constPts.forEach(function(p,idx){
+      var m=new THREE.Mesh(constNodeGeo,constNodeMat);
+      m.position.copy(p);
+      m.userData.phase=idx/constPts.length; // staggers each "star" igniting in sequence rather than all at once
+      m.scale.setScalar(0);
+      constGroup.add(m);
+      constMeshes.push(m);
+    });
+    if(!isMobile){
+      var constLinePts=[];
+      for(var cA=0;cA<constPts.length;cA++){
+        for(var cB=cA+1;cB<constPts.length;cB++){
+          if(constPts[cA].distanceTo(constPts[cB])<4.2 && Math.random()<0.45){
+            constLinePts.push(constPts[cA],constPts[cB]);
+          }
+        }
+      }
+      var constLineGeo=new THREE.BufferGeometry().setFromPoints(constLinePts);
+      var constLineMat=new THREE.LineBasicMaterial({color:0xb9985a,transparent:true,opacity:0.3});
+      constGroup.add(new THREE.LineSegments(constLineGeo,constLineMat));
+    }
+    constGroup.visible=false;
+    scene.add(constGroup);
+
+    /* ---- SCROLLYTELLING TIMELINE ----
+       Keyframes are anchored to the real DOM position of each chapter's
+       section, so camera/sun/color motion is driven by actual scroll
+       progress rather than a fixed step count. Between anchors we lerp;
+       intermediate sections (certs, profile, goals) simply ride the
+       interpolation between their neighbours, keeping motion continuous. */
+    var K={
+      hero:        {camX:0,  camY:0,   camZ:12, sunX:0,  sunY:0,  sunZ:0,   sunScale:1.00, color:0xff8a3d, starOp:0.75, canvasOp:1.00, nodeOp:0, ringOp:0, constOp:0, coronaMul:1.00},
+      aboutmini:   {camX:3.2,camY:0.8, camZ:16, sunX:6,  sunY:2,  sunZ:-5,  sunScale:0.62, color:0xff9a55, starOp:0.55, canvasOp:0.85, nodeOp:0, ringOp:0, constOp:0, coronaMul:0.55},
+      certs:       {camX:-1.2,camY:1.6, camZ:15, sunX:-4, sunY:5,  sunZ:-14, sunScale:0.34, color:0x8ec8ff, starOp:0.48, canvasOp:0.5,  nodeOp:0, ringOp:1, constOp:0, coronaMul:0.30},
+      skills:      {camX:0,  camY:1.4, camZ:14, sunX:0,  sunY:7,  sunZ:-19, sunScale:0.26, color:0x6fd0e6, starOp:0.5,  canvasOp:0.6,  nodeOp:1, ringOp:0, constOp:0, coronaMul:0.22},
+      projects:    {camX:-2.6,camY:0.2,camZ:19, sunX:-8, sunY:-1, sunZ:-11, sunScale:0.40, color:0x5fb4e0, starOp:0.42, canvasOp:0.55, nodeOp:0, ringOp:0, constOp:0, coronaMul:0.20},
+      achievements:{camX:2.8, camY:-0.8,camZ:17, sunX:5,  sunY:-3, sunZ:-7,  sunScale:0.55, color:0xd9a656, starOp:0.6,  canvasOp:0.65, nodeOp:0, ringOp:0, constOp:1, coronaMul:0.26},
+      about:       {camX:1.0,camY:0.3, camZ:13, sunX:2,  sunY:1,  sunZ:-16, sunScale:0.30, color:0xffb27a, starOp:0.4,  canvasOp:0.5,  nodeOp:0, ringOp:0, constOp:0, coronaMul:0.20},
+      goals:       {camX:-0.5,camY:0.6,camZ:20, sunX:-1, sunY:2,  sunZ:-24, sunScale:0.22, color:0x9fc2ff, starOp:0.3,  canvasOp:0.42, nodeOp:0, ringOp:0, constOp:0, coronaMul:0.14},
+      contact:     {camX:0,  camY:0,   camZ:27, sunX:0,  sunY:0,  sunZ:-32, sunScale:0.18, color:0xbcd6ff, starOp:0.22, canvasOp:0.35, nodeOp:0, ringOp:0, constOp:0, coronaMul:0.10}
+    };
+    /* anchors now follow the page's real DOM order (sections were physically
+       reordered to match the intended narrative — see summary), so the
+       journey reads in one straight line rather than needing the camera to
+       imply an order the page didn't have:
+       01 ORIGIN (hero) -> 02 EXPLORATION (about-mini) ->
+       03 FORMATION (certs, orbital timeline ring) -> 04 SYSTEMS (skills, node graph) ->
+       05 CREATION (projects) -> 06 MILESTONES (achievements, constellation) ->
+       about / goals bridge back down to -> 07 DESTINATION (contact) */
+    var anchorIds=['hero','about-mini','certs','skills','projects','achievements','about','goals','contact'];
+    var anchorKeys=['hero','aboutmini','certs','skills','projects','achievements','about','goals','contact'];
+    var anchors=[]; // filled on measure()
+
+    function measure(){
+      anchors=anchorIds.map(function(id,i){
+        var el=document.getElementById(id);
+        var top=el?(el.getBoundingClientRect().top+window.scrollY):i*window.innerHeight;
+        return {top:top,state:K[anchorKeys[i]]};
+      });
+    }
+
+    function smoothstep(t){return t*t*t*(t*(t*6-15)+10);} // quintic smootherstep — zero 1st & 2nd derivative at both ends, reads as a true cinematic ease rather than a mechanical linear-ish blend
+
+    function timelineState(scrollY){
+      if(scrollY<=anchors[0].top)return anchors[0].state;
+      for(var i=0;i<anchors.length-1;i++){
+        if(scrollY>=anchors[i].top && scrollY<=anchors[i+1].top){
+          var span=anchors[i+1].top-anchors[i].top || 1;
+          var t=smoothstep(Math.min(Math.max((scrollY-anchors[i].top)/span,0),1));
+          return lerpState(anchors[i].state,anchors[i+1].state,t);
+        }
+      }
+      return anchors[anchors.length-1].state;
+    }
+    function lerpN(a,b,t){return a+(b-a)*t;}
+    /* Progress (0..1, eased) through one specific named transition span —
+       used to drive per-transition storytelling (particle morphs, collapses,
+       staggered reveals) independently of the general camera/color crossfade
+       above, which already covers the whole anchor list. */
+    function segmentProgress(fromId,toId){
+      var a=anchors.filter(function(o,i){return anchorIds[i]===fromId;})[0];
+      var b=anchors.filter(function(o,i){return anchorIds[i]===toId;})[0];
+      if(!a||!b)return 0;
+      if(latestScrollY<=a.top)return 0;
+      if(latestScrollY>=b.top)return 1;
+      return smoothstep((latestScrollY-a.top)/((b.top-a.top)||1));
+    }
+    function lerpState(a,b,t){
+      return {
+        camX:lerpN(a.camX,b.camX,t), camY:lerpN(a.camY,b.camY,t), camZ:lerpN(a.camZ,b.camZ,t),
+        sunX:lerpN(a.sunX,b.sunX,t), sunY:lerpN(a.sunY,b.sunY,t), sunZ:lerpN(a.sunZ,b.sunZ,t),
+        sunScale:lerpN(a.sunScale,b.sunScale,t),
+        color:lerpColor(a.color,b.color,t),
+        starOp:lerpN(a.starOp,b.starOp,t), canvasOp:lerpN(a.canvasOp,b.canvasOp,t),
+        nodeOp:lerpN(a.nodeOp,b.nodeOp,t),
+        ringOp:lerpN(a.ringOp,b.ringOp,t), constOp:lerpN(a.constOp,b.constOp,t),
+        coronaMul:lerpN(a.coronaMul,b.coronaMul,t)
+      };
+    }
+    function lerpColor(c1,c2,t){
+      var r1=(c1>>16&255),g1=(c1>>8&255),b1=(c1&255);
+      var r2=(c2>>16&255),g2=(c2>>8&255),b2=(c2&255);
+      return (Math.round(lerpN(r1,r2,t))<<16)|(Math.round(lerpN(g1,g2,t))<<8)|Math.round(lerpN(b1,b2,t));
+    }
+
+    /* ---- state ---- */
+    var clock=new THREE.Clock();
+    var ZERO3=new THREE.Vector3(0,0,0);
+    var running=true;
+    var introStart=performance.now();
+    var introDur=2600;
+    var mouseX=0,mouseY=0,targetMouseX=0,targetMouseY=0;
+    var dustMouseX=0,dustMouseY=0;
+    var current=Object.assign({},K.hero); // smoothed / "inertial" state actually applied each frame
+    var latestScrollY=window.scrollY;
+    var pageVisible=true;
+    var lastTargetCamZ=K.hero.camZ, fovPulse=0;
+
+    if(!isMobile){
+      window.addEventListener('mousemove',function(e){
+        targetMouseX=(e.clientX/window.innerWidth-0.5);
+        targetMouseY=(e.clientY/window.innerHeight-0.5);
+      },{passive:true});
+    }
+
+    window.addEventListener('scroll',function(){latestScrollY=window.scrollY;},{passive:true});
+
+    function easeOutCubic(t){return 1-Math.pow(1-t,3);}
+
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(entries){
+        pageVisible=entries.some(function(e){return e.isIntersecting;});
+      },{threshold:0});
+      io.observe(document.body);
+    }
+
+    var resizeTimer;
+    function resize(){
+      var w=window.innerWidth,h=window.innerHeight;
+      camera.aspect=w/h;camera.updateProjectionMatrix();
+      renderer.setSize(w,h);
+      measure();
+    }
+    window.addEventListener('resize',function(){
+      clearTimeout(resizeTimer);resizeTimer=setTimeout(resize,150);
+    });
+
+    measure();
+    canvas.classList.add('ready');
+    window.dispatchEvent(new Event('cosmos:ready'));
+
+    var frameSkip=isMobile?1:0; // render every other frame on mobile to save battery/heat
+    var frameCounter=0;
+
+    function tick(){
+      if(!running)return;
+      requestAnimationFrame(tick);
+      if(contextLost)return; // GPU context dropped — skip frames until (if ever) restored
+      if(document.hidden||!pageVisible)return;
+      if(frameSkip){frameCounter++;if(frameCounter%2)return;}
+
+      var t=clock.getElapsedTime();
+      sunMat.uniforms.uTime.value=t;
+      sun.rotation.y=t*0.045;
+      sun.rotation.x=Math.sin(t*0.02)*0.05;
+      corona.rotation.y=-t*0.02;
+      stars.rotation.y=t*0.006;
+      nodeGroup.rotation.y=t*0.05;
+      nodeGroup.rotation.x=Math.sin(t*0.03)*0.15;
+
+      var target=timelineState(latestScrollY);
+      var damp=isMobile?0.06:0.045; // smoothing factor = inertia, prevents scroll-jitter
+      current.camX=lerpN(current.camX,target.camX,damp);
+      current.camY=lerpN(current.camY,target.camY,damp);
+      current.camZ=lerpN(current.camZ,target.camZ,damp);
+      current.sunX=lerpN(current.sunX,target.sunX,damp);
+      current.sunY=lerpN(current.sunY,target.sunY,damp);
+      current.sunZ=lerpN(current.sunZ,target.sunZ,damp);
+      current.sunScale=lerpN(current.sunScale,target.sunScale,damp);
+      current.starOp=lerpN(current.starOp,target.starOp,damp);
+      current.canvasOp=lerpN(current.canvasOp,target.canvasOp,damp);
+      current.nodeOp=lerpN(current.nodeOp,target.nodeOp,damp);
+      current.ringOp=lerpN(current.ringOp,target.ringOp,damp);
+      current.constOp=lerpN(current.constOp,target.constOp,damp);
+      current.coronaMul=lerpN(current.coronaMul,target.coronaMul,damp);
+
+      var intro=Math.min((performance.now()-introStart)/introDur,1);
+      var eased=easeOutCubic(intro);
+      var introBonusZ=(1-eased)*22; // cinematic dolly-in on first load only
+
+      mouseX+=(targetMouseX-mouseX)*0.04;
+      mouseY+=(targetMouseY-mouseY)*0.04;
+
+      camera.position.x+=((current.camX+mouseX*1.4)-camera.position.x)*0.06;
+      camera.position.y+=((current.camY-mouseY*0.9)-camera.position.y)*0.06;
+      camera.position.z=current.camZ+introBonusZ;
+      camera.lookAt(current.sunX*0.4,current.sunY*0.4,0);
+
+      sun.position.set(current.sunX,current.sunY,current.sunZ);
+      sun.scale.setScalar(current.sunScale);
+      corona.position.copy(sun.position);
+      corona.scale.setScalar(current.sunScale);
+      corona.material.uniforms.uColor.value.setHex(target.color);
+      corona.material.uniforms.uStrength.value=1.0*current.coronaMul;
+      coronaOuter.position.copy(sun.position);
+      coronaOuter.scale.setScalar(current.sunScale);
+      coronaOuter.material.uniforms.uColor.value.setHex(target.color);
+      coronaOuter.material.uniforms.uStrength.value=0.55*current.coronaMul;
+
+      stars.material.opacity=current.starOp;
+      if(dust){
+        dust.rotation.y=t*0.012;
+        dustMouseX+=(mouseX*2.2-dustMouseX)*0.05;
+        dustMouseY+=(mouseY*1.6-dustMouseY)*0.05;
+        dust.position.x=dustMouseX;
+        dust.position.y=-dustMouseY;
+        dust.material.opacity=current.starOp*0.55;
+      }
+      nodeGroup.position.set(0,0.5,-8);
+      nodeGroup.visible=current.nodeOp>0.02;
+      nodeMatEmissive.opacity=current.nodeOp;
+      nodeMatEmissive.transparent=true;
+      // FORMATION -> SYSTEMS: nodes assemble out of scattered chaos into the
+      // network; SYSTEMS -> CREATION: the assembled network then collapses
+      // inward toward a single point as it dissolves — "nodes connecting
+      // toward a centre, network collapsing into a dense particle field"
+      var nodeForm=segmentProgress('certs','skills');
+      var nodeCollapse=segmentProgress('skills','projects');
+      nodeMeshes.forEach(function(m){
+        var assembled=new THREE.Vector3().lerpVectors(m.userData.chaos,m.userData.target,nodeForm);
+        m.position.lerpVectors(assembled,ZERO3,nodeCollapse);
+      });
+      if(nodeGroup.children[nodeGroup.children.length-1] && nodeGroup.children[nodeGroup.children.length-1].material && nodeGroup.children[nodeGroup.children.length-1].material.isLineBasicMaterial){
+        nodeGroup.children[nodeGroup.children.length-1].material.opacity=current.nodeOp*0.35*nodeForm*(1-nodeCollapse);
+      }
+      // brief particle-density pulse right as the network finishes collapsing —
+      // reads as the network dissolving into the dust that becomes the
+      // Projects exhibition's ambient particle field
+      if(dust)dust.material.opacity=(current.starOp*0.55)+Math.sin(Math.min(nodeCollapse,1)*Math.PI)*0.25;
+
+      // Formation ring (certs) — chaos-to-structure morph: markers fly in from
+      // scattered star-like positions and assemble into the ring as the user
+      // scrolls through EXPLORATION -> FORMATION, then it turns slowly once formed
+      var ringForm=segmentProgress('about-mini','certs');
+      ringMeshes.forEach(function(m){m.position.lerpVectors(m.userData.chaos,m.userData.target,ringForm);});
+      ringGroup.position.set(0,-0.3,-10);
+      ringGroup.rotation.y=t*0.035;
+      ringGroup.rotation.z=Math.sin(t*0.015)*0.08;
+      ringGroup.visible=current.ringOp>0.02;
+      ringNodeMat.opacity=current.ringOp;ringNodeMat.transparent=true;
+      ringLoopMat.opacity=current.ringOp*0.5*ringForm; // the connecting loop only draws once markers have actually arrived
+
+      // Milestones constellation (achievements) — each "star" ignites in its
+      // own staggered moment rather than the whole field popping in at once,
+      // then thin lines connect them once most are lit
+      var constForm=segmentProgress('projects','achievements');
+      constMeshes.forEach(function(m){
+        var ignite=smoothstep(Math.max(0,Math.min(1,(constForm*1.35-m.userData.phase)/(1-m.userData.phase*0.6))));
+        m.scale.setScalar(ignite);
+      });
+      constGroup.position.set(0,0.2,-6);
+      constGroup.rotation.y=t*0.012;
+      constGroup.visible=current.constOp>0.02;
+      constNodeMat.opacity=current.constOp;constNodeMat.transparent=true;
+      if(constGroup.children[constGroup.children.length-1] && constGroup.children[constGroup.children.length-1].material && constGroup.children[constGroup.children.length-1].material.isLineBasicMaterial){
+        constGroup.children[constGroup.children.length-1].material.opacity=current.constOp*0.3*smoothstep(Math.max(0,Math.min(1,(constForm-0.65)/0.35)));
+      }
+
+      canvas.style.opacity=String(current.canvasOp);
+
+      // Subtle choreographed FOV "breath" on scene transitions — reads as an
+      // intentional lens move rather than a hard cut when camZ target changes.
+      var camZDelta=Math.abs(target.camZ-lastTargetCamZ);
+      if(camZDelta>0.6)fovPulse=Math.min(fovPulse+camZDelta*0.35,3.2);
+      lastTargetCamZ=target.camZ;
+      fovPulse*=0.92;
+      var wantFov=42+fovPulse;
+      if(Math.abs(camera.fov-wantFov)>0.02){
+        camera.fov+=(wantFov-camera.fov)*0.08;
+        camera.updateProjectionMatrix();
+      }
+
+      if(composer){composer.render();}else{renderer.render(scene,camera);}
+    }
+    tick();
+
+  }).catch(function(){ window.dispatchEvent(new Event('cosmos:ready')); /* CDN unreachable — fixed dark backdrop remains, no crash */ });
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════
+     MICRO-INTERACTIONS — magnetic buttons, cursor light,
+     scroll-staged project spotlight. Desktop-only where
+     it depends on a precise pointer; degrades cleanly on
+     touch (handlers simply never attach).
+═══════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var coarse=window.matchMedia && window.matchMedia('(pointer:coarse)').matches;
+  var reduced=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Custom cursor: precise dot + trailing ring, with hover/magnetic/view states */
+  if(!coarse && !reduced){
+    document.documentElement.classList.add('has-custom-cursor');
+    var dot=document.createElement('div');dot.id='cc-dot';
+    var ring=document.createElement('div');ring.id='cc-ring';
+    document.body.appendChild(dot);document.body.appendChild(ring);
+    var cx=0,cy=0,rx=0,ry=0,cvisible=false;
+    window.addEventListener('mousemove',function(e){
+      cx=e.clientX;cy=e.clientY;
+      if(!cvisible){cvisible=true;dot.classList.remove('cc-hidden');ring.classList.remove('cc-hidden');}
+    },{passive:true});
+    document.addEventListener('mouseleave',function(){dot.classList.add('cc-hidden');ring.classList.add('cc-hidden');});
+    (function raf(){
+      rx+=(cx-rx)*0.18;ry+=(cy-ry)*0.18;
+      dot.style.transform='translate3d('+cx+'px,'+cy+'px,0)';
+      ring.style.transform='translate3d('+rx+'px,'+ry+'px,0)';
+      requestAnimationFrame(raf);
+    })();
+    // Contextual states: expand on interactive elements, a distinct larger
+    // "view" ring over anything meant to be opened/zoomed, hide entirely
+    // over text inputs so the native caret stays legible.
+    document.addEventListener('mouseover',function(e){
+      var t=e.target;
+      if(t.closest('input,textarea,select,[contenteditable]')){
+        ring.classList.add('cc-hidden');dot.classList.add('cc-hidden');return;
+      }
+      ring.classList.remove('cc-hidden');dot.classList.remove('cc-hidden');
+      if(t.closest('[style*="zoom-in"],.tneb-shot,.at-shot,.cert-view,.ulb-img,#ulb-img')){
+        ring.classList.add('cc-view');ring.classList.remove('cc-hover');
+      }else if(t.closest('a,button,[role="button"],.proj-card,.chip,.social-btn')){
+        ring.classList.add('cc-hover');ring.classList.remove('cc-view');
+      }else{
+        ring.classList.remove('cc-hover','cc-view');
+      }
+    });
+  }
+
+  /* Cursor-reactive ambient light */
+  if(!coarse && !reduced){
+    var light=document.createElement('div');
+    light.id='cursor-light';
+    document.body.appendChild(light);
+    var lx=0,ly=0,tx=0,ty=0;
+    window.addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY;light.style.opacity='1';},{passive:true});
+    document.addEventListener('mouseleave',function(){light.style.opacity='0';});
+    (function raf(){
+      lx+=(tx-lx)*0.15;ly+=(ty-ly)*0.15;
+      light.style.transform='translate3d('+(lx-220)+'px,'+(ly-220)+'px,0)';
+      requestAnimationFrame(raf);
+    })();
+  }
+
+  /* Magnetic buttons */
+  if(!coarse && !reduced){
+    var mag=document.querySelectorAll('.btn-primary,.btn-secondary,.social-btn,.nav-cv,.hero-live-btn');
+    mag.forEach(function(el){
+      el.addEventListener('mousemove',function(e){
+        var r=el.getBoundingClientRect();
+        var mx=(e.clientX-r.left-r.width/2)*0.28;
+        var my=(e.clientY-r.top-r.height/2)*0.32;
+        el.style.transform='translate('+mx+'px,'+my+'px)';
+      });
+      el.addEventListener('mouseleave',function(){el.style.transform='';});
+    });
+  }
+
+  /* Project spotlight — the active project stage gets focus, siblings recede */
+  var projCards=document.querySelectorAll('#projects .proj-card');
+  if(projCards.length && 'IntersectionObserver' in window){
+    var pObs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        e.target.classList.toggle('proj-focus',e.isIntersecting && e.intersectionRatio>0.5);
+      });
+    },{threshold:[0,0.5,0.75]});
+    projCards.forEach(function(c){c.classList.add('proj-stage');pObs.observe(c);});
+  }
+
+  /* Hero name — subtle text distortion that tracks the cursor (desktop only) */
+  if(!coarse && !reduced){
+    var heroName=document.querySelector('.hero-name');
+    if(heroName){
+      heroName.addEventListener('mousemove',function(e){
+        var r=heroName.getBoundingClientRect();
+        var px=(e.clientX-r.left)/r.width-0.5;
+        heroName.style.transform='perspective(600px) rotateY('+(px*4)+'deg)';
+      });
+      heroName.addEventListener('mouseleave',function(){heroName.style.transform='';});
+    }
+  }
+})();
+</script>
+
+<script>
+/* ── NAV COORDINATE READOUT + SCROLL PROGRESS ── */
+(function(){
+  var prog=document.getElementById('scroll-progress');
+  var coord=document.getElementById('nav-coord');
+  var chapters=[
+    {id:'hero',label:'HERO'},
+    {id:'about-mini',label:'OVERVIEW'},
+    {id:'certs',label:'CERTIFICATIONS'},
+    {id:'skills',label:'SKILLS'},
+    {id:'projects',label:'PROJECTS'},
+    {id:'achievements',label:'ACHIEVEMENTS'},
+    {id:'about',label:'PROFILE'},
+    {id:'goals',label:'GOALS'},
+    {id:'contact',label:'CONTACT'}
+  ];
+  var els=chapters.map(function(c){return {c:c,el:document.getElementById(c.id)};}).filter(function(o){return o.el;});
+
+  function updateProgress(){
+    var d=document.documentElement;
+    var s=d.scrollTop,t=d.scrollHeight-d.clientHeight;
+    if(prog)prog.style.width=(t>0?(s/t*100):0).toFixed(2)+'%';
+  }
+  window.addEventListener('scroll',updateProgress,{passive:true});
+  updateProgress();
+
+  if('IntersectionObserver' in window && coord){
+    var total=String(els.length).padStart(2,'0');
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          var idx=els.findIndex(function(o){return o.el===e.target;});
+          if(idx>-1){
+            var n=String(idx+1).padStart(2,'0');
+            coord.innerHTML='<span class="nc-dot"></span>'+n+' / '+total+' · '+els[idx].c.label;
+          }
+        }
+      });
+    },{threshold:0.35,rootMargin:'-40% 0px -40% 0px'});
+    els.forEach(function(o){obs.observe(o.el);});
+  }
+})();
+</script>
+
 </body>
 </html>
