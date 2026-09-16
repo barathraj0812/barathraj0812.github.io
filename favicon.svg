@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Core B Structure (Royal Violet) -->
   <path
-    fill="currentColor"
+    fill="#7C3AED"
     fill-rule="evenodd"
     d="
       M3 3
@@ -29,7 +30,12 @@
       C18 16.5 17 15.5 14.5 15.5
       H8
       Z
-      
+    "
+  />
+  <!-- Integrated R Leg Accent (Regal Gold) -->
+  <path
+    fill="#FBBF24"
+    d="
       M18 14
       L27 25
       H21
