@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Barath M — Student Developer · AI Applications | Chennai</title>
@@ -28,6 +29,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
+	.nav-logo img {
+  width: 32px;
+  height: 32px;
+  display: block;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 :root{
@@ -1872,7 +1878,9 @@ footer{border-top:1px solid var(--border);padding:40px 32px 28px;position:relati
 <!-- NAV -->
 <nav id="main-nav">
   <div class="nav-inner">
-    <a href="#hero" class="nav-logo">BR<span>.</span></a>
+    <a href="#hero" class="nav-logo" aria-label="Barath M">
+  		<img src="/logo.svg" alt="Barath M">
+	</a>
     <ul class="nav-links">
       <li><a href="#hero" class="active">Home</a></li>
       <li><a href="#about">About</a></li>
